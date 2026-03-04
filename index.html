@@ -473,28 +473,57 @@
 
                     <!-- Right Side Controls: VU (tall) + Knob/Buttons (fixed bottom) -->
                     <div class="side-rec-controls">
-
-                        <!-- ── TOP: VU Meter fills all available height ── -->
+                        <!-- TOP: High-Density VU Meter Column -->
                         <div class="v-vu-wrap">
-                            <div class="v-label">IN</div>
-                            <div style="display:flex;flex-direction:row;align-items:stretch;gap:3px;flex:1;width:100%;">
-                                <!-- dB scale labels -->
+                            <div class="v-label" style="text-align: center; margin-bottom: 4px;">IN</div>
+                            <div
+                                style="display: flex; flex: 1; gap: 6px; padding: 0 4px; min-height: 0; align-items: stretch; height: 100%;">
+                                <!-- dB Scale pinned to left -->
                                 <div id="vu-db-scale"
-                                    style="display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end;padding:2px 0;font:bold 7px 'Orbitron',monospace;line-height:1;user-select:none;min-width:22px;">
-                                    <span style="color:rgba(255,60,60,0.9)">0</span>
-                                    <span style="color:rgba(255,140,0,0.8)">−6</span>
-                                    <span style="color:rgba(255,200,0,0.75)">−12</span>
-                                    <span style="color:rgba(0,220,100,0.75)">−18</span>
-                                    <span style="color:rgba(80,160,255,0.65)">−24</span>
-                                    <span style="color:rgba(0,229,255,0.45)">−∞</span>
+                                    style="display: flex; flex-direction: column; justify-content: space-between; align-items: flex-end; font: bold 8px 'Orbitron', monospace; color: rgba(255,255,255,0.3); min-width: 26px; padding: 4px 0; flex-shrink: 0;">
+                                    <span style="color: rgba(255,60,60,0.8)">0</span>
+                                    <span>-3</span>
+                                    <span>-6</span>
+                                    <span>-12</span>
+                                    <span>-18</span>
+                                    <span>-24</span>
+                                    <span>-36</span>
+                                    <span style="color: var(--pri);">-inf</span>
                                 </div>
-                                <!-- VU bar — flex:1 fills the remaining height -->
+                                <!-- VU Meter track — no inline style conflicts -->
                                 <div class="v-vu-meter" id="input-vu">
-                                    <div class="vu-seg level-peak" data-level="14"></div>
-                                    <div class="vu-seg level-orange" data-level="13"></div>
-                                    <div class="vu-seg level-orange" data-level="12"></div>
-                                    <div class="vu-seg level-mid" data-level="11"></div>
-                                    <div class="vu-seg level-mid" data-level="10"></div>
+                                    <!-- 40 segments for professional resolution -->
+                                    <div class="vu-seg level-peak" data-level="40"></div>
+                                    <div class="vu-seg level-peak" data-level="39"></div>
+                                    <div class="vu-seg level-peak" data-level="38"></div>
+                                    <div class="vu-seg level-orange" data-level="37"></div>
+                                    <div class="vu-seg level-orange" data-level="36"></div>
+                                    <div class="vu-seg level-orange" data-level="35"></div>
+                                    <div class="vu-seg level-orange" data-level="34"></div>
+                                    <div class="vu-seg level-mid" data-level="33"></div>
+                                    <div class="vu-seg level-mid" data-level="32"></div>
+                                    <div class="vu-seg level-mid" data-level="31"></div>
+                                    <div class="vu-seg level-mid" data-level="30"></div>
+                                    <div class="vu-seg level-mid" data-level="29"></div>
+                                    <div class="vu-seg level-mid" data-level="28"></div>
+                                    <div class="vu-seg level-mid" data-level="27"></div>
+                                    <div class="vu-seg level-mid" data-level="26"></div>
+                                    <div class="vu-seg level-mid" data-level="25"></div>
+                                    <div class="vu-seg level-mid" data-level="24"></div>
+                                    <div class="vu-seg level-mid" data-level="23"></div>
+                                    <div class="vu-seg level-low" data-level="22"></div>
+                                    <div class="vu-seg level-low" data-level="21"></div>
+                                    <div class="vu-seg level-low" data-level="20"></div>
+                                    <div class="vu-seg level-low" data-level="19"></div>
+                                    <div class="vu-seg level-low" data-level="18"></div>
+                                    <div class="vu-seg level-low" data-level="17"></div>
+                                    <div class="vu-seg level-low" data-level="16"></div>
+                                    <div class="vu-seg level-low" data-level="15"></div>
+                                    <div class="vu-seg level-low" data-level="14"></div>
+                                    <div class="vu-seg level-low" data-level="13"></div>
+                                    <div class="vu-seg level-low" data-level="12"></div>
+                                    <div class="vu-seg level-low" data-level="11"></div>
+                                    <div class="vu-seg level-low" data-level="10"></div>
                                     <div class="vu-seg level-low" data-level="9"></div>
                                     <div class="vu-seg level-low" data-level="8"></div>
                                     <div class="vu-seg level-low" data-level="7"></div>
@@ -508,20 +537,25 @@
                             </div>
                         </div>
 
-                        <!-- ── BOTTOM: Knob + Transport buttons (fixed height) ── -->
+                        <!-- MIDDLE: Separation Line (requested by user) -->
+                        <div
+                            style="width: 80%; height: 1px; background: rgba(255,255,255,0.15); margin: 6px 0; flex-shrink: 0;">
+                        </div>
+
+                        <!-- BOTTOM: Gain + Transport (Fixed Bottom) -->
                         <div class="side-bottom-controls">
 
                             <!-- GAIN Knob -->
                             <div class="input-knob-wrap" id="input-knob-wrap">
                                 <svg id="ik-tick-svg" width="60" height="60" viewBox="0 0 60 60"
                                     style="position:absolute;top:0;left:0;pointer-events:none;"></svg>
-                                <div class="input-knob" id="input-knob" style="width:52px;height:52px;">
-                                    <div class="ik-body" style="width:42px;height:42px;">
+                                <div class="input-knob" id="input-knob">
+                                    <div class="ik-body">
                                         <div class="ik-pointer"></div>
                                     </div>
                                 </div>
                                 <div id="ik-db-display"
-                                    style="font:bold 9px 'Orbitron',monospace;color:#00e5ff;text-align:center;margin-top:2px;letter-spacing:0.03em;text-shadow:0 0 6px rgba(0,229,255,0.6);min-height:13px;">
+                                    style="font:bold 9px 'Orbitron',monospace;color:#00e5ff;text-align:center;margin-top:2px;letter-spacing:0.03em;">
                                     −6.0 dB</div>
                                 <div class="v-label">GAIN</div>
                             </div>
@@ -636,6 +670,31 @@
                     </div>
                     <div class="ve-sep"></div>
 
+                    <!-- Group 6: Zoom (Moved to top row) -->
+                    <div class="ve-group">
+                        <button class="ve-btn" id="btn-zoom-out" title="Zoom Out (−)" onclick="prZoom(-1)">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.2">
+                                <circle cx="11" cy="11" r="8" />
+                                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                <line x1="8" y1="11" x2="14" y2="11" />
+                            </svg>
+                        </button>
+                        <div class="ve-zoom-display" id="zoom-display">100%</div>
+                        <button class="ve-btn" id="btn-zoom-in" title="Zoom In (+)" onclick="prZoom(1)">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.2">
+                                <circle cx="11" cy="11" r="8" />
+                                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                <line x1="11" y1="8" x2="11" y2="14" />
+                                <line x1="8" y1="11" x2="14" y2="11" />
+                            </svg>
+                        </button>
+                        <button class="ve-btn" id="btn-zoom-fit" title="Fit to Window" onclick="prZoom(0)"
+                            style="font-size:8px;letter-spacing:.05em;padding:4px 6px;">FIT</button>
+                    </div>
+                    <div class="ve-sep"></div>
+
                     <!-- Group 3: Vocal Expression Tools -->
                     <div class="ve-group">
                         <button class="ve-btn ve-expr-btn" data-expr="vibrato" title="Vibrato Curve" id="expr-vibrato">
@@ -729,32 +788,8 @@
                             <span>Q</span>
                         </button>
                     </div>
-                    <div class="ve-sep"></div>
+                </div><!-- /ve-toolbar -->
 
-                    <!-- Group 6: Zoom -->
-                    <div class="ve-group">
-                        <button class="ve-btn" id="btn-zoom-out" title="Zoom Out (−)" onclick="prZoom(-1)">
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2.2">
-                                <circle cx="11" cy="11" r="8" />
-                                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                                <line x1="8" y1="11" x2="14" y2="11" />
-                            </svg>
-                        </button>
-                        <div class="ve-zoom-display" id="zoom-display">100%</div>
-                        <button class="ve-btn" id="btn-zoom-in" title="Zoom In (+)" onclick="prZoom(1)">
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2.2">
-                                <circle cx="11" cy="11" r="8" />
-                                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                                <line x1="11" y1="8" x2="11" y2="14" />
-                                <line x1="8" y1="11" x2="14" y2="11" />
-                            </svg>
-                        </button>
-                        <button class="ve-btn" id="btn-zoom-fit" title="Fit to Window" onclick="prZoom(0)"
-                            style="font-size:8px;letter-spacing:.05em;padding:4px 6px;">FIT</button>
-                    </div>
-                </div>
                 <!-- ── STATUS BAR ── -->
                 <div class="ve-status-bar">
                     <span id="ve-tool-status">✏ Tool: <b>Select</b></span>
@@ -1137,15 +1172,15 @@
 
                 <!-- PRO LEVEL knob + Sliders side by side -->
                 <div class="c-controls-row">
-                    <div class="vol-knob-wrap" id="prolevel-knob-wrap" style="margin:0 auto 4px;">
+                    <div class="vol-knob-wrap" id="prolevel-knob-wrap"
+                        style="margin:0 auto 4px; flex-shrink: 0; min-width: 140px;">
                         <svg id="prolevel-svg" width="140" height="140" viewBox="0 0 140 140"
                             xmlns="http://www.w3.org/2000/svg" style="display:block;cursor:pointer;">
                             <defs>
-                                <radialGradient id="knob-bg" cx="40%" cy="35%" r="60%">
-                                    <stop offset="0%" stop-color="#2a2e3e" />
-                                    <stop offset="35%" stop-color="#1a1f2e" />
-                                    <stop offset="70%" stop-color="#0e1220" />
-                                    <stop offset="100%" stop-color="#07091a" />
+                                <radialGradient id="knob-bg" cx="40%" cy="30%" r="65%">
+                                    <stop offset="0%" stop-color="#4a4d52" />
+                                    <stop offset="60%" stop-color="#17191d" />
+                                    <stop offset="100%" stop-color="#050608" />
                                 </radialGradient>
                                 <filter id="arc-glow" x="-20%" y="-20%" width="140%" height="140%">
                                     <feGaussianBlur stdDeviation="3" result="b" />
@@ -1211,12 +1246,17 @@
                             <path id="kn-arc" d="M 31.11,108.89 A 55,55 0 1,1 124.83,74.32" fill="none" stroke="#ff9200"
                                 stroke-width="7" stroke-linecap="round" filter="url(#arc-glow)" />
 
+                            <!-- Knob 3D base shadow -->
+                            <circle cx="70" cy="70" r="50" fill="rgba(0,0,0,0.8)" filter="url(#glow-sm)" />
+
                             <!-- Knob 3D body -->
                             <circle cx="70" cy="70" r="48" fill="url(#knob-bg)" />
-                            <!-- Inner highlight top-left (3D light reflection) -->
-                            <ellipse cx="58" cy="56" rx="18" ry="12" fill="rgba(255,255,255,0.06)" />
-                            <!-- Inner shadow bottom-right -->
-                            <ellipse cx="82" cy="84" rx="16" ry="10" fill="rgba(0,0,0,0.4)" />
+
+                            <!-- Inner highlight ring -->
+                            <circle cx="70" cy="70" r="47" fill="none" stroke="rgba(255,255,255,0.12)"
+                                stroke-width="1.5" />
+                            <circle cx="70" cy="70" r="48" fill="none" stroke="rgba(0,0,0,0.8)" stroke-width="2" />
+
                             <!-- Body edge ring (concave feel) -->
                             <circle cx="70" cy="70" r="48" fill="none" stroke="rgba(255,255,255,0.05)"
                                 stroke-width="1.5" />

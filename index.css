@@ -1138,7 +1138,7 @@ body {
     gap: 12px;
     flex: 1;
     min-height: 0;
-    overflow: hidden
+    overflow: hidden;
 }
 
 .card {
@@ -1151,7 +1151,10 @@ body {
     position: relative;
     overflow: hidden;
     min-width: 0;
-    transition: border-color .3s
+    min-height: 0;
+    height: 100%;
+    box-sizing: border-box;
+    transition: border-color .3s;
 }
 
 .card:hover {
@@ -1378,6 +1381,7 @@ body {
     cursor: pointer;
     display: block;
     width: 100%;
+    box-sizing: border-box;
     padding: 11px;
     background: linear-gradient(135deg, rgba(255, 171, 0, .12), rgba(255, 171, 0, .04));
     border: 1px solid var(--sec);
@@ -1389,7 +1393,12 @@ body {
     text-align: center;
     letter-spacing: 1px;
     box-shadow: 0 0 20px rgba(255, 171, 0, .12);
-    transition: .3s
+    transition: .3s;
+    flex-shrink: 0;
+    /* NEVER clip this button */
+    margin-top: auto;
+    /* Push to bottom of card safely without spilling padding */
+    margin-bottom: 2px;
 }
 
 .clone-btn:hover {
@@ -1411,19 +1420,19 @@ body {
 .wf-panel {
     display: flex;
     gap: 8px;
-    flex: 1;
-    min-height: 200px;
-    /* ← guaranteed height even if card doesn't stretch */
-    margin-bottom: 10px;
+    flex: 1 1 0%;
+    min-height: 0;
+    height: 100%;
+    margin-bottom: 8px;
     position: relative;
+    overflow: hidden;
 }
 
 .wfbox {
-    flex: 1;
-    min-height: 120px;
-    /* ← ensures it's always visible */
+    flex: 1 1 0%;
+    min-height: 0;
+    height: 100%;
     min-width: 80px;
-    /* ← won't collapse horizontally */
     background: rgba(0, 0, 0, 0.45);
     border: 1px solid rgba(0, 229, 255, 0.1);
     border-radius: 10px;
@@ -1462,28 +1471,27 @@ body {
 .side-rec-controls {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 4px;
     align-items: center;
     flex-shrink: 0;
     width: 90px;
     max-width: 90px;
-    /* fixed width — won't expand */
     align-self: stretch;
-    /* fill parent height */
+    height: 100%;
+    overflow: visible;
 }
 
 /* VU Meter vertical — fills all space above the knob */
 .v-vu-wrap {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    flex: 1;
-    /* ← stretch to fill all available height */
+    align-items: stretch;
+    gap: 2px;
+    flex: 1 1 0%;
     min-height: 0;
-    /* allow shrinking in tight layouts */
+    height: 100%;
     width: 100%;
-    overflow: hidden;
+    overflow: visible;
 }
 
 /* Bottom fixed section: GAIN knob + transport buttons */
@@ -1491,7 +1499,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 6px;
+    gap: 2px;
     flex-shrink: 0;
     width: 100%;
     padding-bottom: 4px;
@@ -1508,15 +1516,14 @@ body {
 .v-vu-meter {
     display: flex;
     flex-direction: column;
-    /* HTML order: level-14(red) first → top, level-1(green) last → bottom */
-    gap: 2px;
+    gap: 1px;
     width: 22px;
-    flex: 1;
+    flex: 1 1 0%;
+    height: 100%;
     min-height: 0;
-    /* ← required for flex-grow in column direction */
     background: #030405;
-    padding: 4px 4px;
-    border-radius: 5px;
+    padding: 2px;
+    border-radius: 4px;
     border: 1px solid rgba(255, 255, 255, 0.07);
     box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.8);
 }
@@ -1524,9 +1531,10 @@ body {
 .vu-seg {
     flex: 1;
     width: 100%;
-    border-radius: 1.5px;
-    background: rgba(255, 255, 255, 0.04);
+    border-radius: 1px;
+    background: rgba(0, 180, 80, 0.12);
     transition: background 0.08s, box-shadow 0.08s;
+    min-height: 1px;
 }
 
 /* VU colors - TOP = Red, mid = Orange, low = Green */
@@ -1550,10 +1558,11 @@ body {
     box-shadow: 0 0 3px rgba(0, 200, 83, 0.4);
 }
 
-/* Dimmed state (off) - keep color but fade */
+/* Dimmed state (off) - subtle dark green so segments are always visible */
 .vu-seg.dim {
-    opacity: 0.1;
-    box-shadow: none;
+    background: rgba(0, 120, 50, 0.15) !important;
+    box-shadow: none !important;
+    opacity: 1;
 }
 
 /* Input Gain Knob */
@@ -2038,92 +2047,7 @@ body {
     text-transform: uppercase;
 }
 
-/* Vertical VU Meter */
-.v-vu-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    height: 100%;
-}
 
-.v-vu-meter {
-    display: flex;
-    flex-direction: column;
-    /* red(14) top → green(1) bottom */
-    gap: 2px;
-    width: 14px;
-    height: 100px;
-    background: #05070a;
-    padding: 3px;
-    border-radius: 4px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.vu-seg {
-    height: 3px;
-    width: 100%;
-    border-radius: 1px;
-    background: rgba(255, 255, 255, 0.05);
-    transition: 0.1s;
-}
-
-/* Segment colors */
-.vu-seg.level-low {
-    background: #00c853;
-    box-shadow: 0 0 3px rgba(0, 200, 83, 0.4);
-}
-
-.vu-seg.level-mid {
-    background: #ffab00;
-    box-shadow: 0 0 3px rgba(255, 171, 0, 0.4);
-}
-
-.vu-seg.level-peak {
-    background: #ff3d3d;
-    box-shadow: 0 0 8px rgba(255, 61, 61, 0.8);
-}
-
-.rec-action-btns {
-    width: 100%;
-    display: flex;
-    gap: 6px;
-}
-
-.rec-btn {
-    flex: 1;
-    all: unset;
-    cursor: pointer;
-    padding: 8px;
-    border-radius: 6px;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.55rem;
-    text-align: center;
-    letter-spacing: 1px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: 0.2s;
-}
-
-.rec-btn.record {
-    color: var(--red);
-    background: rgba(255, 61, 61, 0.05);
-}
-
-.rec-btn.record:hover {
-    background: var(--red);
-    color: #fff;
-    box-shadow: 0 0 15px rgba(255, 61, 61, 0.4);
-}
-
-.rec-btn.stop {
-    color: var(--tm);
-    background: rgba(255, 255, 255, 0.05);
-}
-
-.rec-btn.stop:hover {
-    background: rgba(255, 255, 255, 0.15);
-    color: #fff;
-}
 
 /* ═══ MODULE B: Pro-Expression & Texture ═══ */
 /* Vocal Character 7-Step Slider */
@@ -2292,10 +2216,12 @@ body {
     position: relative;
     width: 130px;
     height: 130px;
+    flex-shrink: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: grab;
+    border-radius: 50%;
 }
 
 .vol-knob-outer:active {
@@ -2306,11 +2232,11 @@ body {
 .vol-knob-outer::before {
     content: '';
     position: absolute;
-    width: 104px;
-    height: 104px;
+    width: 106px;
+    height: 106px;
     border-radius: 50%;
     background: #08090b;
-    box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.9), 0 1px 1px rgba(255, 255, 255, 0.05);
+    box-shadow: inset 0 5px 12px rgba(0, 0, 0, 0.95), 0 1px 2px rgba(255, 255, 255, 0.08);
 }
 
 /* Spreading Light/Bloom Effect behind the arc */
@@ -2319,7 +2245,7 @@ body {
     position: absolute;
     width: 140px;
     height: 140px;
-    background: radial-gradient(circle, var(--sec-d) 0%, transparent 70%);
+    background: radial-gradient(circle, var(--sec-d) 0%, transparent 60%);
     opacity: 0.6;
     pointer-events: none;
     z-index: 0;
@@ -2328,13 +2254,13 @@ body {
 
 @keyframes knob-bloom {
     from {
-        opacity: 0.4;
+        opacity: 0.3;
         transform: scale(0.9);
     }
 
     to {
-        opacity: 0.7;
-        transform: scale(1.1);
+        opacity: 0.6;
+        transform: scale(1.05);
     }
 }
 
@@ -2351,7 +2277,7 @@ body {
             transparent var(--kb-sweep));
     -webkit-mask: radial-gradient(circle, transparent 44px, #000 45px, #000 47px, transparent 48px);
     mask: radial-gradient(circle, transparent 44px, #000 45px, #000 47px, transparent 48px);
-    filter: drop-shadow(0 0 12px var(--sec-g)) drop-shadow(0 0 25px rgba(255, 171, 0, 0.3));
+    filter: drop-shadow(0 0 8px var(--sec-g)) drop-shadow(0 0 15px rgba(255, 171, 0, 0.4));
     z-index: 4;
 }
 
@@ -2365,7 +2291,7 @@ body {
 .vol-knob-ticks svg {
     width: 100%;
     height: 100%;
-    opacity: 0.4;
+    opacity: 0.5;
 }
 
 /* Satin metallic knob body */
@@ -2374,10 +2300,11 @@ body {
     width: 84px;
     height: 84px;
     border-radius: 50%;
-    background: radial-gradient(circle at 40% 30%, #3a3d42 0%, #17191d 65%, #08090a 100%);
+    background: radial-gradient(circle at 40% 30%, #4a4d52 0%, #17191d 60%, #050608 100%);
     box-shadow:
-        0 8px 16px rgba(0, 0, 0, 0.7),
-        inset 0 1px 1px rgba(255, 255, 255, 0.1);
+        0 10px 20px rgba(0, 0, 0, 0.9),
+        inset 0 2px 3px rgba(255, 255, 255, 0.15),
+        inset 0 -2px 5px rgba(0, 0, 0, 0.8);
     z-index: 5;
     display: flex;
     justify-content: center;
@@ -2390,21 +2317,22 @@ body {
 .vol-knob-body::before {
     content: '';
     position: absolute;
-    inset: 2px;
+    inset: 1px;
     border-radius: 50%;
-    background: radial-gradient(circle at 40% 30%, #3a3d42 0%, #17191d 65%, #08090a 100%);
-    box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.06);
+    background: radial-gradient(circle at 50% 10%, rgba(255, 255, 255, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 50% 90%, rgba(0, 0, 0, 0.4) 0%, transparent 40%);
+    pointer-events: none;
 }
 
 /* Elegant Needle Pointer */
 .vol-knob-pointer {
     position: absolute;
-    top: 8px;
+    top: 6px;
     width: 2px;
-    height: 16px;
+    height: 14px;
     background: #fff;
     border-radius: 4px;
-    box-shadow: 0 0 12px rgba(255, 255, 255, 1);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 1);
     z-index: 6;
 }
 
@@ -3396,116 +3324,6 @@ body {
 .proll-svg-v2 {
     display: block;
     image-rendering: crisp-edges;
-}
-
-/* ══════════════════════════════════════════════
-   BIG PRO LEVEL KNOB — Orange Glow 3D (Module C)
-   ══════════════════════════════════════════════ */
-
-/* Override the existing vol-knob in Module C only */
-#mod-c .vol-knob-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 4px auto 6px;
-}
-
-#mod-c .vol-knob-outer {
-    width: 130px !important;
-    height: 130px !important;
-    border-radius: 50% !important;
-    position: relative;
-    cursor: pointer;
-    /* Dark metallic body */
-    background: radial-gradient(circle at 38% 34%,
-            #2c3040 0%,
-            #1e2230 25%,
-            #14182a 55%,
-            #0a0d1a 80%,
-            #060812 100%) !important;
-    /* Thick orange glowing ring using box-shadow */
-    box-shadow:
-        0 0 0 9px rgba(255, 140, 0, 0.82),
-        0 0 0 12px rgba(255, 160, 20, 0.35),
-        0 0 0 18px rgba(255, 120, 0, 0.18),
-        0 0 25px rgba(255, 140, 0, 0.55),
-        0 0 50px rgba(255, 100, 0, 0.28),
-        0 0 80px rgba(255, 80, 0, 0.12),
-        0 12px 40px rgba(0, 0, 0, 0.9),
-        inset 0 3px 8px rgba(255, 255, 255, 0.07),
-        inset 0 -5px 15px rgba(0, 0, 0, 0.75) !important;
-    transition: box-shadow 0.2s ease;
-}
-
-#mod-c .vol-knob-outer:hover {
-    box-shadow:
-        0 0 0 9px rgba(255, 155, 0, 0.92),
-        0 0 0 13px rgba(255, 175, 30, 0.45),
-        0 0 0 22px rgba(255, 130, 0, 0.22),
-        0 0 30px rgba(255, 155, 0, 0.7),
-        0 0 60px rgba(255, 110, 0, 0.38),
-        0 12px 40px rgba(0, 0, 0, 0.9),
-        inset 0 3px 8px rgba(255, 255, 255, 0.1),
-        inset 0 -5px 15px rgba(0, 0, 0, 0.7) !important;
-}
-
-/* Override tick SVG to hide (use the ring as visual indicator) */
-#mod-c .vol-knob-ticks {
-    display: none !important;
-}
-
-/* Enlarged knob body */
-#mod-c .vol-knob-body {
-    width: 96px !important;
-    height: 96px !important;
-    border-radius: 50% !important;
-    position: absolute !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    background: radial-gradient(circle at 36% 32%,
-            #383c4e 0%,
-            #272c3c 20%,
-            #1a1f2e 45%,
-            #101420 72%,
-            #080a16 100%) !important;
-    box-shadow:
-        inset 0 4px 10px rgba(255, 255, 255, 0.1),
-        inset 0 -6px 18px rgba(0, 0, 0, 0.85),
-        inset 3px 0 8px rgba(255, 255, 255, 0.04) !important;
-}
-
-/* Large indicator line on knob */
-#mod-c .vol-knob-pointer {
-    width: 4px !important;
-    height: 36% !important;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.95) 0%, rgba(255, 200, 100, 0.4) 60%, transparent 100%) !important;
-    border-radius: 2px !important;
-    top: 10% !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    box-shadow: 0 0 8px rgba(255, 255, 255, 0.7), 0 0 16px rgba(255, 200, 100, 0.5) !important;
-}
-
-/* Bigger label */
-#mod-c .kl {
-    font-size: 11px !important;
-    letter-spacing: 0.15em !important;
-    margin-top: 10px !important;
-    color: rgba(255, 160, 0, 0.9) !important;
-    text-shadow: 0 0 12px rgba(255, 140, 0, 0.6) !important;
-    font-weight: 700 !important;
-}
-
-#mod-c .kv {
-    font-size: 10px !important;
-    color: rgba(200, 210, 230, 0.75) !important;
-    margin-top: 2px !important;
-}
-
-#mod-c .kv strong {
-    color: rgba(255, 160, 0, 0.95) !important;
-    text-shadow: 0 0 8px rgba(255, 140, 0, 0.5) !important;
 }
 
 /* ══════════════════════════════════════════════
