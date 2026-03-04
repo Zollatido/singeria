@@ -1,0 +1,3476 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Singeria — Professional Standalone AI Singing Synthesis Engine, Plugin & SDK">
+    <title>Singeria | Professional AI SVS Engine & SDK</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <div class="app">
+        <!-- ═══ HEADER ═══ -->
+        <header class="hdr">
+            <div class="logo"><span class="c">SINGER</span><span class="o">IA</span></div>
+            <div class="pname"></div>
+            <nav class="nav">
+                <button class="on" data-tab="projects">📁 Projects</button>
+                <button data-tab="voices">🎙 Voices</button>
+                <button data-tab="effects">⚡ Effects</button>
+                <button data-tab="render">🎛 Render</button>
+            </nav>
+            <div class="trn">
+                <button class="pb" aria-label="Play"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"
+                        stroke="none">
+                        <polygon points="5,3 19,12 5,21" />
+                    </svg></button>
+                <button aria-label="Rewind"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <polygon points="11,19 2,12 11,5" />
+                        <polygon points="22,19 13,12 22,5" />
+                    </svg></button>
+                <button aria-label="Pause"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <rect x="6" y="4" width="4" height="16" />
+                        <rect x="14" y="4" width="4" height="16" />
+                    </svg></button>
+                <button aria-label="Stop"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2" />
+                    </svg></button>
+                <button aria-label="Loop"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <polyline points="17,1 21,5 17,9" />
+                        <path d="M3,11V9a4,4,0,0,1,4-4h14" />
+                        <polyline points="7,23 3,19 7,15" />
+                        <path d="M21,13v2a4,4,0,0,1-4,4H3" />
+                    </svg></button>
+            </div>
+            <div class="sbar">
+                <div>bpm <span class="bv" id="bpm-val" title="Click to edit BPM" style="cursor:pointer">128</span></div>
+                <div class="tc">00:01:34:12</div>
+                <div style="display:flex;align-items:center;gap:5px">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        style="opacity:.5; cursor:pointer" id="btn-mute" title="Mute">
+                        <polygon points="11,5 6,9 2,9 2,15 6,15 11,19" />
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
+                    </svg>
+                    <div class="vb" id="vol-bar" style="cursor:pointer">
+                        <div class="vb-f" id="vol-fill" style="width:75%"></div>
+                    </div>
+                </div>
+                <div class="vum">
+                    <div class="vum-ch" style="position:relative">
+                        <div class="vs vs-n" id="vu1-n" style="width:0%"></div>
+                        <div class="vs vs-w" id="vu1-w" style="width:0%; left:55%"></div>
+                        <div class="vs vs-p" id="vu1-p" style="width:0%; left:73%"></div>
+                        <div class="vs vs-o" id="vu1-o" style="width:0%; left:78%"></div>
+                        <div class="vph" id="vu1-ph" style="left:0%"></div>
+                    </div>
+                    <div class="vum-ch" style="position:relative">
+                        <div class="vs vs-n" id="vu2-n" style="width:0%"></div>
+                        <div class="vs vs-w" id="vu2-w" style="width:0%; left:55%"></div>
+                        <div class="vs vs-p" id="vu2-p" style="width:0%; left:73%"></div>
+                        <div class="vs vs-o" id="vu2-o" style="width:0%; left:78%"></div>
+                        <div class="vph" id="vu2-ph" style="left:0%"></div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ══════ NAV PANELS (Projects / Voices / Effects / Render) ══════ -->
+
+        <!-- ── PROJECTS PANEL ── -->
+        <div id="panel-projects" class="nav-panel" style="display:none">
+            <div class="np-title">📁 Projects</div>
+            <div class="np-body">
+                <div class="np-section">
+                    <div class="np-label" style="display:flex;justify-content:space-between;align-items:center">
+                        <span>Recent Projects</span>
+                        <button class="np-add-fx" style="margin:0;padding:2px 10px;font-size:10px">+ New</button>
+                    </div>
+                    <div class="np-project-list">
+                        <div class="np-proj-item on" id="proj-1">
+                            <div class="np-proj-icon">🎵</div>
+                            <div class="np-proj-info">
+                                <div class="np-proj-name">Moonlight Serenade</div>
+                                <div class="np-proj-meta">Voice: Soprano-F &nbsp;·&nbsp; 3m 42s &nbsp;·&nbsp; 128 BPM
+                                </div>
+                                <div class="np-proj-meta" style="color:rgba(0,229,255,0.6)">Modified: Today 09:14</div>
+                            </div>
+                            <div class="np-proj-badge">ACTIVE</div>
+                        </div>
+                        <div class="np-proj-item" id="proj-2">
+                            <div class="np-proj-icon">🎶</div>
+                            <div class="np-proj-info">
+                                <div class="np-proj-name">Starfall Ballad</div>
+                                <div class="np-proj-meta">Voice: Tenor-M &nbsp;·&nbsp; 4m 18s &nbsp;·&nbsp; 95 BPM</div>
+                                <div class="np-proj-meta">Modified: Yesterday 18:32</div>
+                            </div>
+                        </div>
+                        <div class="np-proj-item" id="proj-3">
+                            <div class="np-proj-icon">🎼</div>
+                            <div class="np-proj-info">
+                                <div class="np-proj-name">Echo Chamber</div>
+                                <div class="np-proj-meta">Voice: Default AI &nbsp;·&nbsp; 2m 55s &nbsp;·&nbsp; 140 BPM
+                                </div>
+                                <div class="np-proj-meta">Modified: 2 days ago</div>
+                            </div>
+                        </div>
+                        <div class="np-proj-item" id="proj-4">
+                            <div class="np-proj-icon">🎹</div>
+                            <div class="np-proj-info">
+                                <div class="np-proj-name">Crystal Rain</div>
+                                <div class="np-proj-meta">Voice: Clone #003 &nbsp;·&nbsp; 5m 01s &nbsp;·&nbsp; 112 BPM
+                                </div>
+                                <div class="np-proj-meta">Modified: Mar 1</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="np-section">
+                    <div class="np-label">Project Stats</div>
+                    <div class="np-stats-grid">
+                        <div class="np-stat-box">
+                            <div class="np-stat-val">4</div>
+                            <div class="np-stat-key">Projects</div>
+                        </div>
+                        <div class="np-stat-box">
+                            <div class="np-stat-val">3</div>
+                            <div class="np-stat-key">Voices</div>
+                        </div>
+                        <div class="np-stat-box">
+                            <div class="np-stat-val">16m</div>
+                            <div class="np-stat-key">Total Audio</div>
+                        </div>
+                        <div class="np-stat-box">
+                            <div class="np-stat-val">2</div>
+                            <div class="np-stat-key">Rendered</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── VOICES PANEL ── -->
+        <div id="panel-voices" class="nav-panel" style="display:none">
+            <div class="np-title">🎙 Voice Library</div>
+            <div class="np-body">
+                <div class="np-section">
+                    <div class="np-label">Current Voice</div>
+                    <div class="np-row">
+                        <div class="np-voice-card on" id="vc-1">👤 Default AI<span>SVS-Core v2</span></div>
+                        <div class="np-voice-card" id="vc-2">👤 Soprano-F<span>Clone #001</span></div>
+                        <div class="np-voice-card" id="vc-3">👤 Tenor-M<span>Clone #002</span></div>
+                        <div class="np-voice-card" id="vc-4">+ Clone New Voice</div>
+                    </div>
+                </div>
+                <!-- Voice Detail Card -->
+                <div class="np-section">
+                    <div class="np-label">Voice Profile</div>
+                    <div class="np-voice-detail">
+                        <div class="np-vd-row">
+                            <span class="np-vd-k">Model</span>
+                            <span class="np-vd-v" style="color:rgba(0,229,255,0.9)">SVS-Core v2.1.4</span>
+                        </div>
+                        <div class="np-vd-row">
+                            <span class="np-vd-k">Range</span>
+                            <span class="np-vd-v">A2 – C6 (Alto/Mezzo)</span>
+                        </div>
+                        <div class="np-vd-row">
+                            <span class="np-vd-k">Language</span>
+                            <span class="np-vd-v">Thai · EN · JP</span>
+                        </div>
+                        <div class="np-vd-row">
+                            <span class="np-vd-k">Training</span>
+                            <span class="np-vd-v" style="color:rgba(0,255,140,0.85)">✔ 98k samples</span>
+                        </div>
+                        <div class="np-vd-row">
+                            <span class="np-vd-k">Timbre</span>
+                            <span class="np-vd-v">Warm · Smooth · Airy</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="np-section">
+                    <div class="np-label">Voice Parameters</div>
+                    <div class="np-params">
+                        <div class="np-param-row"><span>Breathiness</span>
+                            <div class="sl-t np-sl">
+                                <div class="sl-f" style="width:30%"></div>
+                            </div>
+                        </div>
+                        <div class="np-param-row"><span>Tension</span>
+                            <div class="sl-t np-sl">
+                                <div class="sl-f" style="width:55%"></div>
+                            </div>
+                        </div>
+                        <div class="np-param-row"><span>Gender Factor</span>
+                            <div class="sl-t np-sl">
+                                <div class="sl-f" style="width:48%"></div>
+                            </div>
+                        </div>
+                        <div class="np-param-row"><span>Growl</span>
+                            <div class="sl-t np-sl">
+                                <div class="sl-f" style="width:10%"></div>
+                            </div>
+                        </div>
+                        <div class="np-param-row"><span>Air / Resonance</span>
+                            <div class="sl-t np-sl">
+                                <div class="sl-f" style="width:62%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── EFFECTS PANEL ── -->
+        <div id="panel-effects" class="nav-panel" style="display:none">
+            <div class="np-title">⚡ Effects Chain</div>
+            <div class="np-body">
+                <div class="np-section">
+                    <div class="np-label" style="display:flex;justify-content:space-between;align-items:center">
+                        <span>FX Preset</span>
+                        <select class="np-mini-select" id="fx-preset-sel">
+                            <option>Studio Vocal</option>
+                            <option>Pop Shine</option>
+                            <option>Lo-Fi Warm</option>
+                            <option>Film Score</option>
+                            <option>Custom</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- Signal Chain Labels -->
+                <div class="np-section">
+                    <div class="np-chain-flow">
+                        <span class="np-chain-node on">INPUT</span>
+                        <span class="np-chain-arrow">→</span>
+                        <span class="np-chain-node on">EQ</span>
+                        <span class="np-chain-arrow">→</span>
+                        <span class="np-chain-node on">COMP</span>
+                        <span class="np-chain-arrow">→</span>
+                        <span class="np-chain-node on">REVERB</span>
+                        <span class="np-chain-arrow">→</span>
+                        <span class="np-chain-node">DELAY</span>
+                        <span class="np-chain-arrow">→</span>
+                        <span class="np-chain-node on">OUT</span>
+                    </div>
+                </div>
+                <div class="np-section">
+                    <div class="np-label">Active FX</div>
+                    <div class="np-fx-chain">
+                        <div class="np-fx-slot on" id="slot-reverb">
+                            <span class="np-fx-name">Reverb</span>
+                            <span class="np-fx-val">Hall · 35%</span>
+                            <div class="sl-t np-sl" style="margin-top:4px" data-fx="reverb">
+                                <div class="sl-f" style="width:35%"></div>
+                            </div>
+                        </div>
+                        <div class="np-fx-slot on" id="slot-comp">
+                            <span class="np-fx-name">Compressor</span>
+                            <span class="np-fx-val">Ratio 4:1 · Thresh −12dB</span>
+                            <div class="sl-t np-sl" style="margin-top:4px" data-fx="comp">
+                                <div class="sl-f" style="width:60%"></div>
+                            </div>
+                        </div>
+                        <div class="np-fx-slot on" id="slot-eq">
+                            <span class="np-fx-name">Parametric EQ</span>
+                            <span class="np-fx-val">Presence +3dB · Air +2dB</span>
+                            <div class="sl-t np-sl" style="margin-top:4px" data-fx="eq">
+                                <div class="sl-f" style="width:70%"></div>
+                            </div>
+                        </div>
+                        <div class="np-fx-slot" id="slot-delay">
+                            <span class="np-fx-name">Stereo Delay</span>
+                            <span class="np-fx-val">1/8 · Feedback 28% · Off</span>
+                            <div class="sl-t np-sl" style="margin-top:4px" data-fx="delay">
+                                <div class="sl-f" style="width:0%"></div>
+                            </div>
+                        </div>
+                        <div class="np-fx-slot">
+                            <span class="np-fx-name">Pitch Correct</span>
+                            <span class="np-fx-val">Key: C Maj · Speed: Off</span>
+                            <div class="sl-t np-sl" style="margin-top:4px">
+                                <div class="sl-f" style="width:0%"></div>
+                            </div>
+                        </div>
+                        <div class="np-fx-slot">
+                            <span class="np-fx-name">Exciter</span>
+                            <span class="np-fx-val">HF Enhance · Mix 0%</span>
+                            <div class="sl-t np-sl" style="margin-top:4px">
+                                <div class="sl-f" style="width:0%"></div>
+                            </div>
+                        </div>
+                        <button class="np-add-fx">+ Add Effect</button>
+                    </div>
+                </div>
+                <div class="np-section">
+                    <div class="np-label">Output Level</div>
+                    <div class="np-out-meter">
+                        <div class="np-meter-bar">
+                            <div class="np-meter-fill" id="fx-meter-l" style="width:72%"></div>
+                        </div>
+                        <div class="np-meter-bar">
+                            <div class="np-meter-fill" id="fx-meter-r" style="width:68%"></div>
+                        </div>
+                        <div class="np-meter-labels">
+                            <span>−∞</span><span>−24</span><span>−12</span><span>−6</span><span>0 dBFS</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── RENDER PANEL ── -->
+        <div id="panel-render" class="nav-panel" style="display:none">
+            <div class="np-title">🎛 Render Settings</div>
+            <div class="np-body">
+                <!-- Output Format -->
+                <div class="np-section">
+                    <div class="np-label">Output Format</div>
+                    <div class="np-row" style="gap:6px">
+                        <button class="np-fmt-btn on" id="fmt-wav">WAV 32-bit</button>
+                        <button class="np-fmt-btn" id="fmt-flac">FLAC</button>
+                        <button class="np-fmt-btn" id="fmt-mp3">MP3 320k</button>
+                        <button class="np-fmt-btn" id="fmt-aiff">AIFF</button>
+                    </div>
+                </div>
+                <!-- Sample Rate -->
+                <div class="np-section">
+                    <div class="np-label">Sample Rate</div>
+                    <div class="np-row" style="gap:6px">
+                        <button class="np-fmt-btn" id="sr-44">44.1 kHz</button>
+                        <button class="np-fmt-btn on" id="sr-48">48 kHz</button>
+                        <button class="np-fmt-btn" id="sr-96">96 kHz</button>
+                    </div>
+                </div>
+                <!-- File Output Details -->
+                <div class="np-section">
+                    <div class="np-label">File Details</div>
+                    <div class="np-voice-detail">
+                        <div class="np-vd-row">
+                            <span class="np-vd-k">Project</span>
+                            <span class="np-vd-v" style="color:rgba(0,229,255,0.9)">Moonlight Serenade</span>
+                        </div>
+                        <div class="np-vd-row">
+                            <span class="np-vd-k">Duration</span>
+                            <span class="np-vd-v">3m 42s &nbsp;(6,624 bars)</span>
+                        </div>
+                        <div class="np-vd-row">
+                            <span class="np-vd-k">Est. Size</span>
+                            <span class="np-vd-v">~38.4 MB <small style="opacity:.5">(WAV 48kHz/32bit)</small></span>
+                        </div>
+                        <div class="np-vd-row">
+                            <span class="np-vd-k">Est. Time</span>
+                            <span class="np-vd-v" style="color:rgba(0,255,140,0.85)">⚡ ~4.2 sec (SVS)</span>
+                        </div>
+                        <div class="np-vd-row">
+                            <span class="np-vd-k">Output Path</span>
+                            <span class="np-vd-v" style="font-size:9px;opacity:.65">~/Music/Singeria/Exports/</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Render Options -->
+                <div class="np-section">
+                    <div class="np-label">Render Options</div>
+                    <div class="np-checks">
+                        <label class="np-check"><input type="checkbox" checked> Normalize Output</label>
+                        <label class="np-check"><input type="checkbox" checked> Apply Master FX</label>
+                        <label class="np-check"><input type="checkbox"> Render Stems Separately</label>
+                        <label class="np-check"><input type="checkbox"> Include Metadata Tags</label>
+                        <label class="np-check"><input type="checkbox" checked> Auto-export to DAW Folder</label>
+                    </div>
+                </div>
+                <!-- Render Engine -->
+                <div class="np-section">
+                    <div class="np-label">Render Engine</div>
+                    <div class="np-row" style="gap:6px">
+                        <button class="np-fmt-btn on" id="eng-svs">SVS Engine v2</button>
+                        <button class="np-fmt-btn" id="eng-cloud">☁ Cloud Render</button>
+                    </div>
+                </div>
+                <!-- Render Queue -->
+                <div class="np-section">
+                    <div class="np-label">Render Queue</div>
+                    <div class="np-queue">
+                        <div class="np-queue-item done">
+                            <span class="np-q-icon">✅</span>
+                            <div class="np-q-info">
+                                <div class="np-q-name">Starfall Ballad.wav</div>
+                                <div class="np-q-meta">48kHz · 32bit · 4m 18s · 45.1 MB</div>
+                            </div>
+                        </div>
+                        <div class="np-queue-item done">
+                            <span class="np-q-icon">✅</span>
+                            <div class="np-q-info">
+                                <div class="np-q-name">Echo Chamber.flac</div>
+                                <div class="np-q-meta">48kHz · 24bit · 2m 55s · 18.7 MB</div>
+                            </div>
+                        </div>
+                        <div class="np-queue-item pending">
+                            <span class="np-q-icon">⏳</span>
+                            <div class="np-q-info">
+                                <div class="np-q-name">Moonlight Serenade.wav</div>
+                                <div class="np-q-meta">48kHz · 32bit · 3m 42s · ~38.4 MB</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="np-render-btn" id="btn-render-now">🎙 Start Render</button>
+            </div>
+        </div>
+
+        <!-- ═══ MAIN GRID (3 Columns) ═══ -->
+        <main class="grid">
+
+            <!-- ──── MODULE A: Vocal Source ──── -->
+            <section class="card" id="mod-a">
+                <div class="card-hdr">
+                    <h3>Voice Extractor <small>(Module A)</small></h3>
+                    <span class="gear-icon">⚙</span>
+                </div>
+
+                <!-- SMART IMPORT + Info -->
+                <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+                    <button class="smart-import-btn" id="btn-smart-import" style="margin-bottom:0;flex:1">
+                        <div class="si-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--pri)"
+                                stroke-width="2">
+                                <path d="M3 18v-6a9 9 0 0 1 18 0v6" />
+                                <path
+                                    d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" />
+                            </svg>
+                        </div>
+                        <div class="si-text">
+                            <div class="si-title">SMART IMPORT</div>
+                            <div class="si-desc">AI ตรวจจับไฟล์อัตโนมัติ</div>
+                        </div>
+                        <div class="si-led"></div>
+                    </button>
+                    <div class="info-wrap">
+                        <button class="info-btn" aria-label="Info">i</button>
+                        <div class="info-popup">
+                            <strong>SUPPORTED FORMATS</strong>
+                            WAV, MP3, AAC, FLAC, OGG<br>
+                            <strong style="margin-top:6px">AKAI SAMPLING</strong>
+                            IMG, PGM, SMP, WAV (AKAI)
+                        </div>
+                    </div>
+                </div>
+
+                <!-- WAVEFORM + SIDE CONTROLS (full height) -->
+                <div class="wf-panel">
+                    <!-- Main Waveform Area -->
+                    <div class="wfbox" id="wfbox-main">
+                        <input type="file" id="si-file-input"
+                            accept="audio/*,.wav,.mp3,.aac,.flac,.ogg,.aiff,.img,.pgm,.smp" style="display:none">
+                        <div class="drop-hint" id="drop-area">Drag Audio File Here</div>
+                        <canvas id="main-wf-canvas" width="400" height="100"
+                            style="position:absolute; width:100%; height:100%; top:0; left:0; pointer-events:none;"></canvas>
+                    </div>
+
+                    <!-- Right Side Controls: VU (tall) + Knob/Buttons (fixed bottom) -->
+                    <div class="side-rec-controls">
+
+                        <!-- ── TOP: VU Meter fills all available height ── -->
+                        <div class="v-vu-wrap">
+                            <div class="v-label">IN</div>
+                            <div style="display:flex;flex-direction:row;align-items:stretch;gap:3px;flex:1;width:100%;">
+                                <!-- dB scale labels -->
+                                <div id="vu-db-scale"
+                                    style="display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end;padding:2px 0;font:bold 7px 'Orbitron',monospace;line-height:1;user-select:none;min-width:22px;">
+                                    <span style="color:rgba(255,60,60,0.9)">0</span>
+                                    <span style="color:rgba(255,140,0,0.8)">−6</span>
+                                    <span style="color:rgba(255,200,0,0.75)">−12</span>
+                                    <span style="color:rgba(0,220,100,0.75)">−18</span>
+                                    <span style="color:rgba(80,160,255,0.65)">−24</span>
+                                    <span style="color:rgba(0,229,255,0.45)">−∞</span>
+                                </div>
+                                <!-- VU bar — flex:1 fills the remaining height -->
+                                <div class="v-vu-meter" id="input-vu">
+                                    <div class="vu-seg level-peak" data-level="14"></div>
+                                    <div class="vu-seg level-orange" data-level="13"></div>
+                                    <div class="vu-seg level-orange" data-level="12"></div>
+                                    <div class="vu-seg level-mid" data-level="11"></div>
+                                    <div class="vu-seg level-mid" data-level="10"></div>
+                                    <div class="vu-seg level-low" data-level="9"></div>
+                                    <div class="vu-seg level-low" data-level="8"></div>
+                                    <div class="vu-seg level-low" data-level="7"></div>
+                                    <div class="vu-seg level-low" data-level="6"></div>
+                                    <div class="vu-seg level-low" data-level="5"></div>
+                                    <div class="vu-seg level-low" data-level="4"></div>
+                                    <div class="vu-seg level-low" data-level="3"></div>
+                                    <div class="vu-seg level-low" data-level="2"></div>
+                                    <div class="vu-seg level-low" data-level="1"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ── BOTTOM: Knob + Transport buttons (fixed height) ── -->
+                        <div class="side-bottom-controls">
+
+                            <!-- GAIN Knob -->
+                            <div class="input-knob-wrap" id="input-knob-wrap">
+                                <svg id="ik-tick-svg" width="60" height="60" viewBox="0 0 60 60"
+                                    style="position:absolute;top:0;left:0;pointer-events:none;"></svg>
+                                <div class="input-knob" id="input-knob" style="width:52px;height:52px;">
+                                    <div class="ik-body" style="width:42px;height:42px;">
+                                        <div class="ik-pointer"></div>
+                                    </div>
+                                </div>
+                                <div id="ik-db-display"
+                                    style="font:bold 9px 'Orbitron',monospace;color:#00e5ff;text-align:center;margin-top:2px;letter-spacing:0.03em;text-shadow:0 0 6px rgba(0,229,255,0.6);min-height:13px;">
+                                    −6.0 dB</div>
+                                <div class="v-label">GAIN</div>
+                            </div>
+
+                            <!-- Transport Buttons -->
+                            <div class="transport-col">
+
+                                <button class="t3d-btn mic-rec" id="btn-mic-rec" title="Record">
+                                    <div class="t3d-face">
+                                        <div class="t3d-led" id="led-rec"></div>
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+                                            <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                                            <line x1="12" y1="19" x2="12" y2="23" />
+                                            <line x1="8" y1="23" x2="16" y2="23" />
+                                        </svg>
+                                        <span class="t3d-label" id="lbl-rec">REC</span>
+                                    </div>
+                                </button>
+                                <button class="t3d-btn mic-play" id="btn-mic-play" title="Playback">
+                                    <div class="t3d-face">
+                                        <div class="t3d-led" id="led-play"></div>
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"
+                                            stroke="none">
+                                            <polygon points="5,3 19,12 5,21" />
+                                        </svg>
+                                        <span class="t3d-label">PLAY</span>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div><!-- /side-rec-controls -->
+                </div><!-- /wf-panel -->
+
+                <button class="clone-btn" id="btn-clone">CLONE VOICE (15s)</button>
+            </section>
+
+
+
+            <!-- ──── MODULE B: Pro-Expression — Full Piano Roll (PREMIUM V12) ──── -->
+            <section class="card" id="mod-b">
+                <div class="card-hdr">
+                    <h3>Pro-Expression <small>(Module B)</small></h3>
+                    <span class="gear-icon">⚙</span>
+                </div>
+
+                <!-- ══ VOCAL EDIT TOOLBAR ══ -->
+                <div class="ve-toolbar" id="ve-toolbar">
+                    <!-- Group 1: History -->
+                    <div class="ve-group">
+                        <button class="ve-btn" id="btn-undo" title="Undo (Ctrl+Z)" onclick="veUndo()">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.2">
+                                <path d="M3 7v6h6" />
+                                <path d="M3 13C5.5 7 11 4 17 6s8 8 5 13" />
+                            </svg>
+                            <span>Undo</span>
+                        </button>
+                        <button class="ve-btn" id="btn-redo" title="Redo (Ctrl+Shift+Z)" onclick="veRedo()">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.2">
+                                <path d="M21 7v6h-6" />
+                                <path d="M21 13C18.5 7 13 4 7 6s-8 8-5 13" />
+                            </svg>
+                            <span>Redo</span>
+                        </button>
+                    </div>
+                    <div class="ve-sep"></div>
+
+                    <!-- Group 2: Edit Mode Tools -->
+                    <div class="ve-group">
+                        <button class="ve-btn ve-tool on" data-tool="select" title="Select (S)" id="tool-select">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M4 2l16 9-7 2-4 7z" />
+                            </svg>
+                            <span>Select</span>
+                        </button>
+                        <button class="ve-btn ve-tool" data-tool="draw" title="Draw Note (D)" id="tool-draw">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M12 20h9" />
+                                <path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4 12.5-12.5z" />
+                            </svg>
+                            <span>Draw</span>
+                        </button>
+                        <button class="ve-btn ve-tool" data-tool="erase" title="Erase (E)" id="tool-erase">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M20 20H7L3 16l10-10 7 7-2.5 2.5" />
+                                <path d="M6.1 11.9l5 5" />
+                            </svg>
+                            <span>Erase</span>
+                        </button>
+                        <button class="ve-btn ve-tool" data-tool="slice" title="Slice (C)" id="tool-slice">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <line x1="6" y1="3" x2="6" y2="21" />
+                                <path d="M3 6l15 6-15 6" />
+                            </svg>
+                            <span>Slice</span>
+                        </button>
+                        <button class="ve-btn ve-tool" data-tool="glue" title="Glue Notes (G)" id="tool-glue">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="2" y="8" width="8" height="8" rx="1" />
+                                <rect x="14" y="8" width="8" height="8" rx="1" />
+                                <line x1="10" y1="12" x2="14" y2="12" stroke-width="3" />
+                            </svg>
+                            <span>Glue</span>
+                        </button>
+                    </div>
+                    <div class="ve-sep"></div>
+
+                    <!-- Group 3: Vocal Expression Tools -->
+                    <div class="ve-group">
+                        <button class="ve-btn ve-expr-btn" data-expr="vibrato" title="Vibrato Curve" id="expr-vibrato">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M2 12 Q5 6 8 12 Q11 18 14 12 Q17 6 20 12 Q22 15 24 12" />
+                            </svg>
+                            <span>Vibrato</span>
+                        </button>
+                        <button class="ve-btn ve-expr-btn" data-expr="dynamics" title="Dynamics (Volume Envelope)"
+                            id="expr-dynamics">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="2,18 7,6 12,14 17,8 22,18" />
+                            </svg>
+                            <span>Dynamics</span>
+                        </button>
+                        <button class="ve-btn ve-expr-btn" data-expr="breath" title="Breath Control" id="expr-breath">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M12 2a10 4 0 0 1 0 8 10 4 0 0 0 0 8" />
+                                <path d="M6 9a8 3 0 0 0 12 0" />
+                            </svg>
+                            <span>Breath</span>
+                        </button>
+                        <button class="ve-btn ve-expr-btn" data-expr="pitch" title="Pitch Bend Curve" id="expr-pitch">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M2 16 Q6 4 12 12 Q18 20 22 8" />
+                            </svg>
+                            <span>Pitch</span>
+                        </button>
+                        <button class="ve-btn ve-expr-btn" data-expr="portamento" title="Portamento / Glide"
+                            id="expr-porto">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M4 18 Q12 18 20 6" />
+                                <circle cx="4" cy="18" r="2" fill="currentColor" />
+                                <circle cx="20" cy="6" r="2" fill="currentColor" />
+                            </svg>
+                            <span>Porto</span>
+                        </button>
+                    </div>
+                    <div class="ve-sep"></div>
+
+                    <!-- Group 4: Lyric Insert -->
+                    <div class="ve-group">
+                        <button class="ve-btn ve-lyric-btn" id="btn-insert-lyric" title="Insert Lyric to Note"
+                            onclick="openLyricModal()">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                            </svg>
+                            <span>Lyric</span>
+                        </button>
+                        <button class="ve-btn" id="btn-lyric-all" title="Bulk Lyric Input"
+                            onclick="openLyricAllModal()">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <line x1="8" y1="6" x2="21" y2="6" />
+                                <line x1="8" y1="12" x2="21" y2="12" />
+                                <line x1="8" y1="18" x2="21" y2="18" />
+                                <line x1="3" y1="6" x2="3.01" y2="6" />
+                                <line x1="3" y1="12" x2="3.01" y2="12" />
+                                <line x1="3" y1="18" x2="3.01" y2="18" />
+                            </svg>
+                            <span>Lyrics All</span>
+                        </button>
+                    </div>
+                    <div class="ve-sep"></div>
+
+                    <!-- Group 5: Quantize / Snap -->
+                    <div class="ve-group">
+                        <span class="ve-label">Snap</span>
+                        <select class="ve-select" id="snap-sel" title="Quantize Snap">
+                            <option value="1/1">1/1</option>
+                            <option value="1/2">1/2</option>
+                            <option value="1/4" selected>1/4</option>
+                            <option value="1/8">1/8</option>
+                            <option value="1/16">1/16</option>
+                            <option value="1/32">1/32</option>
+                            <option value="free">Free</option>
+                        </select>
+                        <button class="ve-btn" id="btn-quantize" title="Auto-Quantize Selected" onclick="veQuantize()">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="3" y="3" width="4" height="18" />
+                                <rect x="10" y="8" width="4" height="13" />
+                                <rect x="17" y="5" width="4" height="16" />
+                            </svg>
+                            <span>Q</span>
+                        </button>
+                    </div>
+                    <div class="ve-sep"></div>
+
+                    <!-- Group 6: Zoom -->
+                    <div class="ve-group">
+                        <button class="ve-btn" id="btn-zoom-out" title="Zoom Out (−)" onclick="prZoom(-1)">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.2">
+                                <circle cx="11" cy="11" r="8" />
+                                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                <line x1="8" y1="11" x2="14" y2="11" />
+                            </svg>
+                        </button>
+                        <div class="ve-zoom-display" id="zoom-display">100%</div>
+                        <button class="ve-btn" id="btn-zoom-in" title="Zoom In (+)" onclick="prZoom(1)">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.2">
+                                <circle cx="11" cy="11" r="8" />
+                                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                <line x1="11" y1="8" x2="11" y2="14" />
+                                <line x1="8" y1="11" x2="14" y2="11" />
+                            </svg>
+                        </button>
+                        <button class="ve-btn" id="btn-zoom-fit" title="Fit to Window" onclick="prZoom(0)"
+                            style="font-size:8px;letter-spacing:.05em;padding:4px 6px;">FIT</button>
+                    </div>
+                </div>
+                <!-- ── STATUS BAR ── -->
+                <div class="ve-status-bar">
+                    <span id="ve-tool-status">✏ Tool: <b>Select</b></span>
+                    <span class="ve-status-sep">|</span>
+                    <span id="ve-note-info">No note selected</span>
+                    <span class="ve-status-sep">|</span>
+                    <span id="ve-lyric-status">Lyric: —</span>
+                    <span class="ve-status-sep">|</span>
+                    <span>Snap: <span id="ve-snap-val">1/4</span></span>
+                </div>
+
+                <div class="proll-full proll-full-v2">
+                    <div class="proll-header-v2">
+                        <div class="proll-key-corner" style="width:60px !important; min-width:60px;"></div>
+                        <div class="proll-beat-nums">
+                            <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span>
+                        </div>
+                    </div>
+                    <div class="proll-body-v2" id="proll-body-v2">
+                        <svg class="proll-svg-v2" id="proll-svg" width="1260" height="1078" viewBox="0 0 1260 1078"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="white-key" x1="0" y1="0" x2="1" y2="0">
+                                    <stop offset="0%" stop-color="#ffffff" />
+                                    <stop offset="85%" stop-color="#edf0f5" />
+                                    <stop offset="100%" stop-color="#b8bec8" />
+                                </linearGradient>
+                                <linearGradient id="black-key" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#3a3d4a" />
+                                    <stop offset="100%" stop-color="#050608" />
+                                </linearGradient>
+                                <linearGradient id="note-grad" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#00e5ff" stop-opacity="0.95" />
+                                    <stop offset="100%" stop-color="#0095aa" stop-opacity="0.85" />
+                                </linearGradient>
+                                <linearGradient id="note-sel-grad" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#ffab00" stop-opacity="0.98" />
+                                    <stop offset="100%" stop-color="#cc7a00" stop-opacity="0.9" />
+                                </linearGradient>
+                                <filter id="note-glow" x="-10%" y="-30%" width="120%" height="160%">
+                                    <feGaussianBlur stdDeviation="2" result="b" />
+                                    <feMerge>
+                                        <feMergeNode in="b" />
+                                        <feMergeNode in="SourceGraphic" />
+                                    </feMerge>
+                                </filter>
+                            </defs>
+                            <rect x="0" y="0.0" width="60" height="22.0" fill="url(#white-key)" />
+                            <line x1="0" y1="22.0" x2="60" y2="22.0" stroke="#161820" stroke-width="1.5"
+                                opacity="0.6" />
+                            <rect x="0" y="22.0" width="60" height="33.0" fill="url(#white-key)" />
+                            <line x1="0" y1="55.0" x2="60" y2="55.0" stroke="#161820" stroke-width="1.5"
+                                opacity="0.6" />
+                            <rect x="0" y="55.0" width="60" height="44.0" fill="url(#white-key)" />
+                            <line x1="0" y1="99.0" x2="60" y2="99.0" stroke="#161820" stroke-width="1.5"
+                                opacity="0.6" />
+                            <rect x="0" y="99.0" width="60" height="44.0" fill="url(#white-key)" />
+                            <line x1="0" y1="143.0" x2="60" y2="143.0" stroke="#161820" stroke-width="1.5"
+                                opacity="0.6" />
+                            <rect x="0" y="143.0" width="60" height="33.0" fill="url(#white-key)" />
+                            <line x1="0" y1="176.0" x2="60" y2="176.0" stroke="#161820" stroke-width="1.5"
+                                opacity="0.6" />
+                            <rect x="0" y="176.0" width="60" height="33.0" fill="url(#white-key)" />
+                            <line x1="0" y1="209.0" x2="60" y2="209.0" stroke="#161820" stroke-width="1.5"
+                                opacity="0.6" />
+                            <rect x="0" y="209.0" width="60" height="44.0" fill="url(#white-key)" />
+                            <line x1="0" y1="253.0" x2="60" y2="253.0" stroke="#161820" stroke-width="1.5"
+                                opacity="0.6" />
+                            <rect x="0" y="253.0" width="60" height="33.0" fill="url(#white-key)" />
+                            <line x1="0" y1="286.0" x2="60" y2="286.0" stroke="#161820" stroke-width="1.5"
+                                opacity="0.6" />
+                            <rect x="0" y="286.0" width="60" height="33.0" fill="url(#white-key)" />
+                            <rect x="0" y="319.0" width="60" height="44.0" fill="url(#white-key)" />
+                            <line x1="0" y1="363.0" x2="60" y2="363.0" stroke="#161820" stroke-width="1.5"
+                                opacity="0.6" />
+                            <rect x="0" y="363.0" width="60" height="44.0" fill="url(#white-key)" />
+                            <line x1="0" y1="407.0" x2="60" y2="407.0" stroke="#161820" stroke-width="1.5"
+                                opacity="0.6" />
+                            <rect x="0" y="407.0" width="60" height="33.0" fill="url(#white-key)" />
+                            <line x1="0" y1="440.0" x2="60" y2="440.0" stroke="#161820" stroke-width="1.5"
+                                opacity="0.6" />
+                            <rect x="0" y="440.0" width="60" height="33.0" fill="url(#white-key)" />
+                            <line x1="0" y1="473.0" x2="60" y2="473.0" stroke="#161820" stroke-width="1.5"
+                                opacity="0.6" />
+                            <rect x="0" y="473.0" width="60" height="44.0" fill="url(#white-key)" />
+                            <rect x="0" y="517.0" width="60" height="33.0" fill="url(#white-key)" />
+                            <rect x="0" y="550.0" width="60" height="33.0" fill="url(#white-key)" />
+                            <rect x="0" y="583.0" width="60" height="44.0" fill="url(#white-key)" />
+                            <rect x="0" y="627.0" width="60" height="44.0" fill="url(#white-key)" />
+                            <rect x="0" y="671.0" width="60" height="33.0" fill="url(#white-key)" />
+                            <rect x="0" y="704.0" width="60" height="33.0" fill="url(#white-key)" />
+                            <rect x="0" y="737.0" width="60" height="44.0" fill="url(#white-key)" />
+                            <rect x="0" y="781.0" width="60" height="33.0" fill="url(#white-key)" />
+                            <rect x="0" y="814.0" width="60" height="33.0" fill="url(#white-key)" />
+                            <rect x="0" y="847.0" width="60" height="44.0" fill="url(#white-key)" />
+                            <rect x="0" y="891.0" width="60" height="44.0" fill="url(#white-key)" />
+                            <rect x="0" y="935.0" width="60" height="33.0" fill="url(#white-key)" />
+                            <rect x="0" y="968.0" width="60" height="33.0" fill="url(#white-key)" />
+                            <rect x="0" y="1001.0" width="60" height="44.0" fill="url(#white-key)" />
+                            <rect x="0" y="1045.0" width="60" height="33.0" fill="url(#white-key)" />
+                            <!-- Black keys -->
+                            <rect x="0" y="46" width="38" height="22" fill="rgba(0,0,0,0.6)" rx="1" />
+                            <rect x="0" y="44" width="36" height="22" fill="url(#black-key)" rx="1"
+                                stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+                            <rect x="0" y="44" width="34" height="2" fill="rgba(255,255,255,0.15)" />
+                            <rect x="0" y="90" width="38" height="22" fill="rgba(0,0,0,0.6)" rx="1" />
+                            <rect x="0" y="88" width="36" height="22" fill="url(#black-key)" rx="1"
+                                stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+                            <rect x="0" y="88" width="34" height="2" fill="rgba(255,255,255,0.15)" />
+                            <rect x="0" y="134" width="38" height="22" fill="rgba(0,0,0,0.6)" rx="1" />
+                            <rect x="0" y="132" width="36" height="22" fill="url(#black-key)" rx="1"
+                                stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+                            <rect x="0" y="132" width="34" height="2" fill="rgba(255,255,255,0.15)" />
+                            <rect x="0" y="200" width="38" height="22" fill="rgba(0,0,0,0.6)" rx="1" />
+                            <rect x="0" y="198" width="36" height="22" fill="url(#black-key)" rx="1"
+                                stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+                            <rect x="0" y="198" width="34" height="2" fill="rgba(255,255,255,0.15)" />
+                            <rect x="0" y="244" width="38" height="22" fill="rgba(0,0,0,0.6)" rx="1" />
+                            <rect x="0" y="242" width="36" height="22" fill="url(#black-key)" rx="1"
+                                stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+                            <rect x="0" y="242" width="34" height="2" fill="rgba(255,255,255,0.15)" />
+                            <rect x="0" y="310" width="38" height="22" fill="rgba(0,0,0,0.6)" rx="1" />
+                            <rect x="0" y="308" width="36" height="22" fill="url(#black-key)" rx="1"
+                                stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+                            <rect x="0" y="308" width="34" height="2" fill="rgba(255,255,255,0.15)" />
+                            <rect x="0" y="354" width="38" height="22" fill="rgba(0,0,0,0.6)" rx="1" />
+                            <rect x="0" y="352" width="36" height="22" fill="url(#black-key)" rx="1"
+                                stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+                            <rect x="0" y="352" width="34" height="2" fill="rgba(255,255,255,0.15)" />
+                            <rect x="0" y="398" width="38" height="22" fill="rgba(0,0,0,0.6)" rx="1" />
+                            <rect x="0" y="396" width="36" height="22" fill="url(#black-key)" rx="1"
+                                stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+                            <rect x="0" y="396" width="34" height="2" fill="rgba(255,255,255,0.15)" />
+                            <rect x="0" y="464" width="38" height="22" fill="rgba(0,0,0,0.6)" rx="1" />
+                            <rect x="0" y="462" width="36" height="22" fill="url(#black-key)" rx="1"
+                                stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+                            <rect x="0" y="462" width="34" height="2" fill="rgba(255,255,255,0.15)" />
+                            <rect x="0" y="508" width="38" height="22" fill="rgba(0,0,0,0.6)" rx="1" />
+                            <rect x="0" y="506" width="36" height="22" fill="url(#black-key)" rx="1"
+                                stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+                            <rect x="0" y="506" width="34" height="2" fill="rgba(255,255,255,0.15)" />
+                            <rect x="0" y="574" width="38" height="22" fill="rgba(0,0,0,0.6)" rx="1" />
+                            <rect x="0" y="572" width="36" height="22" fill="url(#black-key)" rx="1"
+                                stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+                            <rect x="0" y="572" width="34" height="2" fill="rgba(255,255,255,0.15)" />
+                            <rect x="0" y="618" width="38" height="22" fill="rgba(0,0,0,0.6)" rx="1" />
+                            <rect x="0" y="616" width="36" height="22" fill="url(#black-key)" rx="1"
+                                stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+                            <rect x="0" y="616" width="34" height="2" fill="rgba(255,255,255,0.15)" />
+                            <rect x="0" y="662" width="38" height="22" fill="rgba(0,0,0,0.6)" rx="1" />
+                            <rect x="0" y="660" width="36" height="22" fill="url(#black-key)" rx="1"
+                                stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+                            <rect x="0" y="660" width="34" height="2" fill="rgba(255,255,255,0.15)" />
+                            <rect x="0" y="728" width="38" height="22" fill="rgba(0,0,0,0.6)" rx="1" />
+                            <rect x="0" y="726" width="36" height="22" fill="url(#black-key)" rx="1"
+                                stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+                            <rect x="0" y="726" width="34" height="2" fill="rgba(255,255,255,0.15)" />
+                            <rect x="0" y="772" width="38" height="22" fill="rgba(0,0,0,0.6)" rx="1" />
+                            <rect x="0" y="770" width="36" height="22" fill="url(#black-key)" rx="1"
+                                stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+                            <rect x="0" y="770" width="34" height="2" fill="rgba(255,255,255,0.15)" />
+                            <rect x="0" y="838" width="38" height="22" fill="rgba(0,0,0,0.6)" rx="1" />
+                            <rect x="0" y="836" width="36" height="22" fill="url(#black-key)" rx="1"
+                                stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+                            <rect x="0" y="836" width="34" height="2" fill="rgba(255,255,255,0.15)" />
+                            <rect x="0" y="882" width="38" height="22" fill="rgba(0,0,0,0.6)" rx="1" />
+                            <rect x="0" y="880" width="36" height="22" fill="url(#black-key)" rx="1"
+                                stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+                            <rect x="0" y="880" width="34" height="2" fill="rgba(255,255,255,0.15)" />
+                            <rect x="0" y="926" width="38" height="22" fill="rgba(0,0,0,0.6)" rx="1" />
+                            <rect x="0" y="924" width="36" height="22" fill="url(#black-key)" rx="1"
+                                stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+                            <rect x="0" y="924" width="34" height="2" fill="rgba(255,255,255,0.15)" />
+                            <rect x="0" y="992" width="38" height="22" fill="rgba(0,0,0,0.6)" rx="1" />
+                            <rect x="0" y="990" width="36" height="22" fill="url(#black-key)" rx="1"
+                                stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+                            <rect x="0" y="990" width="34" height="2" fill="rgba(255,255,255,0.15)" />
+                            <rect x="0" y="1036" width="38" height="22" fill="rgba(0,0,0,0.6)" rx="1" />
+                            <rect x="0" y="1034" width="36" height="22" fill="url(#black-key)" rx="1"
+                                stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+                            <rect x="0" y="1034" width="34" height="2" fill="rgba(255,255,255,0.15)" />
+                            <!-- Note labels -->
+                            <text x="54" y="16.0" text-anchor="end" fill="#00b4ff" font-weight="bold" font-size="11"
+                                font-family="sans-serif">C6</text>
+                            <text x="54" y="280.0" text-anchor="end" fill="#00b4ff" font-weight="bold" font-size="11"
+                                font-family="sans-serif">C5</text>
+                            <text x="54" y="544.0" text-anchor="end" fill="#00b4ff" font-weight="bold" font-size="11"
+                                font-family="sans-serif">C4</text>
+                            <text x="54" y="808.0" text-anchor="end" fill="#00b4ff" font-weight="bold" font-size="11"
+                                font-family="sans-serif">C3</text>
+                            <text x="54" y="1072.0" text-anchor="end" fill="#00b4ff" font-weight="bold" font-size="11"
+                                font-family="sans-serif">C2</text>
+                            <!-- Grid background -->
+                            <rect x="60" y="0" width="1200" height="1078" fill="#10121a" />
+                            <line x1="60" y1="0" x2="1260" y2="0" stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+                            <line x1="60" y1="22" x2="1260" y2="22" stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+                            <rect x="60" y="44" width="1200" height="22" fill="rgba(0,0,0,0.25)" />
+                            <line x1="60" y1="44" x2="1260" y2="44" stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+                            <rect x="60" y="88" width="1200" height="22" fill="rgba(0,0,0,0.25)" />
+                            <line x1="60" y1="88" x2="1260" y2="88" stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+                            <rect x="60" y="132" width="1200" height="22" fill="rgba(0,0,0,0.25)" />
+                            <line x1="60" y1="132" x2="1260" y2="132" stroke="rgba(255,255,255,0.05)"
+                                stroke-width="1" />
+                            <rect x="60" y="198" width="1200" height="22" fill="rgba(0,0,0,0.25)" />
+                            <line x1="60" y1="198" x2="1260" y2="198" stroke="rgba(255,255,255,0.05)"
+                                stroke-width="1" />
+                            <rect x="60" y="242" width="1200" height="22" fill="rgba(0,0,0,0.25)" />
+                            <line x1="60" y1="242" x2="1260" y2="242" stroke="rgba(255,255,255,0.05)"
+                                stroke-width="1" />
+                            <rect x="60" y="308" width="1200" height="22" fill="rgba(0,0,0,0.25)" />
+                            <line x1="60" y1="308" x2="1260" y2="308" stroke="rgba(255,255,255,0.05)"
+                                stroke-width="1" />
+                            <rect x="60" y="352" width="1200" height="22" fill="rgba(0,0,0,0.25)" />
+                            <line x1="60" y1="352" x2="1260" y2="352" stroke="rgba(255,255,255,0.05)"
+                                stroke-width="1" />
+                            <rect x="60" y="396" width="1200" height="22" fill="rgba(0,0,0,0.25)" />
+                            <line x1="60" y1="396" x2="1260" y2="396" stroke="rgba(255,255,255,0.05)"
+                                stroke-width="1" />
+                            <rect x="60" y="462" width="1200" height="22" fill="rgba(0,0,0,0.25)" />
+                            <line x1="60" y1="462" x2="1260" y2="462" stroke="rgba(255,255,255,0.05)"
+                                stroke-width="1" />
+                            <rect x="60" y="506" width="1200" height="22" fill="rgba(0,0,0,0.25)" />
+                            <line x1="60" y1="506" x2="1260" y2="506" stroke="rgba(255,255,255,0.05)"
+                                stroke-width="1" />
+                            <rect x="60" y="572" width="1200" height="22" fill="rgba(0,0,0,0.25)" />
+                            <line x1="60" y1="572" x2="1260" y2="572" stroke="rgba(255,255,255,0.05)"
+                                stroke-width="1" />
+                            <rect x="60" y="616" width="1200" height="22" fill="rgba(0,0,0,0.25)" />
+                            <line x1="60" y1="616" x2="1260" y2="616" stroke="rgba(255,255,255,0.05)"
+                                stroke-width="1" />
+                            <rect x="60" y="660" width="1200" height="22" fill="rgba(0,0,0,0.25)" />
+                            <line x1="60" y1="660" x2="1260" y2="660" stroke="rgba(255,255,255,0.05)"
+                                stroke-width="1" />
+                            <rect x="60" y="726" width="1200" height="22" fill="rgba(0,0,0,0.25)" />
+                            <line x1="60" y1="726" x2="1260" y2="726" stroke="rgba(255,255,255,0.05)"
+                                stroke-width="1" />
+                            <rect x="60" y="770" width="1200" height="22" fill="rgba(0,0,0,0.25)" />
+                            <line x1="60" y1="770" x2="1260" y2="770" stroke="rgba(255,255,255,0.05)"
+                                stroke-width="1" />
+                            <rect x="60" y="836" width="1200" height="22" fill="rgba(0,0,0,0.25)" />
+                            <line x1="60" y1="836" x2="1260" y2="836" stroke="rgba(255,255,255,0.05)"
+                                stroke-width="1" />
+                            <rect x="60" y="880" width="1200" height="22" fill="rgba(0,0,0,0.25)" />
+                            <line x1="60" y1="880" x2="1260" y2="880" stroke="rgba(255,255,255,0.05)"
+                                stroke-width="1" />
+                            <rect x="60" y="924" width="1200" height="22" fill="rgba(0,0,0,0.25)" />
+                            <line x1="60" y1="924" x2="1260" y2="924" stroke="rgba(255,255,255,0.05)"
+                                stroke-width="1" />
+                            <rect x="60" y="990" width="1200" height="22" fill="rgba(0,0,0,0.25)" />
+                            <line x1="60" y1="990" x2="1260" y2="990" stroke="rgba(255,255,255,0.05)"
+                                stroke-width="1" />
+                            <rect x="60" y="1034" width="1200" height="22" fill="rgba(0,0,0,0.25)" />
+                            <line x1="60" y1="1034" x2="1260" y2="1034" stroke="rgba(255,255,255,0.05)"
+                                stroke-width="1" />
+                            <!-- Beat lines -->
+                            <line x1="210" y1="0" x2="210" y2="1078" stroke="rgba(0,229,255,0.2)" stroke-width="1.5" />
+                            <line x1="172.5" y1="0" x2="172.5" y2="1078" stroke="rgba(255,255,255,0.03)"
+                                stroke-width="0.5" />
+                            <line x1="135.0" y1="0" x2="135.0" y2="1078" stroke="rgba(255,255,255,0.03)"
+                                stroke-width="0.5" />
+                            <line x1="97.5" y1="0" x2="97.5" y2="1078" stroke="rgba(255,255,255,0.03)"
+                                stroke-width="0.5" />
+                            <line x1="360" y1="0" x2="360" y2="1078" stroke="rgba(0,229,255,0.2)" stroke-width="1.5" />
+                            <line x1="322.5" y1="0" x2="322.5" y2="1078" stroke="rgba(255,255,255,0.03)"
+                                stroke-width="0.5" />
+                            <line x1="285.0" y1="0" x2="285.0" y2="1078" stroke="rgba(255,255,255,0.03)"
+                                stroke-width="0.5" />
+                            <line x1="247.5" y1="0" x2="247.5" y2="1078" stroke="rgba(255,255,255,0.03)"
+                                stroke-width="0.5" />
+                            <line x1="510" y1="0" x2="510" y2="1078" stroke="rgba(0,229,255,0.2)" stroke-width="1.5" />
+                            <line x1="472.5" y1="0" x2="472.5" y2="1078" stroke="rgba(255,255,255,0.03)"
+                                stroke-width="0.5" />
+                            <line x1="435.0" y1="0" x2="435.0" y2="1078" stroke="rgba(255,255,255,0.03)"
+                                stroke-width="0.5" />
+                            <line x1="397.5" y1="0" x2="397.5" y2="1078" stroke="rgba(255,255,255,0.03)"
+                                stroke-width="0.5" />
+                            <line x1="660" y1="0" x2="660" y2="1078" stroke="rgba(0,229,255,0.2)" stroke-width="1.5" />
+                            <line x1="622.5" y1="0" x2="622.5" y2="1078" stroke="rgba(255,255,255,0.03)"
+                                stroke-width="0.5" />
+                            <line x1="585.0" y1="0" x2="585.0" y2="1078" stroke="rgba(255,255,255,0.03)"
+                                stroke-width="0.5" />
+                            <line x1="547.5" y1="0" x2="547.5" y2="1078" stroke="rgba(255,255,255,0.03)"
+                                stroke-width="0.5" />
+                            <line x1="810" y1="0" x2="810" y2="1078" stroke="rgba(0,229,255,0.2)" stroke-width="1.5" />
+                            <line x1="772.5" y1="0" x2="772.5" y2="1078" stroke="rgba(255,255,255,0.03)"
+                                stroke-width="0.5" />
+                            <line x1="735.0" y1="0" x2="735.0" y2="1078" stroke="rgba(255,255,255,0.03)"
+                                stroke-width="0.5" />
+                            <line x1="697.5" y1="0" x2="697.5" y2="1078" stroke="rgba(255,255,255,0.03)"
+                                stroke-width="0.5" />
+                            <line x1="960" y1="0" x2="960" y2="1078" stroke="rgba(0,229,255,0.2)" stroke-width="1.5" />
+                            <line x1="922.5" y1="0" x2="922.5" y2="1078" stroke="rgba(255,255,255,0.03)"
+                                stroke-width="0.5" />
+                            <line x1="885.0" y1="0" x2="885.0" y2="1078" stroke="rgba(255,255,255,0.03)"
+                                stroke-width="0.5" />
+                            <line x1="847.5" y1="0" x2="847.5" y2="1078" stroke="rgba(255,255,255,0.03)"
+                                stroke-width="0.5" />
+                            <line x1="1110" y1="0" x2="1110" y2="1078" stroke="rgba(0,229,255,0.2)"
+                                stroke-width="1.5" />
+                            <line x1="1072.5" y1="0" x2="1072.5" y2="1078" stroke="rgba(255,255,255,0.03)"
+                                stroke-width="0.5" />
+                            <line x1="1035.0" y1="0" x2="1035.0" y2="1078" stroke="rgba(255,255,255,0.03)"
+                                stroke-width="0.5" />
+                            <line x1="997.5" y1="0" x2="997.5" y2="1078" stroke="rgba(255,255,255,0.03)"
+                                stroke-width="0.5" />
+                            <line x1="1260" y1="0" x2="1260" y2="1078" stroke="rgba(0,229,255,0.2)"
+                                stroke-width="1.5" />
+                            <line x1="1222.5" y1="0" x2="1222.5" y2="1078" stroke="rgba(255,255,255,0.03)"
+                                stroke-width="0.5" />
+                            <line x1="1185.0" y1="0" x2="1185.0" y2="1078" stroke="rgba(255,255,255,0.03)"
+                                stroke-width="0.5" />
+                            <line x1="1147.5" y1="0" x2="1147.5" y2="1078" stroke="rgba(255,255,255,0.03)"
+                                stroke-width="0.5" />
+
+                            <!-- ══ Piano Roll Notes (Empty by default) ══ -->
+
+                        </svg>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ══ LYRIC INSERT MODAL ══ -->
+            <div class="lyric-modal-overlay" id="lyric-modal" style="display:none" onclick="closeLyricModal(event)">
+                <div class="lyric-modal-box" onclick="event.stopPropagation()">
+                    <div class="lyric-modal-title">✏ Insert Lyric to Note</div>
+                    <div class="lyric-modal-info" id="lyric-note-info">Selected: <b id="lm-pitch">—</b> at beat <b
+                            id="lm-beat">—</b></div>
+                    <input class="lyric-modal-input" id="lyric-input" type="text"
+                        placeholder="พิมพ์พยางค์ / syllable..." maxlength="12" autofocus />
+                    <div class="lyric-modal-hint">
+                        <span>- = เชื่อมพยางค์ถัดไป</span>
+                        <span>_ = melisma/vibrato</span>
+                        <span>Enter = ยืนยัน</span>
+                    </div>
+                    <div style="display:flex;gap:8px;margin-top:12px">
+                        <button class="lyric-modal-btn" id="lm-confirm" onclick="confirmLyric()">✔ Apply</button>
+                        <button class="lyric-modal-btn secondary" onclick="closeLyricModal()">✗ Cancel</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ══ LYRIC ALL MODAL ══ -->
+            <div class="lyric-modal-overlay" id="lyric-all-modal" style="display:none"
+                onclick="closeLyricAllModal(event)">
+                <div class="lyric-modal-box" style="min-width:340px" onclick="event.stopPropagation()">
+                    <div class="lyric-modal-title">📝 Bulk Lyric Input</div>
+                    <div class="lyric-modal-info">พิมพ์เนื้อเพลงทั้งหมด คั่นด้วยช่องว่าง หรือ ขีด (-)</div>
+                    <textarea class="lyric-modal-ta" id="lyric-all-input"
+                        placeholder="moon- light se- re- nade shine on me..." rows="4"></textarea>
+                    <div class="lyric-modal-hint">
+                        <span>เว้นวรรค = แบ่งพยางค์ใหม่</span>
+                        <span>- = เชื่อมพยางค์ต่อโน้ต</span>
+                    </div>
+                    <div style="display:flex;gap:8px;margin-top:12px">
+                        <button class="lyric-modal-btn" onclick="applyLyricAll()">✔ Apply All</button>
+                        <button class="lyric-modal-btn secondary" onclick="closeLyricAllModal()">✗ Cancel</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ──── MODULE C: SVS Engine (Render) ──── -->
+            <section class="card" id="mod-c">
+                <div class="card-hdr">
+                    <h3>SVS Engine <small>(Module C)</small></h3>
+                    <span class="gear-icon">⚙</span>
+                </div>
+
+                <!-- Vocal Character Slider (moved from Module B) -->
+                <div class="vc-section">
+                    <div class="vc-led" id="vc-display">LEVEL 4: NATURAL</div>
+                    <div class="vc-slider-wrap">
+                        <input type="range" class="vc-slider" id="vc-slider" min="1" max="7" value="4" step="1">
+                        <div class="vc-labels">
+                            <span>☁️ Whisper</span><span>Airy</span><span>Gentle</span>
+                            <span class="active">Natural</span>
+                            <span>Firm</span><span>Powerful</span><span>Intense ⚡</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PRO LEVEL knob + Sliders side by side -->
+                <div class="c-controls-row">
+                    <div class="vol-knob-wrap" id="prolevel-knob-wrap" style="margin:0 auto 4px;">
+                        <svg id="prolevel-svg" width="140" height="140" viewBox="0 0 140 140"
+                            xmlns="http://www.w3.org/2000/svg" style="display:block;cursor:pointer;">
+                            <defs>
+                                <radialGradient id="knob-bg" cx="40%" cy="35%" r="60%">
+                                    <stop offset="0%" stop-color="#2a2e3e" />
+                                    <stop offset="35%" stop-color="#1a1f2e" />
+                                    <stop offset="70%" stop-color="#0e1220" />
+                                    <stop offset="100%" stop-color="#07091a" />
+                                </radialGradient>
+                                <filter id="arc-glow" x="-20%" y="-20%" width="140%" height="140%">
+                                    <feGaussianBlur stdDeviation="3" result="b" />
+                                    <feMerge>
+                                        <feMergeNode in="b" />
+                                        <feMergeNode in="b" />
+                                        <feMergeNode in="SourceGraphic" />
+                                    </feMerge>
+                                </filter>
+                                <filter id="glow-sm" x="-30%" y="-30%" width="160%" height="160%">
+                                    <feGaussianBlur stdDeviation="2" result="b" />
+                                    <feMerge>
+                                        <feMergeNode in="b" />
+                                        <feMergeNode in="SourceGraphic" />
+                                    </feMerge>
+                                </filter>
+                            </defs>
+
+                            <!-- Outer shadow disc -->
+                            <circle cx="70" cy="70" r="68" fill="rgba(0,0,0,0.6)" transform="translate(2,4)" />
+
+                            <!-- Dark metallic base disc -->
+                            <circle cx="70" cy="70" r="68" fill="#0a0c18" />
+
+                            <!-- Concave groove ring (outer bevel) -->
+                            <circle cx="70" cy="70" r="67" fill="none" stroke="rgba(255,255,255,0.04)"
+                                stroke-width="3" />
+                            <circle cx="70" cy="70" r="64" fill="none" stroke="rgba(30,38,58,0.9)" stroke-width="5" />
+
+                            <!-- Tick marks -->
+                            <line x1="27.6" y1="112.4" x2="24.0" y2="116.0" stroke="rgba(255,160,20,0.6)"
+                                stroke-width="1.8" stroke-linecap="round" />
+                            <line x1="14.6" y1="93.0" x2="9.9" y2="94.9" stroke="rgba(255,140,0,0.3)" stroke-width="1"
+                                stroke-linecap="round" />
+                            <line x1="10.0" y1="70.0" x2="5.0" y2="70.0" stroke="rgba(255,140,0,0.3)" stroke-width="1"
+                                stroke-linecap="round" />
+                            <line x1="14.6" y1="47.0" x2="9.9" y2="45.1" stroke="rgba(255,160,20,0.6)"
+                                stroke-width="1.8" stroke-linecap="round" />
+                            <line x1="27.6" y1="27.6" x2="24.0" y2="24.0" stroke="rgba(255,140,0,0.3)" stroke-width="1"
+                                stroke-linecap="round" />
+                            <line x1="47.0" y1="14.6" x2="45.1" y2="9.9" stroke="rgba(255,140,0,0.3)" stroke-width="1"
+                                stroke-linecap="round" />
+                            <line x1="70.0" y1="10.0" x2="70.0" y2="5.0" stroke="rgba(255,160,20,0.6)"
+                                stroke-width="1.8" stroke-linecap="round" />
+                            <line x1="93.0" y1="14.6" x2="94.9" y2="9.9" stroke="rgba(255,140,0,0.3)" stroke-width="1"
+                                stroke-linecap="round" />
+                            <line x1="112.4" y1="27.6" x2="116.0" y2="24.0" stroke="rgba(255,140,0,0.3)"
+                                stroke-width="1" stroke-linecap="round" />
+                            <line x1="125.4" y1="47.0" x2="130.1" y2="45.1" stroke="rgba(255,160,20,0.6)"
+                                stroke-width="1.8" stroke-linecap="round" />
+                            <line x1="130.0" y1="70.0" x2="135.0" y2="70.0" stroke="rgba(255,140,0,0.3)"
+                                stroke-width="1" stroke-linecap="round" />
+                            <line x1="125.4" y1="93.0" x2="130.1" y2="94.9" stroke="rgba(255,140,0,0.3)"
+                                stroke-width="1" stroke-linecap="round" />
+                            <line x1="112.4" y1="112.4" x2="116.0" y2="116.0" stroke="rgba(255,160,20,0.6)"
+                                stroke-width="1.8" stroke-linecap="round" />
+
+                            <!-- Arc track (dim – full range indicator) -->
+                            <path d="M 31.11,108.89 A 55,55 0 1,1 108.89,108.89" fill="none"
+                                stroke="rgba(255,140,0,0.14)" stroke-width="7" stroke-linecap="round" />
+
+                            <!-- Arc value (bright glowing orange) -->
+                            <path id="kn-arc" d="M 31.11,108.89 A 55,55 0 1,1 124.83,74.32" fill="none" stroke="#ff9200"
+                                stroke-width="7" stroke-linecap="round" filter="url(#arc-glow)" />
+
+                            <!-- Knob 3D body -->
+                            <circle cx="70" cy="70" r="48" fill="url(#knob-bg)" />
+                            <!-- Inner highlight top-left (3D light reflection) -->
+                            <ellipse cx="58" cy="56" rx="18" ry="12" fill="rgba(255,255,255,0.06)" />
+                            <!-- Inner shadow bottom-right -->
+                            <ellipse cx="82" cy="84" rx="16" ry="10" fill="rgba(0,0,0,0.4)" />
+                            <!-- Body edge ring (concave feel) -->
+                            <circle cx="70" cy="70" r="48" fill="none" stroke="rgba(255,255,255,0.05)"
+                                stroke-width="1.5" />
+                            <circle cx="70" cy="70" r="46" fill="none" stroke="rgba(0,0,0,0.3)" stroke-width="1.5" />
+
+                            <!-- Indicator dot at tip -->
+                            <circle id="kn-dot" cx="113.9" cy="73.5" r="3.5" fill="white" filter="url(#glow-sm)" />
+                            <!-- Indicator line -->
+                            <line id="kn-ptr" x1="99.9" y1="72.4" x2="113.9" y2="73.5" stroke="rgba(255,255,255,0.9)"
+                                stroke-width="2.5" stroke-linecap="round" filter="url(#glow-sm)" />
+
+                            <!-- Point glow (arc end dot) -->
+                            <circle id="kn-end-dot" cx="124.8" cy="74.3" r="4" fill="#ffbb44" filter="url(#arc-glow)"
+                                opacity="0.9" />
+                        </svg>
+                        <div class="kl"
+                            style="font-size:11px;letter-spacing:0.14em;color:rgba(255,155,0,0.92);text-shadow:0 0 12px rgba(255,130,0,0.55);font-weight:700;margin-top:6px;">
+                            PRO LEVEL</div>
+                        <div class="kv" style="font-size:9px;color:rgba(190,200,220,0.75);">Value: <strong
+                                id="prolevel-val" style="color:rgba(255,155,0,0.95);">8.5</strong>/10</div>
+                    </div>
+                    <div class="slds slds-c">
+                        <div class="sl-r"><span class="sl-l">Pitch</span>
+                            <div class="sl-t">
+                                <div class="sl-f" style="width:65%"></div>
+                            </div>
+                        </div>
+                        <div class="sl-r"><span class="sl-l">Vibrato</span>
+                            <div class="sl-t">
+                                <div class="sl-f" style="width:42%"></div>
+                            </div>
+                        </div>
+                        <div class="sl-r"><span class="sl-l">Dynamics</span>
+                            <div class="sl-t">
+                                <div class="sl-f" style="width:78%"></div>
+                            </div>
+                        </div>
+                        <div class="sl-r"><span class="sl-l">Expression</span>
+                            <div class="sl-t">
+                                <div class="sl-f" style="width:25%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="height:1px;background:rgba(0,229,255,0.1);margin:8px 0 6px"></div>
+
+                <!-- Render Button with Hex Base + Gear Ring -->
+                <div class="rnd-area">
+                    <div class="hex-base">
+                        <svg viewBox="0 0 220 220">
+                            <polygon points="110,8 202,53 202,167 110,212 18,167 18,53" fill="none"
+                                stroke="rgba(0,229,255,.12)" stroke-width="1.5" stroke-linejoin="round" />
+                            <polygon points="110,18 192,58 192,162 110,202 28,162 28,58" fill="none"
+                                stroke="rgba(0,229,255,.06)" stroke-width="1" stroke-linejoin="round"
+                                stroke-dasharray="4,4" />
+                        </svg>
+                    </div>
+                    <div class="gear-wrap" id="btn-render">
+                        <div class="gear-svg">
+                            <svg viewBox="0 0 200 200">
+                                <defs>
+                                    <linearGradient id="gg" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="var(--pri)" stop-opacity=".5" />
+                                        <stop offset="100%" stop-color="var(--sec)" stop-opacity=".3" />
+                                    </linearGradient>
+                                </defs>
+                                <path
+                                    d="M100,6 L104,6 L106,2 L108,6 L112,6 A94,94 0 0,1 134,12 L136,8 L139,11 L137,15 A94,94 0 0,1 157,27 L161,25 L163,29 L159,31 A94,94 0 0,1 174,49 L178,48 L179,52 L175,53 A94,94 0 0,1 184,74 L188,74 L188,78 L184,78 A94,94 0 0,1 188,100 L192,100 L192,104 L188,104 A94,94 0 0,1 184,126 L188,126 L188,130 L184,130 A94,94 0 0,1 175,151 L179,152 L178,156 L174,155 A94,94 0 0,1 159,173 L163,175 L161,179 L157,177 A94,94 0 0,1 137,189 L139,193 L136,196 L134,192 A94,94 0 0,1 112,198 L108,198 L106,202 L104,198 L100,198 L96,198 L94,202 L92,198 L88,198 A94,94 0 0,1 66,192 L64,196 L61,193 L63,189 A94,94 0 0,1 43,177 L39,179 L37,175 L41,173 A94,94 0 0,1 25,155 L22,156 L21,152 L25,151 A94,94 0 0,1 16,130 L12,130 L12,126 L16,126 A94,94 0 0,1 12,104 L8,104 L8,100 L12,100 A94,94 0 0,1 16,78 L12,78 L12,74 L16,74 A94,94 0 0,1 25,53 L21,52 L22,48 L26,49 A94,94 0 0,1 41,31 L37,29 L39,25 L43,27 A94,94 0 0,1 63,15 L61,11 L64,8 L66,12 A94,94 0 0,1 88,6 L92,6 L94,2 L96,6 Z"
+                                    fill="none" stroke="url(#gg)" stroke-width="1" />
+                                <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(0,229,255,.08)"
+                                    stroke-width=".5" stroke-dasharray="2,6" />
+                            </svg>
+                        </div>
+                        <div class="rnd-circle">
+                            <div class="rtxt">
+                                <div class="rs">RENDER</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- View Mode Toggle removed -->
+
+                <!-- Progress -->
+                <div class="prog">
+                    <div class="prog-t">
+                        <div class="prog-f"></div>
+                    </div>
+                    <div class="prog-l">Synthesizing&#8230; 74%</div>
+                </div>
+
+                <!-- Footer -->
+                <div class="eftr">
+                    <select id="track-sel">
+                        <option>Vocal Track 1</option>
+                        <option>Vocal Track 2</option>
+                        <option>Harmony Track</option>
+                    </select>
+                    <div class="exp-r">
+                        <select id="fmt-sel">
+                            <option>WAV 48kHz/24bit</option>
+                            <option>WAV 44.1kHz/16bit</option>
+                            <option>FLAC 48kHz/24bit</option>
+                        </select>
+                        <button class="exp-btn" id="btn-export">Export</button>
+                    </div>
+                </div>
+            </section>
+
+
+        </main>
+    </div>
+
+    <script>
+        // Vocal Character Slider Logic
+        const vcSlider = document.getElementById('vc-slider');
+        const vcDisplay = document.getElementById('vc-display');
+        const vcLabels = document.querySelectorAll('.vc-labels span');
+        const ssSegs = document.querySelectorAll('.ss-seg');
+        const levels = ['WHISPER', 'AIRY', 'GENTLE', 'NATURAL', 'FIRM', 'POWERFUL', 'INTENSE'];
+        const colors = ['#00e5ff', '#00e5ff', '#00e5ff', '#00e5ff', '#ffab00', '#ff6d00', '#ff3d3d'];
+
+        vcSlider.addEventListener('input', function () {
+            const v = parseInt(this.value);
+            vcDisplay.textContent = 'LEVEL ' + v + ': ' + levels[v - 1];
+            vcDisplay.style.color = colors[v - 1];
+            vcDisplay.style.textShadow = '0 0 10px ' + colors[v - 1];
+            vcLabels.forEach((l, i) => { l.classList.toggle('active', i === v - 1); l.style.color = i === v - 1 ? colors[v - 1] : ''; });
+            // Update Soft-Strong indicator
+            ssSegs.forEach((s, i) => {
+                s.className = 'ss-seg';
+                if (i < v) {
+                    if (v <= 3) s.classList.add('on-cyan');
+                    else if (v <= 5) s.classList.add(i < 4 ? 'on-cyan' : 'on-sec');
+                    else s.classList.add(i < 3 ? 'on-cyan' : (i < 5 ? 'on-sec' : 'on-red'));
+                }
+            });
+            // Update render ring color
+            const rc = document.querySelector('.rnd-circle');
+            rc.style.setProperty('--dynamic-color', colors[v - 1]);
+        });
+
+        // View toggle
+        document.querySelectorAll('.view-btn').forEach(b => {
+            b.addEventListener('click', () => {
+                document.querySelectorAll('.view-btn').forEach(x => x.classList.remove('on'));
+                b.classList.add('on');
+            });
+        });
+
+        // ── Nav Tab Switching & Panel Logic ──
+        const navBtns = document.querySelectorAll('.nav button[data-tab]');
+        const panels = {
+            projects: document.getElementById('panel-projects'),
+            voices: document.getElementById('panel-voices'),
+            effects: document.getElementById('panel-effects'),
+            render: document.getElementById('panel-render'),
+        };
+        let activePanel = null;
+
+        function hideAllPanels() {
+            Object.values(panels).forEach(p => { if (p) p.style.display = 'none'; });
+        }
+
+        navBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tab = btn.dataset.tab;
+                navBtns.forEach(b => b.classList.remove('on'));
+                btn.classList.add('on');
+
+                const panel = panels[tab];
+                if (!panel) return;
+
+                if (activePanel === panel && panel.style.display !== 'none') {
+                    panel.style.display = 'none';
+                    activePanel = null;
+                } else {
+                    hideAllPanels();
+                    panel.style.display = 'flex';
+                    activePanel = panel;
+                }
+            });
+        });
+
+        // ── Project Item Click ──
+        document.querySelectorAll('.np-proj-item').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.np-proj-item').forEach(i => i.classList.remove('on'));
+                item.classList.add('on');
+            });
+        });
+
+        // Close panel on Escape or click outside
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') { hideAllPanels(); activePanel = null; } });
+        document.addEventListener('click', e => {
+            if (activePanel && !activePanel.contains(e.target) && !e.target.closest('.nav')) {
+                hideAllPanels(); activePanel = null;
+            }
+        });
+
+        // ── Voice Cards ──
+        document.querySelectorAll('.np-voice-card').forEach(card => {
+            card.addEventListener('click', () => {
+                document.querySelectorAll('.np-voice-card').forEach(c => c.classList.remove('on'));
+                card.classList.add('on');
+            });
+        });
+
+        // ── FX Slot Toggle ──
+        document.querySelectorAll('.np-fx-slot').forEach(slot => {
+            slot.addEventListener('click', e => {
+                if (e.target.closest('.sl-t')) return; // don't toggle when dragging slider
+                slot.classList.toggle('on');
+                const val = slot.querySelector('.np-fx-val');
+                if (val) val.textContent = slot.classList.contains('on') ? val.textContent.replace('Off', 'On') : val.textContent.replace('On', 'Off');
+            });
+        });
+
+        // ── Format / Sample Rate button groups ──
+        [['fmt-wav', 'fmt-flac', 'fmt-mp3', 'fmt-aiff'], ['sr-44', 'sr-48', 'sr-96'], ['eng-svs', 'eng-cloud']].forEach(group => {
+            group.forEach(id => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                el.addEventListener('click', () => {
+                    group.forEach(gid => { const g = document.getElementById(gid); if (g) g.classList.remove('on'); });
+                    el.classList.add('on');
+                });
+            });
+        });
+
+        // ── Start Render Button ──
+        const renderNowBtn = document.getElementById('btn-render-now');
+        if (renderNowBtn) {
+            renderNowBtn.addEventListener('click', () => {
+                renderNowBtn.textContent = '⏳ Rendering...';
+                renderNowBtn.style.opacity = '0.7';
+                renderNowBtn.disabled = true;
+                setTimeout(() => {
+                    renderNowBtn.textContent = '✅ Render Complete!';
+                    renderNowBtn.style.opacity = '1';
+                    renderNowBtn.style.background = 'linear-gradient(135deg, rgba(0,255,100,0.2), rgba(0,229,255,0.15))';
+                    setTimeout(() => {
+                        renderNowBtn.textContent = '🎙 Start Render';
+                        renderNowBtn.style.background = '';
+                        renderNowBtn.disabled = false;
+                    }, 3000);
+                }, 2500);
+            });
+        }
+
+        // ── SVG PRO LEVEL Knob Control Logic ──
+        const prolevelSVG = document.getElementById('prolevel-svg');
+        const knobArcEl = document.getElementById('kn-arc');
+        const knobPtrEl = document.getElementById('kn-ptr');
+        const knobDotEl = document.getElementById('kn-dot');
+        const knobEndEl = document.getElementById('kn-end-dot');
+        const prolevelVal = document.getElementById('prolevel-val');
+        let isDraggingKnob = false;
+        let currentKnobVal = 0.85; // initial: 8.5/10
+
+        /* Helpers for knob geometry */
+        function _kPt(angDeg, r) {
+            const a = angDeg * Math.PI / 180;
+            return { x: 70 + r * Math.cos(a), y: 70 + r * Math.sin(a) };
+        }
+        function _arcPath(val) {
+            /* val 0..1; arc from 135° (SVG) sweeping clockwise by val*270° */
+            const sweep = val * 270 * Math.PI / 180;
+            const sA = 135 * Math.PI / 180;
+            const p1 = _kPt(135, 55);
+            const eAng = 135 + val * 270;
+            const p2 = _kPt(eAng, 55);
+            const large = sweep > Math.PI ? 1 : 0;
+            return `M ${p1.x.toFixed(2)},${p1.y.toFixed(2)} A 55,55 0 ${large},1 ${p2.x.toFixed(2)},${p2.y.toFixed(2)}`;
+        }
+        function updateKnobSVG(val) {
+            if (!knobArcEl) return;
+            val = Math.max(0, Math.min(1, val));
+            currentKnobVal = val;
+            if (val < 0.005) {
+                knobArcEl.setAttribute('d', ''); // no arc at zero
+            } else {
+                knobArcEl.setAttribute('d', _arcPath(val));
+            }
+            /* Pointer line */
+            const endAng = 135 + val * 270;
+            const p2 = _kPt(endAng, 44); // tip
+            const p1 = _kPt(endAng, 30); // base
+            if (knobPtrEl) { knobPtrEl.setAttribute('x1', p1.x.toFixed(1)); knobPtrEl.setAttribute('y1', p1.y.toFixed(1)); knobPtrEl.setAttribute('x2', p2.x.toFixed(1)); knobPtrEl.setAttribute('y2', p2.y.toFixed(1)); }
+            if (knobDotEl) { knobDotEl.setAttribute('cx', p2.x.toFixed(1)); knobDotEl.setAttribute('cy', p2.y.toFixed(1)); }
+            /* Arc end glow dot */
+            const arcEnd = _kPt(endAng, 55);
+            if (knobEndEl) { knobEndEl.setAttribute('cx', arcEnd.x.toFixed(1)); knobEndEl.setAttribute('cy', arcEnd.y.toFixed(1)); knobEndEl.style.opacity = val < 0.02 ? '0' : '0.9'; }
+            /* Label */
+            if (prolevelVal) prolevelVal.textContent = (val * 10).toFixed(1);
+        }
+
+        function handleKnobInteract(e) {
+            if (!prolevelSVG) return;
+            const rect = prolevelSVG.getBoundingClientRect();
+            const cx = rect.left + rect.width / 2;
+            const cy = rect.top + rect.height / 2;
+            const clientX = e.clientX ?? (e.touches?.[0]?.clientX);
+            const clientY = e.clientY ?? (e.touches?.[0]?.clientY);
+            if (clientX == null) return;
+            let ang = Math.atan2(clientY - cy, clientX - cx) * 180 / Math.PI + 90;
+            if (ang < 0) ang += 360;
+            let rel = (ang - 135 + 360) % 360;
+            if (rel > 270 && rel < 315) rel = 270;
+            if (rel >= 315) rel = 0;
+            updateKnobSVG(rel / 270);
+        }
+
+        // Init knob at 8.5/10
+        updateKnobSVG(0.85);
+
+        function updateKnob(e) { handleKnobInteract(e); }
+
+        if (prolevelSVG) {
+            prolevelSVG.addEventListener('mousedown', (e) => {
+                isDraggingKnob = true; handleKnobInteract(e);
+            });
+            prolevelSVG.addEventListener('touchstart', (e) => {
+                isDraggingKnob = true; handleKnobInteract(e);
+                if (e.cancelable) e.preventDefault();
+            }, { passive: false });
+        }
+        window.addEventListener('mousemove', (e) => { if (isDraggingKnob) handleKnobInteract(e); });
+        window.addEventListener('mouseup', () => { isDraggingKnob = false; });
+        window.addEventListener('touchmove', (e) => { if (isDraggingKnob) { handleKnobInteract(e); if (e.cancelable) e.preventDefault(); } }, { passive: false });
+        window.addEventListener('touchend', () => { isDraggingKnob = false; });
+
+        window.addEventListener('touchend', () => {
+            isDraggingKnob = false;
+        });
+
+        // Initial setup for 8.5 value (PRO LEVEL knob)
+        const initialVal = 8.5;
+
+        // === REC / PLAY Buttons Logic (Fixed + Waveform) ===
+        const btnRec = document.getElementById('btn-mic-rec');
+        const btnPlay = document.getElementById('btn-mic-play');
+        const lblRec = document.getElementById('lbl-rec');
+        const vuSegs = document.querySelectorAll('#input-vu .vu-seg');
+        const recWfCanvas = document.getElementById('main-wf-canvas');
+        const recWfCtx = recWfCanvas ? recWfCanvas.getContext('2d') : null;
+
+        // ── Draw initial idle state so wfbox isn't a blank void ────────────
+        function drawIdleWf() {
+            if (!recWfCanvas || !recWfCtx) return;
+            const parent = recWfCanvas.parentElement;
+            const rect = parent ? parent.getBoundingClientRect() : { width: 400, height: 200 };
+            recWfCanvas.width = rect.width || 400;
+            recWfCanvas.height = rect.height || 200;
+            const W = recWfCanvas.width, H = recWfCanvas.height;
+            // Background
+            recWfCtx.fillStyle = 'rgba(0,4,12,0.92)';
+            recWfCtx.fillRect(0, 0, W, H);
+            // Center zero line
+            const midY = H / 2;
+            recWfCtx.strokeStyle = 'rgba(0,229,255,0.25)';
+            recWfCtx.lineWidth = 1;
+            recWfCtx.setLineDash([4, 6]);
+            recWfCtx.beginPath();
+            recWfCtx.moveTo(0, midY);
+            recWfCtx.lineTo(W, midY);
+            recWfCtx.stroke();
+            recWfCtx.setLineDash([]);
+            // Status text
+            recWfCtx.fillStyle = 'rgba(0,229,255,0.3)';
+            recWfCtx.font = "bold 11px 'Orbitron', monospace";
+            recWfCtx.textAlign = 'center';
+            recWfCtx.fillText('◉  Ready — press REC to record', W / 2, midY - 12);
+            recWfCtx.font = "9px 'Orbitron', monospace";
+            recWfCtx.fillStyle = 'rgba(0,229,255,0.18)';
+            recWfCtx.fillText('Waveform will appear here', W / 2, midY + 18);
+            recWfCtx.textAlign = 'left';
+        }
+        // Draw once after a short delay so layout is settled
+        setTimeout(drawIdleWf, 100);
+        window.addEventListener('resize', drawIdleWf);
+
+        let isRecording = false;
+        let isPlaying = false;
+
+        // ── VU Meter — scales with GAIN knob ──────────────────────────────
+        let vuTimer = null;
+        let vuRunning = false;
+
+        function animateVU() {
+            if (!vuRunning) return;
+            const totalSegs = vuSegs.length;
+            // ikGainValue defined later — default 0.5 until knob is initialized
+            const g = (typeof ikGainValue !== 'undefined') ? ikGainValue : 0.5;
+            if (g < 0.01) {
+                // Gain at 0 → all dim (complete silence)
+                vuSegs.forEach(s => s.classList.add('dim'));
+            } else {
+                const maxLevel = Math.max(1, Math.round(g * (totalSegs - 2)));
+                const level = Math.floor(Math.random() * maxLevel + 1);
+                const threshold = totalSegs - level;
+                vuSegs.forEach((seg, i) => {
+                    if (i >= threshold) seg.classList.remove('dim');
+                    else seg.classList.add('dim');
+                });
+            }
+            vuTimer = setTimeout(animateVU, 80);
+        }
+
+        function startVU() { vuRunning = true; animateVU(); }
+
+        function stopVU() {
+            vuRunning = false;
+            if (vuTimer) { clearTimeout(vuTimer); vuTimer = null; }
+            vuSegs.forEach(s => s.classList.add('dim'));
+        }
+
+
+        // ═══════════════════════════════════════════════════════════════
+        // WAVEFORM CANVAS — uses real microphone via Web Audio API
+        // Falls back gracefully when no mic is available.
+        // ═══════════════════════════════════════════════════════════════
+        let recWfTimer = null;
+        let recWfRunning = false;
+        let recWfOffset = 0;
+
+        // ── Web Audio API objects (created on first REC press) ──
+        let audioCtx = null;   // AudioContext
+        let analyser = null;   // AnalyserNode → gives real waveform data
+        let micStream = null;   // MediaStream from getUserMedia
+        let wfDataArray = null;   // Uint8Array holding time-domain samples
+        let micConnected = false;  // true if mic access granted
+
+        // ── Status overlay state ──
+        let wfStatusMsg = '';     // shown in canvas when no real audio
+
+        // ── Real Web Audio Engine (DSP) ──
+        const SingeriaAudio = {
+            ctx: null, analyser: null, nodes: {},
+            init() {
+                if (this.ctx) return;
+                this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                this.analyser = this.ctx.createAnalyser();
+                this.analyser.fftSize = 2048;
+                this.nodes.master = this.ctx.createGain();
+                this.nodes.eq = this.ctx.createBiquadFilter();
+                this.nodes.eq.type = 'peaking'; this.nodes.eq.frequency.value = 3200;
+                this.nodes.comp = this.ctx.createDynamicsCompressor();
+                this.nodes.revGain = this.ctx.createGain(); // simulate mix
+                this.nodes.master.connect(this.nodes.eq);
+                this.nodes.eq.connect(this.nodes.comp);
+                this.nodes.comp.connect(this.analyser);
+                this.analyser.connect(this.ctx.destination);
+            },
+            updateFX(name, pct) {
+                if (!this.ctx) this.init();
+                if (name === 'eq') this.nodes.eq.gain.value = (pct / 100) * 12;
+                if (name === 'comp') this.nodes.comp.threshold.value = -pct / 2;
+                if (name === 'reverb') this.nodes.revGain.gain.value = pct / 100;
+            }
+        };
+
+        async function requestMic() {
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                wfStatusMsg = 'Web Audio not supported in this browser';
+                micConnected = false;
+                return;
+            }
+            try {
+                micStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+                SingeriaAudio.init();
+                audioCtx = SingeriaAudio.ctx;
+                analyser = SingeriaAudio.analyser;
+                const source = audioCtx.createMediaStreamSource(micStream);
+                source.connect(SingeriaAudio.nodes.master);
+                wfDataArray = new Uint8Array(analyser.fftSize);
+                micConnected = true;
+                wfStatusMsg = '';
+            } catch (err) {
+                micConnected = false;
+                wfStatusMsg = '⚠  Mic unavailable: ' + err.name;
+            }
+        }
+
+        function stopMic() {
+            if (micStream) {
+                micStream.getTracks().forEach(t => t.stop());
+                micStream = null;
+            }
+            if (audioCtx) {
+                audioCtx.close();
+                audioCtx = null;
+            }
+            analyser = null;
+            wfDataArray = null;
+            micConnected = false;
+            wfStatusMsg = '';
+        }
+
+        function resizeRecWF() {
+            if (!recWfCanvas) return;
+            const rect = recWfCanvas.parentElement.getBoundingClientRect();
+            recWfCanvas.width = rect.width || 400;
+            recWfCanvas.height = rect.height || 100;
+        }
+
+        function drawRecWaveform(mode) {
+            if (!recWfCtx || !recWfCanvas) return;
+            const W = recWfCanvas.width, H = recWfCanvas.height;
+            const cx = H / 2;
+            const LBL_W = 36;
+
+            recWfCtx.clearRect(0, 0, W, H);
+
+            // Background
+            recWfCtx.fillStyle = 'rgba(0,4,12,0.92)';
+            recWfCtx.fillRect(0, 0, W, H);
+
+            const isRec = (mode === 'rec');
+            const halfH = (H / 2) - 2;
+
+            function dbToY(db, sign) {
+                return cx - sign * halfH * Math.pow(10, db / 20);
+            }
+
+            // dBFS grid zones
+            const zones = [
+                { yTop: 0, yBot: dbToY(-6, +1), color: 'rgba(255,30,30,0.08)' },
+                { yTop: dbToY(-6, -1), yBot: H, color: 'rgba(255,30,30,0.08)' },
+                { yTop: dbToY(-6, +1), yBot: dbToY(-12, +1), color: 'rgba(255,160,0,0.06)' },
+                { yTop: dbToY(-12, -1), yBot: dbToY(-6, -1), color: 'rgba(255,160,0,0.06)' },
+                { yTop: dbToY(-12, +1), yBot: dbToY(-18, +1), color: 'rgba(0,220,100,0.05)' },
+                { yTop: dbToY(-18, -1), yBot: dbToY(-12, -1), color: 'rgba(0,220,100,0.05)' },
+            ];
+            zones.forEach(z => {
+                recWfCtx.fillStyle = z.color;
+                recWfCtx.fillRect(LBL_W, z.yTop, W - LBL_W, z.yBot - z.yTop);
+            });
+
+            // 0 dBFS clip lines
+            recWfCtx.save();
+            recWfCtx.strokeStyle = 'rgba(255,40,40,0.9)';
+            recWfCtx.lineWidth = 1.5;
+            recWfCtx.setLineDash([4, 3]);
+            [1, 3, H - 1, H - 3].forEach(y => {
+                recWfCtx.beginPath(); recWfCtx.moveTo(LBL_W, y); recWfCtx.lineTo(W, y); recWfCtx.stroke();
+            });
+            recWfCtx.restore();
+
+            // dBFS grid lines & labels
+            const dbMarks = [
+                { db: -6, label: '−6', color: 'rgba(255,80,80,0.65)', lw: 1.0, dash: [] },
+                { db: -12, label: '−12', color: 'rgba(255,180,0,0.55)', lw: 0.8, dash: [4, 3] },
+                { db: -18, label: '−18', color: 'rgba(0,220,120,0.55)', lw: 0.8, dash: [6, 4] },
+                { db: -24, label: '−24', color: 'rgba(80,160,255,0.35)', lw: 0.6, dash: [3, 5] },
+            ];
+            recWfCtx.save();
+            recWfCtx.font = '9px "Orbitron", monospace';
+            recWfCtx.textAlign = 'right';
+            dbMarks.forEach(m => {
+                const yP = dbToY(m.db, +1), yN = dbToY(m.db, -1);
+                recWfCtx.strokeStyle = m.color; recWfCtx.lineWidth = m.lw; recWfCtx.setLineDash(m.dash);
+                recWfCtx.beginPath(); recWfCtx.moveTo(LBL_W, yP); recWfCtx.lineTo(W, yP); recWfCtx.stroke();
+                recWfCtx.beginPath(); recWfCtx.moveTo(LBL_W, yN); recWfCtx.lineTo(W, yN); recWfCtx.stroke();
+                recWfCtx.fillStyle = m.color;
+                recWfCtx.shadowColor = m.color; recWfCtx.shadowBlur = 3;
+                recWfCtx.fillText(m.label, LBL_W - 3, yP + 3);
+                if (m.db === -6 || m.db === -18) recWfCtx.fillText(m.label, LBL_W - 3, yN + 3);
+            });
+            recWfCtx.restore();
+
+            // 0 dBFS label & dBFS unit
+            recWfCtx.save();
+            recWfCtx.font = 'bold 9px "Orbitron", monospace';
+            recWfCtx.textAlign = 'right';
+            recWfCtx.fillStyle = 'rgba(255,80,80,0.9)'; recWfCtx.fillText('0', LBL_W - 3, 10);
+            recWfCtx.fillStyle = 'rgba(80,80,255,0.6)'; recWfCtx.fillText('dBFS', LBL_W - 3, H - 2);
+            recWfCtx.restore();
+
+            // Center 0-amplitude baseline
+            recWfCtx.save();
+            recWfCtx.strokeStyle = 'rgba(180,220,255,0.55)';
+            recWfCtx.lineWidth = 1;
+            recWfCtx.setLineDash([]);
+            recWfCtx.shadowBlur = 3;
+            recWfCtx.beginPath(); recWfCtx.moveTo(LBL_W, cx); recWfCtx.lineTo(W, cx); recWfCtx.stroke();
+            recWfCtx.font = 'bold 9px "Orbitron", monospace';
+            recWfCtx.fillStyle = 'rgba(180,220,255,0.8)';
+            recWfCtx.textAlign = 'right';
+            recWfCtx.fillText('0̄', LBL_W - 3, cx + 3);
+            recWfCtx.restore();
+
+            // ── WAVEFORM: Real mic data OR simulation/flat ──────────────────
+            const gainLevel = (typeof ikGainValue !== 'undefined') ? ikGainValue : 0.5;
+            const waveColor = isRec ? 'rgba(255,70,70,0.9)' : 'rgba(0,229,255,0.8)';
+            const fillColor = isRec ? 'rgba(255,50,50,0.18)' : 'rgba(0,180,255,0.12)';
+
+            if (gainLevel >= 0.01) {
+                let samples = null;
+
+                if (micConnected && analyser && wfDataArray) {
+                    // ── REAL microphone data ──────────────────────────────────
+                    analyser.getByteTimeDomainData(wfDataArray);
+                    samples = wfDataArray;
+                }
+
+                recWfCtx.save();
+                recWfCtx.shadowColor = waveColor;
+                recWfCtx.shadowBlur = 6;
+                recWfCtx.strokeStyle = waveColor;
+                recWfCtx.lineWidth = 1.5;
+                recWfCtx.beginPath();
+
+                const drawW = W - LBL_W;
+                for (let xi = 0; xi <= drawW; xi++) {
+                    let amplitude;
+                    if (samples) {
+                        // Real data: map Uint8 0-255 → −1.0 to +1.0, scale by gain
+                        const idx = Math.floor(xi / drawW * samples.length);
+                        amplitude = ((samples[idx] / 128.0) - 1.0) * gainLevel;
+                    } else {
+                        // Simulation (no mic) — only show when PLAY mode,
+                        // or as a gentle "demo" waveform during REC if no mic found
+                        // Signal is deliberately small to show "not real"
+                        const demoGain = isRec ? 0.0 : 0.3;  // REC without mic = flat
+                        const noise = (Math.random() - 0.5) * 0.04;
+                        amplitude = (
+                            Math.sin((xi + recWfOffset) * 0.020) * 0.25 +
+                            Math.sin((xi + recWfOffset) * 0.054 + 0.8) * 0.10
+                        ) * gainLevel * demoGain + noise * demoGain;
+                    }
+                    // dBFS-aware clamp: max at −6 dBFS boundary
+                    const maxPx = halfH * Math.pow(10, -6 / 20) * gainLevel;
+                    const y = cx - Math.max(-maxPx, Math.min(maxPx, amplitude * halfH));
+                    xi === 0 ? recWfCtx.moveTo(LBL_W, y) : recWfCtx.lineTo(LBL_W + xi, y);
+                }
+                recWfCtx.stroke();
+
+                // Fill gradient
+                const maxAmp = halfH * Math.pow(10, -12 / 20) * gainLevel;
+                const grad = recWfCtx.createLinearGradient(0, cx - maxAmp, 0, cx + maxAmp);
+                grad.addColorStop(0, fillColor);
+                grad.addColorStop(1, 'rgba(0,0,0,0)');
+                recWfCtx.fillStyle = grad;
+                recWfCtx.lineTo(W, cx); recWfCtx.lineTo(LBL_W, cx); recWfCtx.closePath();
+                recWfCtx.fill();
+                recWfCtx.restore();
+            }
+
+            // ── Status / warning overlay ───────────────────────────────────
+            if (isRec && wfStatusMsg) {
+                // No mic connected — show clear warning instead of fake signal
+                recWfCtx.save();
+                recWfCtx.font = 'bold 10px "Orbitron", sans-serif';
+                recWfCtx.fillStyle = 'rgba(255,200,0,0.9)';
+                recWfCtx.shadowColor = 'rgba(255,200,0,0.7)';
+                recWfCtx.shadowBlur = 8;
+                recWfCtx.textAlign = 'left';
+                recWfCtx.fillText(wfStatusMsg, LBL_W + 6, cx - 10);
+                recWfCtx.fillStyle = 'rgba(180,180,180,0.6)';
+                recWfCtx.font = '8px "Orbitron", sans-serif';
+                recWfCtx.fillText('Connect a microphone to see real audio', LBL_W + 6, cx + 6);
+                recWfCtx.restore();
+            }
+
+            // ── Pulsing REC indicator ──
+            if (isRec) {
+                const pulse = 0.5 + 0.5 * Math.sin(Date.now() / 300);
+                recWfCtx.save();
+                recWfCtx.beginPath();
+                recWfCtx.arc(LBL_W + 14, 14, 5 + pulse * 2, 0, Math.PI * 2);
+                recWfCtx.fillStyle = `rgba(255,50,50,${0.7 + pulse * 0.3})`;
+                recWfCtx.shadowColor = 'red';
+                recWfCtx.shadowBlur = 10;
+                recWfCtx.fill();
+                recWfCtx.restore();
+            }
+
+            // Status label
+            const labelColor = isRec ? 'rgba(255,100,100,0.95)' : 'rgba(0,229,255,0.9)';
+            const labelTxt = isRec
+                ? (micConnected ? '⏺ RECORDING...' : '⏺ RECORDING (no mic)')
+                : '▶ PLAYING...';
+            recWfCtx.save();
+            recWfCtx.font = 'bold 10px "Orbitron", sans-serif';
+            recWfCtx.fillStyle = labelColor;
+            recWfCtx.shadowColor = labelColor;
+            recWfCtx.shadowBlur = 6;
+            recWfCtx.fillText(labelTxt, LBL_W + 28, 16);
+            recWfCtx.restore();
+
+            recWfOffset += isRec ? 3 : 1.5;
+        }
+
+        function clearRecWF() {
+            if (!recWfCtx || !recWfCanvas) return;
+            recWfCtx.clearRect(0, 0, recWfCanvas.width, recWfCanvas.height);
+        }
+
+        function startWF(mode) {
+            resizeRecWF();
+            recWfRunning = true;
+            recWfOffset = 0;
+            function tick() {
+                if (!recWfRunning) return;
+                drawRecWaveform(mode);
+                recWfTimer = setTimeout(tick, 40);
+            }
+            tick();
+        }
+
+        function stopWF() {
+            if (recWfTimer) { clearTimeout(recWfTimer); recWfTimer = null; }
+            setTimeout(clearRecWF, 150);
+        }
+        // ── Button Handlers ───────────────────────────────────────
+        btnRec.addEventListener('click', async () => {
+            if (!isRecording) {
+                // ── Start recording: request real microphone first ──
+                isRecording = true;
+                btnRec.classList.add('active');
+                lblRec.textContent = 'STOP';
+                // Stop playback if running
+                if (isPlaying) {
+                    isPlaying = false;
+                    btnPlay.classList.remove('active');
+                    stopVU(); stopWF();
+                }
+                // Ask browser for microphone access
+                await requestMic();
+                startVU();
+                startWF('rec');
+            } else {
+                // ── Stop recording: release mic ──
+                isRecording = false;
+                btnRec.classList.remove('active');
+                lblRec.textContent = 'REC';
+                stopMic();   // release microphone stream
+                stopVU();
+                stopWF();
+            }
+        });
+
+        btnPlay.addEventListener('click', () => {
+            if (!isPlaying) {
+                // ── Start playback ──
+                isPlaying = true;
+                btnPlay.classList.add('active');
+                // Stop recordi n g if running
+                if (isRecording) {
+                    isRecording = false;
+                    btnRec.classList.remove('active');
+                    lblRec.textContent = 'REC';
+                }
+                startVU();
+                startWF('play');
+            } else {
+                // ── Stop playback ──
+                isPlaying = false;
+                btnPlay.classList.remove('active');
+                stopVU();
+                stopWF();
+            }
+        });
+
+        // Dim all VU segs initially
+        stopVU();
+
+
+        // === Input Gain Knob (Module A) — Volume Knob Style (7→5 o'clock) ===
+        // ─── min = 210° (7 o'clock), max = 510° (5 o'clock), sweep = 300° ──────
+        const inputKnob = document.getElementById('input-knob');
+        const ikBody = inputKnob ? inputKnob.querySelector('.ik-body') : null;
+        const IK_MIN = 210;    // 7 o'clock = pointer bottom-left
+        const IK_MAX = 510;    // 5 o'clock = pointer bottom-right  (210+300)
+        const IK_RANGE = IK_MAX - IK_MIN;  // 300°
+
+        let ikDragging = false;
+        let ikStartY = 0;
+        let ikStartRot = 0;
+        // Default: 50% = -6 dB position → mid of sweep
+        let ikRot = IK_MIN + IK_RANGE * 0.5;  // 360°
+        let ikGainValue = 0.5;
+
+        const ikDbDisplay = document.getElementById('ik-db-display');
+
+        function ikRelativeGain() {
+            return Math.max(0, Math.min(1, (ikRot - IK_MIN) / IK_RANGE));
+        }
+
+        function ikUpdateDisplay() {
+            ikGainValue = ikRelativeGain();
+            if (!ikDbDisplay) return;
+            if (ikGainValue < 0.005) {
+                ikDbDisplay.textContent = '−∞ dB';
+                ikDbDisplay.style.color = 'rgba(255,80,80,0.8)';
+            } else {
+                const db = 20 * Math.log10(ikGainValue);
+                ikDbDisplay.textContent = (db >= 0 ? '+' : '') + db.toFixed(1) + ' dB';
+                // Color: red near 0, orange -6, yellow -12, green -18+
+                if (db >= -6) ikDbDisplay.style.color = 'rgba(255,90,90,0.95)';
+                else if (db >= -12) ikDbDisplay.style.color = 'rgba(255,160,0,0.95)';
+                else if (db >= -18) ikDbDisplay.style.color = 'rgba(0,229,255,0.9)';
+                else ikDbDisplay.style.color = 'rgba(0,229,255,0.55)';
+            }
+        }
+
+        function ikApplyRot(newRot) {
+            ikRot = Math.max(IK_MIN, Math.min(IK_MAX, newRot));  // hard stops ✓
+            if (ikBody) ikBody.style.transform = `rotate(${ikRot}deg)`;
+            ikUpdateDisplay();
+        }
+
+        // ─── Draw SVG tick marks (11 ticks, 30° apart, from 7→5 o'clock) ─────────
+        (function drawIkTicks() {
+            const svg = document.getElementById('ik-tick-svg');
+            if (!svg) return;
+            const cx = 30, cy = 30, r = 28;  // centre, tick-mark radius
+            const tickAngles = [];
+            for (let i = 0; i <= 10; i++) tickAngles.push(210 + i * 30);  // 210°..510°
+
+            // dB labels at key ticks (0=min 210°, 5=mid 360°, 10=max 510°)
+            const labels = { 0: '0\u00b9', 5: '', 10: '+' };  // omit, just use colors
+
+            let svgHTML = '';
+            tickAngles.forEach((angDeg, idx) => {
+                const angRad = (angDeg - 90) * Math.PI / 180;  // SVG: 0° = right, -90° correction
+                const isMain = (idx === 0 || idx === 5 || idx === 10);
+                const isMid = (idx % 2 === 0);
+                const tickLen = isMain ? 6 : (isMid ? 4 : 3);
+                const innerR = r - tickLen;
+                const x1 = cx + r * Math.cos(angRad);
+                const y1 = cy + r * Math.sin(angRad);
+                const x2 = cx + innerR * Math.cos(angRad);
+                const y2 = cy + innerR * Math.sin(angRad);
+
+                // Color by position: 0–4 = safe/green, 5–7 = yellow, 8–10 = red
+                let color;
+                if (idx <= 4) color = 'rgba(0,220,100,0.7)';
+                else if (idx <= 6) color = 'rgba(255,200,0,0.75)';
+                else if (idx <= 7) color = 'rgba(255,130,0,0.8)';
+                else color = 'rgba(255,60,60,0.85)';
+
+                const strokeW = isMain ? 2 : 1.2;
+                svgHTML += `<line x1="${x1.toFixed(2)}" y1="${y1.toFixed(2)}" x2="${x2.toFixed(2)}" y2="${y2.toFixed(2)}" stroke="${color}" stroke-width="${strokeW}" stroke-linecap="round"/>`;
+            });
+
+            // Arc line from min to max (thin background arc)
+            const minRad = (210 - 90) * Math.PI / 180;
+            const maxRad = (510 - 90) * Math.PI / 180;
+            // SVG arc: large-arc = 1 because sweep > 180
+            const aR = r - 1;
+            const sx = (cx + aR * Math.cos(minRad)).toFixed(2);
+            const sy = (cy + aR * Math.sin(minRad)).toFixed(2);
+            const ex = (cx + aR * Math.cos(maxRad)).toFixed(2);
+            const ey = (cy + aR * Math.sin(maxRad)).toFixed(2);
+            svgHTML += `<path d="M ${sx} ${sy} A ${aR} ${aR} 0 1 1 ${ex} ${ey}" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="1.5"/>`;
+
+            svg.innerHTML = svgHTML;
+        })();
+
+        // ─── dB Tooltip ────────────────────────────────────────────────────────────
+        let ikTooltip = document.getElementById('ik-tooltip');
+        if (!ikTooltip) {
+            ikTooltip = document.createElement('div');
+            ikTooltip.id = 'ik-tooltip';
+            ikTooltip.style.cssText = 'position:fixed;background:rgba(0,0,0,0.88);color:#00e5ff;font:bold 10px "Orbitron",sans-serif;padding:3px 9px;border-radius:4px;pointer-events:none;white-space:nowrap;z-index:9999;display:none;border:1px solid rgba(0,229,255,0.4)';
+            document.body.appendChild(ikTooltip);
+        }
+
+        function ikShowTooltip() {
+            let lbl;
+            if (ikGainValue < 0.005) { lbl = '−∞ dB (MUTE)'; }
+            else {
+                const db = 20 * Math.log10(ikGainValue);
+                lbl = `${db >= 0 ? '+' : ''}${db.toFixed(1)} dB  (${Math.round(ikGainValue * 100)}%)`;
+            }
+            ikTooltip.textContent = 'GAIN  ' + lbl;
+            ikTooltip.style.display = 'block';
+            const r = inputKnob.getBoundingClientRect();
+            ikTooltip.style.left = (r.right + 8) + 'px';
+            ikTooltip.style.top = (r.top + r.height / 2 - 12) + 'px';
+        }
+
+        if (inputKnob && ikBody) {
+            // Mouse drag
+            inputKnob.addEventListener('mousedown', (e) => {
+                ikDragging = true; ikStartY = e.clientY; ikStartRot = ikRot;
+                e.preventDefault(); inputKnob.style.cursor = 'ns-resize';
+            });
+            window.addEventListener('mousemove', (e) => {
+                if (!ikDragging) return;
+                const sens = e.shiftKey ? 0.3 : 1.5;
+                ikApplyRot(ikStartRot + (ikStartY - e.clientY) * sens);
+                ikShowTooltip();
+            });
+            window.addEventListener('mouseup', () => {
+                if (!ikDragging) return;
+                ikDragging = false; inputKnob.style.cursor = '';
+                setTimeout(() => { ikTooltip.style.display = 'none'; }, 900);
+            });
+
+            // Touch drag
+            inputKnob.addEventListener('touchstart', (e) => {
+                ikDragging = true; ikStartY = e.touches[0].clientY; ikStartRot = ikRot;
+            }, { passive: true });
+            window.addEventListener('touchmove', (e) => {
+                if (!ikDragging) return;
+                ikApplyRot(ikStartRot + (ikStartY - e.touches[0].clientY) * 1.5);
+                ikShowTooltip();
+            }, { passive: true });
+            window.addEventListener('touchend', () => {
+                ikDragging = false;
+                setTimeout(() => { ikTooltip.style.display = 'none'; }, 900);
+            });
+
+            // Scroll wheel
+            inputKnob.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                ikApplyRot(ikRot + (e.deltaY < 0 ? 1 : -1) * (e.shiftKey ? 1 : 8));
+                ikShowTooltip();
+                clearTimeout(inputKnob._wt);
+                inputKnob._wt = setTimeout(() => { ikTooltip.style.display = 'none'; }, 900);
+            }, { passive: false });
+
+            // Double-click = reset to 75% (comfortable recording level ≈ −3 dB)
+            inputKnob.addEventListener('dblclick', () => { ikApplyRot(IK_MIN + IK_RANGE * 0.75); });
+
+            // Apply initial 50% rotation
+            ikApplyRot(ikRot);
+        }
+
+
+        // ===============================================
+        // DYNAMIC MOCK ENGINE (REPLACES ALL STATIC MOCKS)
+        // 1. Canvas Waveform
+        const wfCanvas = document.getElementById('main-wf-canvas');
+        const wfCtx = wfCanvas ? wfCanvas.getContext('2d') : null;
+        let wfAnimFrame = null;
+        let engineIsPlaying = false;
+
+        function drawEmptyWaveform() {
+            if (!wfCtx) return;
+            wfCtx.clearRect(0, 0, 400, 100);
+            wfCtx.fillStyle = 'rgba(0, 229, 255, 0.2)';
+            wfCtx.fillRect(10, 49, 380, 2);
+        }
+
+        function animateWaveform() {
+            if (!wfCtx || !engineIsPlaying) return;
+            wfCtx.clearRect(0, 0, 400, 100);
+            const numBars = 40;
+            const barW = 6;
+            const space = 4;
+            let startX = 5;
+            for (let i = 0; i < numBars; i++) {
+                let h = Math.random() * 70 + 5;
+                let y = 50 - (h / 2);
+                wfCtx.fillStyle = (i % 3 === 0) ? '#00ff99' : '#00e5ff';
+                wfCtx.fillRect(startX, y, barW, h);
+                startX += (barW + space);
+            }
+            wfAnimFrame = setTimeout(() => requestAnimationFrame(animateWaveform), 50);
+        }
+
+        if (wfCtx) drawEmptyWaveform();
+
+        // ── 2. Stereo VU Meters Animation ──
+        let headerVUAnimFrame = null;
+
+        function resetVU() {
+            for (let c = 1; c <= 2; c++) {
+                ['n', 'w', 'p', 'o'].forEach(seg => {
+                    let el = document.getElementById('vu' + c + '-' + seg);
+                    if (el) { el.style.width = '0%'; el.style.display = 'block'; }
+                });
+                let ph = document.getElementById('vu' + c + '-ph');
+                if (ph) ph.style.left = '0%';
+            }
+        }
+
+        function updateHeaderVU() {
+            if (!engineIsPlaying) { resetVU(); return; }
+            for (let c = 1; c <= 2; c++) {
+                // Each channel has semi-independent random peaks for stereo feel
+                let val = Math.random() * 95 + 5;
+                // Green section (0-55%)
+                let nW = Math.min(val, 55);
+                // Yellow-green (55-73%)
+                let wStart = 55, wW = Math.max(0, Math.min(val - 55, 18));
+                // Orange (73-78%)
+                let pStart = 73, pW = Math.max(0, Math.min(val - 73, 5));
+                // Red (78-100%)
+                let oStart = 78, oW = Math.max(0, Math.min(val - 78, 22));
+
+                let elN = document.getElementById('vu' + c + '-n');
+                if (elN) elN.style.width = nW + '%';
+
+                let elW = document.getElementById('vu' + c + '-w');
+                if (elW) { elW.style.left = wStart + '%'; elW.style.width = wW + '%'; }
+
+                let elP = document.getElementById('vu' + c + '-p');
+                if (elP) { elP.style.left = pStart + '%'; elP.style.width = pW + '%'; }
+
+                let elO = document.getElementById('vu' + c + '-o');
+                if (elO) { elO.style.left = oStart + '%'; elO.style.width = oW + '%'; }
+
+                // Peak hold dot
+                let ph = document.getElementById('vu' + c + '-ph');
+                if (ph) ph.style.left = Math.min(val, 99) + '%';
+            }
+            headerVUAnimFrame = setTimeout(() => requestAnimationFrame(updateHeaderVU), 80);
+        }
+
+        // ── 3. Expression Sliders ──
+        document.querySelectorAll('.sl-t').forEach(sliderTrack => {
+            // Remove old listeners
+            const fresh = sliderTrack.cloneNode(true);
+            sliderTrack.parentNode.replaceChild(fresh, sliderTrack);
+
+            let dragging = false;
+            const fill = fresh.querySelector('.sl-f');
+            if (!fill) return;
+
+            function doUpdate(e) {
+                e.preventDefault();
+                let rect = fresh.getBoundingClientRect();
+                let clientX = e.clientX ?? e.touches?.[0]?.clientX;
+                let x = clientX - rect.left;
+                let pct = Math.max(0, Math.min(100, (x / rect.width) * 100));
+                fill.style.width = pct + '%';
+
+                // Real-time Audio DSP Connection
+                const fxName = fresh.dataset.fx;
+                if (fxName && typeof SingeriaAudio !== 'undefined') {
+                    SingeriaAudio.updateFX(fxName, pct);
+                }
+
+                // Update label title
+                let label = fresh.closest('.sl-r')?.querySelector('.sl-l');
+                if (label) label.title = Math.round(pct) + '%';
+            }
+
+            fresh.addEventListener('mousedown', (e) => { dragging = true; doUpdate(e); });
+            window.addEventListener('mousemove', (e) => { if (dragging) doUpdate(e); }, { passive: false });
+            window.addEventListener('mouseup', () => { dragging = false; });
+            fresh.addEventListener('touchstart', (e) => { dragging = true; doUpdate(e); }, { passive: false });
+            window.addEventListener('touchmove', (e) => { if (dragging) doUpdate(e); }, { passive: false });
+            window.addEventListener('touchend', () => { dragging = false; });
+        });
+
+        // ── 4. Volume Bar (Header) ──
+        const volBar = document.getElementById('vol-bar');
+        const volFill = document.getElementById('vol-fill');
+        let volDragging = false;
+        let isMuted = false;
+
+        if (volBar && volFill) {
+            function updateVol(e) {
+                let rect = volBar.getBoundingClientRect();
+                let clientX = e.clientX ?? e.touches?.[0]?.clientX;
+                let pct = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
+                volFill.style.width = pct + '%';
+                if (isMuted) { isMuted = false; updateMuteIcon(); }
+            }
+            volBar.addEventListener('mousedown', (e) => { volDragging = true; updateVol(e); });
+            window.addEventListener('mousemove', (e) => { if (volDragging) updateVol(e); });
+            window.addEventListener('mouseup', () => { volDragging = false; });
+            volBar.addEventListener('touchstart', (e) => { volDragging = true; updateVol(e); }, { passive: false });
+            window.addEventListener('touchmove', (e) => { if (volDragging) updateVol(e); }, { passive: false });
+            window.addEventListener('touchend', () => { volDragging = false; });
+        }
+
+        // ── 5. Mute Button ──
+        const muteBtn = document.getElementById('btn-mute');
+        let prevVolWidth = '75%';
+
+        function updateMuteIcon() {
+            if (!muteBtn) return;
+            muteBtn.style.opacity = isMuted ? '1' : '0.5';
+            muteBtn.style.color = isMuted ? '#ff4455' : '';
+            if (volFill) volFill.style.width = isMuted ? '0%' : prevVolWidth;
+        }
+
+        if (muteBtn) {
+            muteBtn.addEventListener('click', () => {
+                if (!isMuted) prevVolWidth = volFill ? volFill.style.width : '75%';
+                isMuted = !isMuted;
+                updateMuteIcon();
+            });
+        }
+
+        // ── 6. Transport Controls ──
+        let timerSecs = 0;
+        let timerInterval = null;
+        let isLooping = false;
+        const timeDisplay = document.querySelector('.tc');
+
+        // Helper: format HH:MM:SS:FF (frames at 25fps)
+        function fmtTime(sec) {
+            let m = Math.floor(sec / 60), s = sec % 60;
+            return `00:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}:00`;
+        }
+
+        function setPlayState(playing) {
+            engineIsPlaying = playing;
+            const playBtn = document.querySelector('.trn .pb');
+            const pauseBtn = document.querySelector('.trn button[aria-label="Pause"]');
+            const stopBtn = document.querySelector('.trn button[aria-label="Stop"]');
+
+            if (playing) {
+                if (playBtn) playBtn.style.color = '#00e5ff';
+                if (pauseBtn) pauseBtn.style.color = '';
+                if (stopBtn) stopBtn.style.color = '';
+                // Start timer
+                if (!timerInterval) timerInterval = setInterval(() => {
+                    timerSecs++;
+                    if (timeDisplay) timeDisplay.textContent = fmtTime(timerSecs);
+                }, 1000);
+                // Start animations
+                animateWaveform();
+                updateHeaderVU();
+            } else {
+                if (playBtn) playBtn.style.color = '';
+                if (pauseBtn) pauseBtn.style.color = '#00e5ff';
+                clearInterval(timerInterval); timerInterval = null;
+                clearTimeout(wfAnimFrame); drawEmptyWaveform();
+                clearTimeout(headerVUAnimFrame); resetVU();
+            }
+        }
+
+        // Wire up transport buttons by cloning to remove stale listeners
+        function wireBtn(selector, handler) {
+            const el = document.querySelector(selector);
+            if (!el) return null;
+            const clone = el.cloneNode(true);
+            el.parentNode.replaceChild(clone, el);
+            clone.addEventListener('click', handler);
+            return clone;
+        }
+
+        // Play
+        wireBtn('.trn .pb', () => setPlayState(true));
+
+        // Pause
+        wireBtn('.trn button[aria-label="Pause"]', () => setPlayState(false));
+
+        // Stop
+        wireBtn('.trn button[aria-label="Stop"]', () => {
+            setPlayState(false);
+            const stopBtn = document.querySelector('.trn button[aria-label="Stop"]');
+            if (stopBtn) { stopBtn.style.color = '#ff3d3d'; setTimeout(() => stopBtn.style.color = '', 300); }
+            timerSecs = 0;
+            if (timeDisplay) timeDisplay.textContent = fmtTime(0);
+        });
+
+        // Rewind
+        wireBtn('.trn button[aria-label="Rewind"]', () => {
+            timerSecs = Math.max(0, timerSecs - 10);
+            if (timeDisplay) timeDisplay.textContent = fmtTime(timerSecs);
+            const rwBtn = document.querySelector('.trn button[aria-label="Rewind"]');
+            if (rwBtn) { rwBtn.style.color = '#ffbb44'; setTimeout(() => rwBtn.style.color = '', 200); }
+        });
+
+        // Loop toggle
+        wireBtn('.trn button[aria-label="Loop"]', () => {
+            isLooping = !isLooping;
+            const loopBtn = document.querySelector('.trn button[aria-label="Loop"]');
+            if (loopBtn) loopBtn.style.color = isLooping ? '#00e5ff' : '';
+        });
+
+        // ── 7. Module A Play/Rec Buttons ──
+        const micPlayEl = document.getElementById('btn-mic-play');
+        if (micPlayEl) {
+            const micPlayClone = micPlayEl.cloneNode(true);
+            micPlayEl.parentNode.replaceChild(micPlayClone, micPlayEl);
+            micPlayClone.addEventListener('click', () => {
+                setPlayState(!engineIsPlaying);
+                micPlayClone.classList.toggle('active', engineIsPlaying);
+            });
+        }
+
+        // ════════════════════════════════════════════════════════════
+        // ══  MODULE B — PRO-EXPRESSION PIANO ROLL ENGINE  ══════════
+        // ════════════════════════════════════════════════════════════
+
+        (function () {
+            'use strict';
+
+            /* ─── CONSTANTS ─────────────────────────────────────────── */
+            const SVG_W = 1260, SVG_H = 1078;
+            const KEY_W = 60;       // Piano key width px
+            const GRID_X = KEY_W;   // Notes start x
+            const GRID_W = SVG_W - GRID_X; // 1200px playable width
+            const BEATS = 8;
+            const BEAT_W = GRID_W / BEATS; // 150px per beat
+
+            // Pitch rows — C6 down to C2  (same as SVG piano key layout)
+            const PITCH_ROWS = [];
+            const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+            // SVG goes top = C6, bottom = C2. Build map pitch→y
+            // Each semitone = 1078/60 ≈ 17.97px (white+black combined row height)
+            const ROW_H = SVG_H / 60; // ≈ 17.97px per semitone
+            function midiToY(midi) { return (107 - midi) * ROW_H; } // C8=108, C2=36
+            function yToMidi(y) { return Math.round(107 - y / ROW_H); }
+            function midiToPitchName(midi) {
+                return NOTE_NAMES[midi % 12] + Math.floor(midi / 12 - 1);
+            }
+
+            const DEFAULT_NOTE_H = ROW_H * 0.85;
+            const NOTE_MIN_W = 20;
+
+            /* ─── STATE ─────────────────────────────────────────────── */
+            let veCurrentTool = 'select';
+            let veSelectedNotes = new Set();  // Set of <g> elements
+            let veUndoStack = [];
+            let veRedoStack = [];
+            let prZoomLevel = 100; // %
+            let snapValue = 1 / 4;   // beats
+            let noteCounter = 9;   // start after demo notes n1-n8
+
+            // Expression overlay state
+            let activeExpr = null; // 'vibrato'|'dynamics'|'breath'|'pitch'|'portamento'
+
+            /* ─── DOM REFS ──────────────────────────────────────────── */
+            const svg = document.getElementById('proll-svg');
+            const prBody = document.getElementById('proll-body-v2');
+            const zoomDisp = document.getElementById('zoom-display');
+            const snapSel = document.getElementById('snap-sel');
+            const toolStEl = document.getElementById('ve-tool-status');
+            const noteInfoEl = document.getElementById('ve-note-info');
+            const lyricStEl = document.getElementById('ve-lyric-status');
+            const snapValEl = document.getElementById('ve-snap-val');
+
+            if (!svg) return; // Safety: Module B not in DOM
+
+            /* ─── HELPER: SVG coordinate from mouse event ────────────── */
+            function svgPt(e) {
+                const pt = svg.createSVGPoint();
+                pt.x = e.clientX; pt.y = e.clientY;
+                return pt.matrixTransform(svg.getScreenCTM().inverse());
+            }
+
+            /* ─── SNAP ───────────────────────────────────────────────── */
+            function snapX(x) {
+                const snapPx = snapValue * BEAT_W;
+                return Math.round((x - GRID_X) / snapPx) * snapPx + GRID_X;
+            }
+            function snapMidi(midi) { return midi; } // pitch snap = chromatic
+
+            /* ─── NOTE FACTORY ───────────────────────────────────────── */
+            function createNoteEl(x, y, w, midi, lyric) {
+                const id = 'n' + (noteCounter++);
+                const pitch = midiToPitchName(midi);
+                const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                g.classList.add('pr-note');
+                g.dataset.id = id; g.dataset.lyric = lyric || ''; g.dataset.pitch = pitch;
+                g.dataset.midi = midi;
+                g.dataset.x = x; g.dataset.y = y; g.dataset.w = w;
+
+                const body = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                body.setAttribute('rx', '3');
+                body.setAttribute('fill', 'url(#note-grad)');
+                body.setAttribute('filter', 'url(#note-glow)');
+                body.setAttribute('opacity', '0.92');
+                body.classList.add('note-body');
+
+                const shine = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                shine.setAttribute('fill', 'rgba(255,255,255,0.6)');
+                shine.setAttribute('rx', '1');
+                shine.classList.add('note-shine');
+
+                const handle = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                handle.setAttribute('fill', 'rgba(255,255,255,0.15)');
+                handle.setAttribute('rx', '2');
+                handle.classList.add('note-resize');
+                handle.style.cursor = 'col-resize';
+
+                const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                txt.setAttribute('font-size', '10');
+                txt.setAttribute('font-family', "'Inter',sans-serif");
+                txt.setAttribute('fill', 'rgba(0,10,20,0.9)');
+                txt.setAttribute('font-weight', '700');
+                txt.classList.add('note-lbl');
+                txt.textContent = lyric || pitch;
+
+                g.appendChild(body); g.appendChild(shine); g.appendChild(handle); g.appendChild(txt);
+                positionNote(g, x, y, w, midi);
+                attachNoteEvents(g);
+                return g;
+            }
+
+            function positionNote(g, x, y, w, midi) {
+                const h = DEFAULT_NOTE_H;
+                y = (midi !== undefined) ? midiToY(midi) : (y || 0);
+                g.dataset.x = x; g.dataset.y = y; g.dataset.w = w;
+                if (midi !== undefined) g.dataset.midi = midi;
+
+                const body = g.querySelector('.note-body');
+                body.setAttribute('x', x); body.setAttribute('y', y);
+                body.setAttribute('width', w); body.setAttribute('height', h);
+
+                const shine = g.querySelector('.note-shine');
+                shine.setAttribute('x', x); shine.setAttribute('y', y);
+                shine.setAttribute('width', 3); shine.setAttribute('height', h);
+
+                const handle = g.querySelector('.note-resize');
+                const hw = 6;
+                handle.setAttribute('x', x + w - hw); handle.setAttribute('y', y);
+                handle.setAttribute('width', hw); handle.setAttribute('height', h);
+
+                const txt = g.querySelector('.note-lbl');
+                txt.setAttribute('x', x + 6); txt.setAttribute('y', y + h * 0.72);
+            }
+
+            /* ─── SELECTION STYLING ──────────────────────────────────── */
+            function setSelected(g, yes) {
+                if (yes) {
+                    veSelectedNotes.add(g); g.classList.add('pr-note-sel');
+                    const body = g.querySelector('.note-body');
+                    body.setAttribute('fill', 'url(#note-sel-grad)');
+                } else {
+                    veSelectedNotes.delete(g); g.classList.remove('pr-note-sel');
+                    const body = g.querySelector('.note-body');
+                    body.setAttribute('fill', 'url(#note-grad)');
+                }
+            }
+
+            function clearSelection() {
+                [...veSelectedNotes].forEach(g => setSelected(g, false));
+            }
+
+            function updateStatusBar() {
+                const note = [...veSelectedNotes][0] || null;
+                if (note) {
+                    if (noteInfoEl) noteInfoEl.innerHTML = `Note <b>${note.dataset.id}</b> · <b>${note.dataset.pitch}</b>`;
+                    if (lyricStEl) lyricStEl.innerHTML = `Lyric: <b>${note.dataset.lyric || '—'}</b>`;
+                } else {
+                    if (noteInfoEl) noteInfoEl.textContent = 'No note selected';
+                    if (lyricStEl) lyricStEl.textContent = 'Lyric: —';
+                }
+            }
+
+            /* ─── UNDO / REDO ─────────────────────────────────────────── */
+            function captureState() {
+                const notes = [];
+                svg.querySelectorAll('.pr-note').forEach(g => {
+                    notes.push({
+                        id: g.dataset.id, pitch: g.dataset.pitch, midi: g.dataset.midi,
+                        lyric: g.dataset.lyric,
+                        x: parseFloat(g.dataset.x), y: parseFloat(g.dataset.y), w: parseFloat(g.dataset.w)
+                    });
+                });
+                return JSON.stringify(notes);
+            }
+
+            function restoreState(stateJSON) {
+                // Remove all current notes
+                svg.querySelectorAll('.pr-note').forEach(g => g.remove());
+                veSelectedNotes.clear();
+                const notes = JSON.parse(stateJSON);
+                notes.forEach(n => {
+                    const g = createNoteEl(n.x, parseFloat(n.y), n.w, parseInt(n.midi), n.lyric);
+                    g.dataset.id = n.id; g.dataset.pitch = n.pitch;
+                    // reposition by y directly (already stored)
+                    positionNote(g, n.x, n.y, n.w);
+                    svg.appendChild(g);
+                });
+                updateStatusBar();
+            }
+
+            function vePushUndo() {
+                veUndoStack.push(captureState());
+                if (veUndoStack.length > 50) veUndoStack.shift();
+                veRedoStack = [];
+                updateHistoryBtns();
+            }
+
+            function updateHistoryBtns() {
+                const ub = document.getElementById('btn-undo');
+                const rb = document.getElementById('btn-redo');
+                if (ub) ub.style.opacity = veUndoStack.length ? '1' : '0.35';
+                if (rb) rb.style.opacity = veRedoStack.length ? '1' : '0.35';
+            }
+
+            function veUndo() {
+                if (!veUndoStack.length) return;
+                veRedoStack.push(captureState());
+                restoreState(veUndoStack.pop());
+                updateHistoryBtns();
+                showVeToast('↩ Undo');
+            }
+
+            function veRedo() {
+                if (!veRedoStack.length) return;
+                veUndoStack.push(captureState());
+                restoreState(veRedoStack.pop());
+                updateHistoryBtns();
+                showVeToast('↪ Redo');
+            }
+
+            window.veUndo = veUndo;
+            window.veRedo = veRedo;
+            updateHistoryBtns();
+
+            /* ─── TOOL STATUS BAR ────────────────────────────────────── */
+            const TOOL_NAMES = { select: 'Select', draw: 'Draw Note', erase: 'Erase', slice: 'Slice', glue: 'Glue' };
+            const CURSOR_MAP = { select: 'default', draw: 'crosshair', erase: 'cell', slice: 'col-resize', glue: 'copy' };
+
+            function setTool(name) {
+                veCurrentTool = name;
+                document.querySelectorAll('.ve-tool').forEach(b => b.classList.remove('on'));
+                const btn = document.querySelector(`.ve-tool[data-tool="${name}"]`);
+                if (btn) btn.classList.add('on');
+                if (toolStEl) toolStEl.innerHTML = `✏ Tool: <b>${TOOL_NAMES[name] || name}</b>`;
+                if (prBody) prBody.style.cursor = CURSOR_MAP[name] || 'default';
+            }
+
+            document.querySelectorAll('.ve-tool').forEach(btn => {
+                btn.addEventListener('click', () => setTool(btn.dataset.tool));
+            });
+            setTool('select'); // default
+
+            /* ─── NOTE INTERACTION EVENTS ────────────────────────────── */
+            let dragging = null; // { type:'move'|'resize', g, startPt, origX, origY, origW }
+            let drawDragNote = null; // note being drawn
+            let drawStartX = 0, drawStartPt = null;
+
+            function attachNoteEvents(g) {
+                g.addEventListener('mousedown', onNoteMouseDown, { capture: false });
+            }
+
+            function onNoteMouseDown(e) {
+                e.stopPropagation();
+                const g = e.currentTarget;
+                const pt = svgPt(e);
+
+                if (veCurrentTool === 'erase') {
+                    vePushUndo();
+                    setSelected(g, false);
+                    if (veSelectedNotes.has(g)) veSelectedNotes.delete(g);
+                    g.remove();
+                    updateStatusBar();
+                    showVeToast('🗑 Note erased');
+                    return;
+                }
+
+                if (veCurrentTool === 'slice') {
+                    vePushUndo();
+                    sliceNote(g, pt.x);
+                    return;
+                }
+
+                if (veCurrentTool === 'glue') {
+                    vePushUndo();
+                    glueSelectedNotes();
+                    return;
+                }
+
+                if (veCurrentTool === 'select') {
+                    if (!e.shiftKey) clearSelection();
+                    setSelected(g, true);
+                    updateStatusBar();
+                    // Begin drag-move
+                    const handle = g.querySelector('.note-resize');
+                    const hr = handle ? handle.getBoundingClientRect() : null;
+                    const isResize = hr && e.clientX >= hr.left;
+                    dragging = {
+                        type: isResize ? 'resize' : 'move',
+                        g, startPt: pt,
+                        origX: parseFloat(g.dataset.x),
+                        origY: parseFloat(g.dataset.y),
+                        origW: parseFloat(g.dataset.w),
+                        statePushed: false
+                    };
+                    e.preventDefault();
+                }
+            }
+
+            /* ─── SVG CANVAS MOUSEDOWN (draw / select-box) ───────────── */
+            let selectBox = null, selectBoxStart = null;
+
+            svg.addEventListener('mousedown', e => {
+                if (e.target !== svg && !e.target.closest('rect[fill="url(#white-key)"]') &&
+                    !e.target.closest('rect[fill="url(#black-key)"]') &&
+                    e.target !== svg.querySelector('rect[fill="#10121a"]') &&
+                    !e.target.matches('rect') &&
+                    e.target.tagName !== 'svg') {
+                    // Clicked on a note or UI element, let note handler deal with it
+                    return;
+                }
+
+                const pt = svgPt(e);
+                if (pt.x < GRID_X) return; // clicked in piano key area
+
+                if (veCurrentTool === 'draw') {
+                    vePushUndo();
+                    const sx = snapX(pt.x);
+                    const midi = Math.max(36, Math.min(107, yToMidi(pt.y)));
+                    const minW = snapValue * BEAT_W;
+                    drawStartX = sx;
+                    drawStartPt = pt;
+                    drawDragNote = createNoteEl(sx, 0, Math.max(NOTE_MIN_W, minW), midi, '');
+                    svg.appendChild(drawDragNote);
+                    e.preventDefault();
+                    return;
+                }
+
+                if (veCurrentTool === 'select') {
+                    clearSelection();
+                    updateStatusBar();
+                    // Start selection box
+                    selectBoxStart = pt;
+                    selectBox = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                    selectBox.setAttribute('fill', 'rgba(0,229,255,0.08)');
+                    selectBox.setAttribute('stroke', 'rgba(0,229,255,0.6)');
+                    selectBox.setAttribute('stroke-width', '1');
+                    selectBox.setAttribute('stroke-dasharray', '4,3');
+                    selectBox.style.pointerEvents = 'none';
+                    svg.appendChild(selectBox);
+                    e.preventDefault();
+                }
+            });
+
+            /* ─── GLOBAL MOUSEMOVE ───────────────────────────────────── */
+            document.addEventListener('mousemove', e => {
+                const pt = svgPt(e);
+
+                // ── Draw drag: resize note width ──
+                if (drawDragNote && drawStartPt) {
+                    const curX = Math.max(drawStartX + NOTE_MIN_W, snapX(pt.x));
+                    const newW = Math.max(NOTE_MIN_W, curX - drawStartX);
+                    positionNote(drawDragNote, drawStartX, 0, newW, parseInt(drawDragNote.dataset.midi));
+                    return;
+                }
+
+                // ── Move / Resize drag ──
+                if (dragging) {
+                    const g = dragging.g;
+                    const dx = pt.x - dragging.startPt.x;
+                    const dy = pt.y - dragging.startPt.y;
+                    if (!dragging.statePushed && (Math.abs(dx) > 3 || Math.abs(dy) > 3)) {
+                        vePushUndo();
+                        dragging.statePushed = true;
+                    }
+                    if (dragging.type === 'move') {
+                        const newX = Math.max(GRID_X, snapX(dragging.origX + dx));
+                        const newMidi = Math.max(36, Math.min(107, yToMidi(dragging.origY + dy)));
+                        positionNote(g, newX, 0, dragging.origW, newMidi);
+                        g.dataset.pitch = midiToPitchName(newMidi);
+                        updateStatusBar();
+                    } else { // resize
+                        const newW = Math.max(NOTE_MIN_W, snapX(dragging.origW + dx + GRID_X) - GRID_X);
+                        positionNote(g, dragging.origX, 0, newW, parseInt(g.dataset.midi));
+                    }
+                    return;
+                }
+
+                // ── Selection box ──
+                if (selectBox && selectBoxStart) {
+                    const x1 = Math.min(selectBoxStart.x, pt.x);
+                    const y1 = Math.min(selectBoxStart.y, pt.y);
+                    const x2 = Math.max(selectBoxStart.x, pt.x);
+                    const y2 = Math.max(selectBoxStart.y, pt.y);
+                    selectBox.setAttribute('x', x1); selectBox.setAttribute('y', y1);
+                    selectBox.setAttribute('width', x2 - x1); selectBox.setAttribute('height', y2 - y1);
+                    // Live-select notes within box
+                    svg.querySelectorAll('.pr-note').forEach(g => {
+                        const nx = parseFloat(g.dataset.x);
+                        const ny = parseFloat(g.dataset.y);
+                        const nw = parseFloat(g.dataset.w);
+                        const inside = nx < x2 && nx + nw > x1 && ny < y2 && ny + DEFAULT_NOTE_H > y1;
+                        setSelected(g, inside);
+                    });
+                    updateStatusBar();
+                }
+            });
+
+            /* ─── GLOBAL MOUSEUP ─────────────────────────────────────── */
+            document.addEventListener('mouseup', e => {
+                if (drawDragNote) {
+                    const w = parseFloat(drawDragNote.dataset.w);
+                    if (w < NOTE_MIN_W) { drawDragNote.remove(); }
+                    else {
+                        setSelected(drawDragNote, true);
+                        updateStatusBar();
+                        showVeToast(`✚ Note added (${drawDragNote.dataset.pitch})`);
+                    }
+                    drawDragNote = null; drawStartPt = null;
+                }
+                if (dragging) { dragging = null; }
+                if (selectBox) { selectBox.remove(); selectBox = null; selectBoxStart = null; }
+            });
+
+            /* ─── SLICE ──────────────────────────────────────────────── */
+            function sliceNote(g, sliceX) {
+                const nx = parseFloat(g.dataset.x);
+                const nw = parseFloat(g.dataset.w);
+                const snap = snapX(sliceX);
+                if (snap <= nx + 4 || snap >= nx + nw - 4) {
+                    showVeToast('⚠ Slice point too close to edge'); return;
+                }
+                const midi = parseInt(g.dataset.midi);
+                const leftW = snap - nx;
+                const rightW = nw - leftW;
+                const lyric1 = g.dataset.lyric;
+                const lyric2 = '';
+
+                g.remove();
+                const g1 = createNoteEl(nx, 0, leftW, midi, lyric1);
+                const g2 = createNoteEl(snap, 0, rightW, midi, lyric2);
+                svg.appendChild(g1); svg.appendChild(g2);
+                showVeToast(`✂ Sliced at beat ${((snap - GRID_X) / BEAT_W + 1).toFixed(2)}`);
+            }
+
+            /* ─── GLUE ───────────────────────────────────────────────── */
+            function glueSelectedNotes() {
+                const notes = [...veSelectedNotes].sort((a, b) => parseFloat(a.dataset.x) - parseFloat(b.dataset.x));
+                if (notes.length < 2) { showVeToast('⚠ Select 2+ notes to glue'); return; }
+                const first = notes[0], last = notes[notes.length - 1];
+                const newX = parseFloat(first.dataset.x);
+                const newW = (parseFloat(last.dataset.x) + parseFloat(last.dataset.w)) - newX;
+                const midi = parseInt(first.dataset.midi);
+                const lyric = notes.map(n => n.dataset.lyric).join('');
+                notes.forEach(n => { setSelected(n, false); n.remove(); });
+                const g = createNoteEl(newX, 0, newW, midi, lyric);
+                svg.appendChild(g);
+                setSelected(g, true);
+                updateStatusBar();
+                showVeToast(`🔗 Glued ${notes.length} notes`);
+            }
+
+            /* ─── ZOOM ───────────────────────────────────────────────── */
+            function prZoom(dir) {
+                const steps = [50, 75, 100, 125, 150, 175, 200, 250, 300, 400];
+                if (dir === 0) {
+                    prZoomLevel = 100;
+                } else {
+                    let idx = steps.findIndex(s => s >= prZoomLevel);
+                    if (idx < 0) idx = steps.length - 1;
+                    if (dir > 0) idx = Math.min(idx + 1, steps.length - 1);
+                    else idx = Math.max(idx - 1, 0);
+                    prZoomLevel = steps[idx];
+                }
+                const scale = prZoomLevel / 100;
+                if (svg) {
+                    svg.style.transform = `scaleX(${scale})`;
+                    svg.style.transformOrigin = 'left top';
+                    svg.style.width = (SVG_W * scale) + 'px';
+                }
+                if (zoomDisp) zoomDisp.textContent = prZoomLevel + '%';
+                showVeToast(`🔍 ${prZoomLevel}%`);
+            }
+            window.prZoom = prZoom;
+
+            /* ─── QUANTIZE ───────────────────────────────────────────── */
+            function veQuantize() {
+                vePushUndo();
+                svg.querySelectorAll('.pr-note').forEach(g => {
+                    const x = parseFloat(g.dataset.x);
+                    const w = parseFloat(g.dataset.w);
+                    const midi = parseInt(g.dataset.midi);
+                    positionNote(g, snapX(x), 0, w, midi);
+                });
+                showVeToast(`⊞ Quantized to ${snapSel ? snapSel.value : '1/4'}`);
+            }
+            window.veQuantize = veQuantize;
+
+            /* ─── SNAP SELECTOR ──────────────────────────────────────── */
+            const SNAP_MAP = { '1/1': 1, '1/2': 0.5, '1/4': 0.25, '1/8': 0.125, '1/16': 0.0625, '1/32': 0.03125, 'free': 0 };
+            if (snapSel) {
+                snapSel.addEventListener('change', () => {
+                    snapValue = SNAP_MAP[snapSel.value] ?? 0.25;
+                    if (snapValEl) snapValEl.textContent = snapSel.value;
+                });
+            }
+
+            /* ─── EXPRESSION OVERLAYS ─────────────────────────────────── */
+            let exprOverlay = null;
+
+            function toggleExpr(type) {
+                // Remove old overlay
+                if (exprOverlay) { exprOverlay.remove(); exprOverlay = null; }
+                document.querySelectorAll('.ve-expr-btn').forEach(b => b.classList.remove('on'));
+
+                if (activeExpr === type) { activeExpr = null; return; }
+                activeExpr = type;
+                const btn = document.querySelector(`.ve-expr-btn[data-expr="${type}"]`);
+                if (btn) btn.classList.add('on');
+
+                // Draw parametric curve overlay
+                exprOverlay = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                exprOverlay.id = 'expr-overlay';
+                exprOverlay.style.pointerEvents = 'none';
+
+                const notes = svg.querySelectorAll('.pr-note');
+                if (!notes.length) { svg.appendChild(exprOverlay); return; }
+
+                notes.forEach(n => {
+                    const nx = parseFloat(n.dataset.x);
+                    const ny = parseFloat(n.dataset.y);
+                    const nw = parseFloat(n.dataset.w);
+                    const cy = ny + DEFAULT_NOTE_H / 2;
+                    const ex = nx + nw;
+
+                    if (type === 'vibrato') {
+                        // Sine wave above note
+                        let d = `M ${nx} ${cy}`;
+                        for (let i = 0; i <= nw; i += 3) {
+                            d += ` L ${nx + i} ${cy - 8 * Math.sin(i / 8)}`;
+                        }
+                        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                        path.setAttribute('d', d);
+                        path.setAttribute('stroke', 'rgba(192,132,252,0.7)');
+                        path.setAttribute('stroke-width', '1.5'); path.setAttribute('fill', 'none');
+                        exprOverlay.appendChild(path);
+                    } else if (type === 'dynamics') {
+                        // Crescendo wedge
+                        const poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+                        poly.setAttribute('points', `${nx},${cy - 2} ${nx},${cy + 2} ${ex},${cy + 9} ${ex},${cy - 9}`);
+                        poly.setAttribute('fill', 'rgba(0,229,255,0.12)');
+                        poly.setAttribute('stroke', 'rgba(0,229,255,0.5)'); poly.setAttribute('stroke-width', '1');
+                        exprOverlay.appendChild(poly);
+                    } else if (type === 'breath') {
+                        // Breath mark at end of note
+                        const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                        txt.setAttribute('x', ex + 2); txt.setAttribute('y', ny + 8);
+                        txt.setAttribute('font-size', '11'); txt.setAttribute('fill', 'rgba(100,220,180,0.85)');
+                        txt.setAttribute('font-family', 'serif'); txt.textContent = ',';
+                        exprOverlay.appendChild(txt);
+                        // Breath line
+                        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                        line.setAttribute('x1', ex); line.setAttribute('y1', cy);
+                        line.setAttribute('x2', ex + 14); line.setAttribute('y2', ny - 4);
+                        line.setAttribute('stroke', 'rgba(100,220,180,0.5)'); line.setAttribute('stroke-width', '1.5');
+                        exprOverlay.appendChild(line);
+                    } else if (type === 'pitch') {
+                        // Pitch bend S-curve at start
+                        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                        path.setAttribute('d', `M ${nx} ${cy + 10} C ${nx + 10} ${cy + 10} ${nx + 20} ${cy - 10} ${nx + 30} ${cy - 10}`);
+                        path.setAttribute('stroke', 'rgba(255,171,0,0.75)'); path.setAttribute('stroke-width', '2');
+                        path.setAttribute('fill', 'none');
+                        exprOverlay.appendChild(path);
+                    } else if (type === 'portamento') {
+                        // Glide line to next note
+                        const allNotes = [...svg.querySelectorAll('.pr-note')].sort((a, b) => parseFloat(a.dataset.x) - parseFloat(b.dataset.x));
+                        const idx = allNotes.indexOf(n);
+                        if (idx < allNotes.length - 1) {
+                            const next = allNotes[idx + 1];
+                            const ncx = parseFloat(next.dataset.x);
+                            const ncy = parseFloat(next.dataset.y) + DEFAULT_NOTE_H / 2;
+                            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                            path.setAttribute('d', `M ${ex} ${cy} Q ${(ex + ncx) / 2} ${(cy + ncy) / 2} ${ncx} ${ncy}`);
+                            path.setAttribute('stroke', 'rgba(255,200,0,0.5)'); path.setAttribute('stroke-width', '2');
+                            path.setAttribute('fill', 'none'); path.setAttribute('stroke-dasharray', '4,3');
+                            exprOverlay.appendChild(path);
+                        }
+                    }
+                });
+
+                svg.appendChild(exprOverlay);
+                showVeToast(`${type.charAt(0).toUpperCase() + type.slice(1)} overlay ON`);
+            }
+
+            document.querySelectorAll('.ve-expr-btn').forEach(btn => {
+                btn.addEventListener('click', () => toggleExpr(btn.dataset.expr));
+            });
+
+            // Refresh expression overlay after note changes
+            function refreshExpr() {
+                if (activeExpr) { const t = activeExpr; activeExpr = null; toggleExpr(t); }
+            }
+
+            /* ─── LYRIC INSERT MODAL ─────────────────────────────────── */
+            function openLyricModal() {
+                const modal = document.getElementById('lyric-modal');
+                if (!modal) return;
+                const sel = [...veSelectedNotes][0] || null;
+                const pitchEl = document.getElementById('lm-pitch');
+                const beatEl = document.getElementById('lm-beat');
+                if (sel) {
+                    if (pitchEl) pitchEl.textContent = sel.dataset.pitch || '—';
+                    const beatNum = (parseFloat(sel.dataset.x) - GRID_X) / BEAT_W + 1;
+                    if (beatEl) beatEl.textContent = `Beat ${beatNum.toFixed(2)}`;
+                    const inp = document.getElementById('lyric-input');
+                    if (inp) { inp.value = sel.dataset.lyric || ''; setTimeout(() => { inp.focus(); inp.select(); }, 60); }
+                } else {
+                    if (pitchEl) pitchEl.textContent = '(no note selected)';
+                    if (beatEl) beatEl.textContent = '—';
+                }
+                modal.style.display = 'flex';
+                const inp = document.getElementById('lyric-input');
+                if (inp) { inp.onkeydown = e => { if (e.key === 'Enter') confirmLyric(); if (e.key === 'Escape') closeLyricModal(); }; }
+            }
+            window.openLyricModal = openLyricModal;
+            window.closeLyricModal = () => { const m = document.getElementById('lyric-modal'); if (m) m.style.display = 'none'; };
+
+            function confirmLyric() {
+                const inp = document.getElementById('lyric-input');
+                const lyric = inp ? inp.value.trim() : '';
+                const sel = [...veSelectedNotes][0] || null;
+                if (!sel) { showVeToast('⚠ Select a note first'); window.closeLyricModal(); return; }
+                vePushUndo();
+                sel.dataset.lyric = lyric;
+                const txt = sel.querySelector('.note-lbl');
+                if (txt) txt.textContent = lyric || sel.dataset.pitch;
+                showVeToast(`✔ Lyric "${lyric}" set`);
+                window.closeLyricModal();
+                refreshExpr();
+            }
+            window.confirmLyric = confirmLyric;
+
+            /* ─── LYRIC ALL MODAL ────────────────────────────────────── */
+            function openLyricAllModal() {
+                const modal = document.getElementById('lyric-all-modal');
+                if (!modal) return;
+                const notes = [...svg.querySelectorAll('.pr-note')].sort((a, b) => parseFloat(a.dataset.x) - parseFloat(b.dataset.x));
+                const ta = document.getElementById('lyric-all-input');
+                if (ta) { ta.value = notes.map(n => n.dataset.lyric || '').join(' '); setTimeout(() => { ta.focus(); ta.select(); }, 60); }
+                modal.style.display = 'flex';
+            }
+            window.openLyricAllModal = openLyricAllModal;
+            window.closeLyricAllModal = (e) => {
+                if (e && e.target !== document.getElementById('lyric-all-modal')) return;
+                const m = document.getElementById('lyric-all-modal'); if (m) m.style.display = 'none';
+            };
+
+            function applyLyricAll() {
+                const ta = document.getElementById('lyric-all-input');
+                if (!ta) return;
+                const syllables = ta.value.split(/\s+/).filter(s => s.length);
+                const notes = [...svg.querySelectorAll('.pr-note')].sort((a, b) => parseFloat(a.dataset.x) - parseFloat(b.dataset.x));
+                vePushUndo();
+                notes.forEach((n, i) => {
+                    const s = syllables[i] ?? '';
+                    n.dataset.lyric = s;
+                    const txt = n.querySelector('.note-lbl');
+                    if (txt) txt.textContent = s || n.dataset.pitch;
+                });
+                showVeToast(`✔ Applied ${Math.min(syllables.length, notes.length)} lyrics`);
+                const m = document.getElementById('lyric-all-modal'); if (m) m.style.display = 'none';
+                refreshExpr();
+            }
+            window.applyLyricAll = applyLyricAll;
+
+            /* ─── TOAST ──────────────────────────────────────────────── */
+            function showVeToast(msg) {
+                let t = document.getElementById('ve-toast');
+                if (!t) {
+                    t = document.createElement('div'); t.id = 've-toast';
+                    t.style.cssText = 'position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:rgba(8,11,22,.94);border:1px solid rgba(0,229,255,.4);color:rgba(0,229,255,.95);font-size:10px;font-weight:700;letter-spacing:.08em;padding:7px 20px;border-radius:20px;z-index:9999;pointer-events:none;font-family:Orbitron,sans-serif;box-shadow:0 4px 20px rgba(0,0,0,.5);transition:opacity .3s';
+                    document.body.appendChild(t);
+                }
+                clearTimeout(t._tmr);
+                t.textContent = msg; t.style.opacity = '1';
+                t._tmr = setTimeout(() => t.style.opacity = '0', 1400);
+            }
+
+            /* ─── KEYBOARD SHORTCUTS ─────────────────────────────────── */
+            document.addEventListener('keydown', e => {
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+                if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) { e.preventDefault(); veUndo(); }
+                if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) { e.preventDefault(); veRedo(); }
+                if (!e.ctrlKey && !e.metaKey) {
+                    const keyMap = { s: 'select', d: 'draw', e: 'erase', c: 'slice', g: 'glue' };
+                    if (keyMap[e.key]) setTool(keyMap[e.key]);
+                    if (e.key === '+' || e.key === '=') prZoom(1);
+                    if (e.key === '-') prZoom(-1);
+                    if (e.key === 'Delete' || e.key === 'Backspace') {
+                        if ([...veSelectedNotes].length) {
+                            vePushUndo();
+                            [...veSelectedNotes].forEach(g => g.remove());
+                            veSelectedNotes.clear(); updateStatusBar();
+                            showVeToast('🗑 Deleted');
+                        }
+                    }
+                }
+            });
+
+            /* ─── WIRE EXISTING DEMO NOTES ───────────────────────────── */
+            // Attach drag-move events to pre-existing demo notes
+            svg.querySelectorAll('.pr-note').forEach(g => {
+                // Ensure they have .note-body, .note-lbl classes (add if missing, for legacy demo notes)
+                const rects = g.querySelectorAll('rect');
+                const txts = g.querySelectorAll('text');
+                if (rects[0] && !rects[0].classList.contains('note-body')) rects[0].classList.add('note-body');
+                if (rects[1] && !rects[1].classList.contains('note-shine')) rects[1].classList.add('note-shine');
+                if (rects[2] && !rects[2].classList.contains('note-resize')) rects[2].classList.add('note-resize');
+                if (txts[0] && !txts[0].classList.contains('note-lbl')) txts[0].classList.add('note-lbl');
+                // Store dataset for engine
+                if (rects[0]) {
+                    g.dataset.x = rects[0].getAttribute('x');
+                    g.dataset.y = rects[0].getAttribute('y');
+                    g.dataset.w = rects[0].getAttribute('width');
+                    // Estimate midi from y
+                    const y = parseFloat(rects[0].getAttribute('y'));
+                    const midi = yToMidi(y);
+                    g.dataset.midi = midi;
+                }
+                // Remove old inline onclick, replace with engine listener
+                g.removeAttribute('onclick');
+                g.addEventListener('mousedown', onNoteMouseDown, { capture: false });
+            });
+
+            // Select first note to populate status bar
+            const firstNote = svg.querySelector('.pr-note');
+            if (firstNote) { setSelected(firstNote, true); updateStatusBar(); }
+
+        })(); // end IIFE
+
+
+        // ══════════════════════════════════════════════════════════
+        // ══  FEATURE BLOCK: All Remaining Interactive Functions  ══
+        // ══════════════════════════════════════════════════════════
+
+        // ── SMART IMPORT: File Picker + Drag-Drop ──────────────────
+        (function () {
+            const siBtn = document.getElementById('btn-smart-import');
+            const siFileInput = document.getElementById('si-file-input');
+            const wfbox = document.getElementById('wfbox-main');
+            const dropHint = document.getElementById('drop-area');
+            const siDesc = siBtn ? siBtn.querySelector('.si-desc') : null;
+            const siLed = siBtn ? siBtn.querySelector('.si-led') : null;
+            const siTitle = siBtn ? siBtn.querySelector('.si-title') : null;
+
+            const AUDIO_TYPES = ['audio/wav', 'audio/mpeg', 'audio/aac', 'audio/flac', 'audio/ogg', 'audio/x-aiff', 'audio/'];
+
+            function isAudioFile(f) {
+                return f && (f.type.startsWith('audio/') || /\.(wav|mp3|aac|flac|ogg|aif|aiff)$/i.test(f.name));
+            }
+
+            // Show analysing animation then "loaded" state
+            function processFile(file) {
+                if (!file) return;
+                const fname = file.name;
+                const size = (file.size / 1024 / 1024).toFixed(2) + ' MB';
+                // UI feedback
+                if (siLed) siLed.style.background = '#ffab00';
+                if (siDesc) siDesc.textContent = 'Analysing… ' + fname;
+                if (siTitle) siTitle.textContent = '⏳ IMPORTING';
+                if (dropHint) {
+                    dropHint.textContent = '⏳ Analysing: ' + fname;
+                    dropHint.style.opacity = '1';
+                }
+
+                // Simulate AI analysis 1.2 s
+                setTimeout(() => {
+                    if (siLed) siLed.style.background = '#00ff88';
+                    if (siTitle) siTitle.textContent = '✔ IMPORTED';
+                    if (siDesc) siDesc.textContent = fname + ' · ' + size;
+                    if (dropHint) {
+                        dropHint.textContent = '✔ ' + fname;
+                        dropHint.style.color = 'rgba(0,255,136,0.8)';
+                    }
+                    // Draw fake loaded waveform on canvas
+                    _drawLoadedWaveform();
+                    // Toast
+                    const t = document.getElementById('ve-toast');
+                    if (t) { t.textContent = '✔ Imported: ' + fname; t.style.opacity = '1'; setTimeout(() => t.style.opacity = '0', 2000); }
+                }, 1200);
+            }
+
+            function _drawLoadedWaveform() {
+                const canvas = document.getElementById('main-wf-canvas');
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                const W = canvas.width || canvas.offsetWidth || 400;
+                const H = canvas.height || canvas.offsetHeight || 200;
+                canvas.width = W; canvas.height = H;
+                ctx.fillStyle = 'rgba(0,4,12,0.92)';
+                ctx.fillRect(0, 0, W, H);
+                // Center line
+                ctx.strokeStyle = 'rgba(0,229,255,0.2)';
+                ctx.lineWidth = 1; ctx.setLineDash([3, 5]);
+                ctx.beginPath(); ctx.moveTo(0, H / 2); ctx.lineTo(W, H / 2); ctx.stroke();
+                ctx.setLineDash([]);
+                // Fake waveform
+                ctx.strokeStyle = 'rgba(0,229,255,0.75)';
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.moveTo(0, H / 2);
+                for (let x = 0; x < W; x++) {
+                    const amp = Math.sin(x * 0.04) * 0.6 + Math.sin(x * 0.13) * 0.3 + (Math.random() - 0.5) * 0.15;
+                    ctx.lineTo(x, H / 2 - amp * (H * 0.42));
+                }
+                ctx.stroke();
+                // Peak indicators in red zone
+                ctx.fillStyle = 'rgba(255,60,60,0.15)';
+                ctx.fillRect(0, 0, W, H * 0.08);
+                ctx.fillRect(0, H * 0.92, W, H * 0.08);
+                ctx.strokeStyle = 'rgba(255,60,60,0.3)';
+                ctx.lineWidth = 0.5; ctx.setLineDash([]);
+                ctx.beginPath(); ctx.moveTo(0, H * 0.08); ctx.lineTo(W, H * 0.08); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(0, H * 0.92); ctx.lineTo(W, H * 0.92); ctx.stroke();
+            }
+
+            // Click SMART IMPORT → open file picker
+            if (siBtn && siFileInput) {
+                siBtn.addEventListener('click', () => siFileInput.click());
+                siFileInput.addEventListener('change', e => {
+                    const f = e.target.files[0];
+                    if (f) processFile(f);
+                    siFileInput.value = ''; // reset so same file can be re-selected
+                });
+            }
+
+            // Drag-drop on wfbox
+            if (wfbox) {
+                ['dragenter', 'dragover'].forEach(ev => {
+                    wfbox.addEventListener(ev, e => {
+                        e.preventDefault();
+                        wfbox.style.outline = '2px dashed rgba(0,229,255,0.7)';
+                        if (dropHint) { dropHint.style.opacity = '1'; dropHint.textContent = 'Drop audio file here'; }
+                    });
+                });
+                ['dragleave', 'dragend'].forEach(ev => {
+                    wfbox.addEventListener(ev, () => { wfbox.style.outline = ''; });
+                });
+                wfbox.addEventListener('drop', e => {
+                    e.preventDefault();
+                    wfbox.style.outline = '';
+                    const f = e.dataTransfer.files[0];
+                    processFile(f);
+                });
+            }
+        })();
+
+        // ── CLONE VOICE: Animated progress flow ───────────────────
+        (function () {
+            const cloneBtn = document.getElementById('btn-clone');
+            const recCanvas = document.getElementById('main-wf-canvas');
+            if (!cloneBtn) return;
+
+            let isCloningBusy = false;
+
+            cloneBtn.addEventListener('click', () => {
+                if (isCloningBusy) return;
+
+                // Check if we have recording / audio (canvas not empty)  — just proceed for UX
+                isCloningBusy = true;
+                cloneBtn.disabled = true;
+                cloneBtn.style.opacity = '0.7';
+
+                // Phase 1: Analysing voice
+                cloneBtn.textContent = '⏳ Analysing Voice…';
+                cloneBtn.style.background = 'linear-gradient(90deg,rgba(255,171,0,0.15),rgba(255,100,0,0.15))';
+
+                const phases = [
+                    { t: 1200, label: '⚙ Extracting Features…' },
+                    { t: 2400, label: '🧠 AI Training Model…' },
+                    { t: 4000, label: '🔬 Verifying Quality…' },
+                    { t: 5400, label: '✔ CLONE VOICE — DONE!' },
+                ];
+
+                phases.forEach(({ t, label }) => {
+                    setTimeout(() => { cloneBtn.textContent = label; }, t);
+                });
+
+                setTimeout(() => {
+                    // Done!
+                    cloneBtn.style.background = 'linear-gradient(90deg,rgba(0,255,136,0.2),rgba(0,229,255,0.15))';
+                    cloneBtn.style.borderColor = 'rgba(0,255,136,0.6)';
+                    cloneBtn.style.color = '#00ff88';
+                    cloneBtn.disabled = false;
+                    isCloningBusy = false;
+
+                    // Add new clone entry in Voices panel
+                    const cloneNum = Date.now().toString().slice(-3);
+                    const vcRow = document.querySelector('#panel-voices .np-row');
+                    if (vcRow) {
+                        const card = document.createElement('div');
+                        card.className = 'np-voice-card';
+                        card.textContent = '👤 My Voice';
+                        const sp = document.createElement('span'); sp.textContent = 'Clone #' + cloneNum;
+                        card.appendChild(sp);
+                        card.addEventListener('click', () => {
+                            document.querySelectorAll('.np-voice-card').forEach(c => c.classList.remove('on'));
+                            card.classList.add('on');
+                        });
+                        vcRow.insertBefore(card, vcRow.lastElementChild);
+                    }
+
+                    // Toast
+                    const t = document.getElementById('ve-toast');
+                    if (t) { t.textContent = '✔ Voice cloned! Open Voices panel to use it.'; t.style.opacity = '1'; setTimeout(() => t.style.opacity = '0', 3000); }
+
+                    setTimeout(() => {
+                        cloneBtn.textContent = 'CLONE VOICE (15s)';
+                        cloneBtn.style.background = '';
+                        cloneBtn.style.borderColor = '';
+                        cloneBtn.style.color = '';
+                    }, 4000);
+                }, 6000);
+            });
+        })();
+
+        // ── BPM: Click to edit ────────────────────────────────────
+        (function () {
+            const bpmEl = document.getElementById('bpm-val');
+            if (!bpmEl) return;
+            let bpmVal = 128;
+
+            bpmEl.addEventListener('click', () => {
+                const inp = document.createElement('input');
+                inp.type = 'number'; inp.min = 40; inp.max = 300; inp.value = bpmVal;
+                inp.style.cssText = 'width:48px;background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.5);color:#00e5ff;font:bold 13px Orbitron,monospace;text-align:center;border-radius:4px;padding:1px 3px;outline:none;';
+                bpmEl.replaceWith(inp);
+                inp.focus(); inp.select();
+                const save = () => {
+                    bpmVal = Math.min(300, Math.max(40, parseInt(inp.value) || 128));
+                    const newSpan = document.createElement('span');
+                    newSpan.id = 'bpm-val'; newSpan.className = 'bv';
+                    newSpan.title = 'Click to edit BPM'; newSpan.style.cursor = 'pointer';
+                    newSpan.textContent = bpmVal;
+                    inp.replaceWith(newSpan);
+                    // Re-bind
+                    newSpan.addEventListener('click', arguments.callee || (() => { }));
+                    document.getElementById('bpm-val').dispatchEvent(new Event('bpm-changed'));
+                };
+                inp.addEventListener('blur', save);
+                inp.addEventListener('keydown', e => { if (e.key === 'Enter') inp.blur(); if (e.key === 'Escape') { inp.value = bpmVal; inp.blur(); } });
+            });
+        })();
+
+        // ── VOICES PANEL: Interactive sliders ─────────────────────
+        (function () {
+            document.querySelectorAll('.np-sl').forEach(track => {
+                const fill = track.querySelector('.sl-f');
+                if (!fill) return;
+                let drag = false;
+                const upd = e => {
+                    e.preventDefault();
+                    const r = track.getBoundingClientRect();
+                    const cx = (e.clientX ?? e.touches?.[0]?.clientX) - r.left;
+                    fill.style.width = Math.max(0, Math.min(100, (cx / r.width) * 100)) + '%';
+                };
+                track.addEventListener('mousedown', e => { drag = true; upd(e); });
+                window.addEventListener('mousemove', e => { if (drag) upd(e); });
+                window.addEventListener('mouseup', () => { drag = false; });
+            });
+        })();
+
+        // ── EFFECTS PANEL: FX Preset Dropdown updates chain ───────
+        (function () {
+            const sel = document.getElementById('fx-preset-sel');
+            if (!sel) return;
+            const PRESETS = {
+                'Studio Vocal': { Reverb: 'Hall · 35%', Compressor: 'Ratio 4:1 · −12dB', 'Parametric EQ': 'Presence +3dB', active: [0, 1, 2] },
+                'Pop Shine': { Reverb: 'Room · 20%', Compressor: 'Ratio 6:1 · −10dB', 'Parametric EQ': 'Air +4dB · Bright', active: [0, 1, 2, 3] },
+                'Lo-Fi Warm': { Reverb: 'Tape · 55%', Compressor: 'Ratio 2:1 · −18dB', 'Parametric EQ': 'Lo-cut +HPF', active: [0, 1] },
+                'Film Score': { Reverb: 'Cathedral · 70%', Compressor: 'Ratio 3:1 · −8dB', 'Parametric EQ': 'Warmth +2dB', active: [0, 1, 2] },
+                'Custom': { active: [] }
+            };
+            sel.addEventListener('change', () => {
+                const p = PRESETS[sel.value] || PRESETS['Custom'];
+                document.querySelectorAll('.np-fx-slot').forEach((slot, i) => {
+                    const isOn = p.active.includes(i);
+                    slot.classList.toggle('on', isOn);
+                    const valEl = slot.querySelector('.np-fx-val');
+                    const nameEl = slot.querySelector('.np-fx-name');
+                    if (valEl && nameEl && p[nameEl.textContent]) valEl.textContent = p[nameEl.textContent];
+                    const fill = slot.querySelector('.sl-f');
+                    if (fill) fill.style.width = isOn ? (30 + Math.random() * 50).toFixed(0) + '%' : '0%';
+                });
+            });
+        })();
+
+        // ── OUTPUT FORMAT / SAMPLE RATE button groups (Render panel) ──
+        (function () {
+            [['fmt-wav', 'fmt-flac', 'fmt-mp3', 'fmt-aiff'], ['sr-44', 'sr-48', 'sr-96'], ['eng-svs', 'eng-cloud']].forEach(group => {
+                group.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (!el) return;
+                    el.addEventListener('click', () => {
+                        group.forEach(gid => { const g = document.getElementById(gid); if (g) g.classList.remove('on'); });
+                        el.classList.add('on');
+                    });
+                });
+            });
+        })();
+
+        // ── Info Button (Module A) pop-over toggle ────────────────
+        (function () {
+            const infoBtn = document.querySelector('.info-btn');
+            const infoPopup = document.querySelector('.info-popup');
+            if (!infoBtn || !infoPopup) return;
+            infoBtn.addEventListener('click', e => {
+                e.stopPropagation();
+                const isVis = infoPopup.style.display === 'block';
+                infoPopup.style.display = isVis ? 'none' : 'block';
+            });
+            document.addEventListener('click', () => { infoPopup.style.display = 'none'; });
+        })();
+
+        // ── BPM tap tempo ─────────────────────────────────────────
+        // (double-click BPM to tap tempo)
+        (function () {
+            let taps = []; let tapTimer;
+            document.addEventListener('keydown', e => {
+                if (e.code === 'KeyT' && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+                    const now = Date.now();
+                    taps.push(now);
+                    if (taps.length > 8) taps.shift();
+                    clearTimeout(tapTimer);
+                    tapTimer = setTimeout(() => { taps = []; }, 3000);
+                    if (taps.length >= 2) {
+                        const diffs = [];
+                        for (let i = 1; i < taps.length; i++) diffs.push(taps[i] - taps[i - 1]);
+                        const avg = diffs.reduce((a, b) => a + b) / diffs.length;
+                        const bpm = Math.round(60000 / avg);
+                        const bv = document.getElementById('bpm-val');
+                        if (bv) bv.textContent = bpm;
+                        const t = document.getElementById('ve-toast');
+                        if (t) { t.textContent = `🥁 Tap BPM: ${bpm}`; t.style.opacity = '1'; setTimeout(() => t.style.opacity = '0', 1200); }
+                    }
+                }
+            });
+        })();
+
+        // ── Module C: Expression sliders live value display ────────
+        (function () {
+            document.querySelectorAll('.sl-r').forEach(row => {
+                const track = row.querySelector('.sl-t');
+                const fill = row.querySelector('.sl-f');
+                const label = row.querySelector('.sl-l');
+                if (!track || !fill || !label) return;
+                const upd = e => {
+                    e.preventDefault();
+                    const r = track.getBoundingClientRect();
+                    const cx = (e.clientX ?? e.touches?.[0]?.clientX) - r.left;
+                    const pct = Math.max(0, Math.min(100, (cx / r.width) * 100));
+                    fill.style.width = pct + '%';
+                };
+                let drag = false;
+                track.addEventListener('mousedown', e => { drag = true; upd(e); });
+                window.addEventListener('mousemove', e => { if (drag) upd(e); });
+                window.addEventListener('mouseup', () => { drag = false; });
+            });
+        })();
+
+        // ── Show keyboard shortcuts toast once on load ─────────────
+        setTimeout(() => {
+            const t = document.getElementById('ve-toast');
+            if (t) {
+                t.textContent = '⌨ Shortcuts: S=Select D=Draw E=Erase C=Slice G=Glue  T=Tap BPM  Ctrl+Z=Undo';
+                t.style.opacity = '1';
+                setTimeout(() => t.style.opacity = '0', 4000);
+            }
+        }, 2000);
+
+    </script>
+
+
+</body>
+
+</html>
