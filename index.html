@@ -14,7 +14,7 @@
         <!-- ═══ HEADER ═══ -->
         <header class="hdr">
             <div class="logo"><span class="c">SINGER</span><span class="o">IA</span><span
-                    style="font-size: 8px; vertical-align: middle; opacity: 0.5; margin-left: 4px;">v2.1</span></div>
+                    style="font-size: 8px; vertical-align: middle; opacity: 0.5; margin-left: 4px;">v2.2</span></div>
             <div class="pname"></div>
             <nav class="nav">
                 <button class="on" data-tab="projects">📁 Projects</button>
@@ -1753,10 +1753,18 @@
         let wfStatusMsg = '';     // shown in canvas when no real audio
 
         // ── Real Web Audio Engine (DSP) ──
+        let recordedChunks = [];
+        let mediaRecorder = null;
+        let recordedAudioUrl = null;
+        let playbackAudio = null;
+
         const SingeriaAudio = {
             ctx: null, analyser: null, nodes: {},
-            init() {
-                if (this.ctx) return;
+            async init() {
+                if (this.ctx) {
+                    if (this.ctx.state === 'suspended') await this.ctx.resume();
+                    return;
+                }
                 this.ctx = new (window.AudioContext || window.webkitAudioContext)();
                 this.analyser = this.ctx.createAnalyser();
                 this.analyser.fftSize = 2048;
@@ -1764,14 +1772,17 @@
                 this.nodes.eq = this.ctx.createBiquadFilter();
                 this.nodes.eq.type = 'peaking'; this.nodes.eq.frequency.value = 3200;
                 this.nodes.comp = this.ctx.createDynamicsCompressor();
-                this.nodes.revGain = this.ctx.createGain(); // simulate mix
+                this.nodes.revGain = this.ctx.createGain();
+
                 this.nodes.master.connect(this.nodes.eq);
                 this.nodes.eq.connect(this.nodes.comp);
                 this.nodes.comp.connect(this.analyser);
-                this.analyser.connect(this.ctx.destination);
+                // To avoid feedback on mobile, we don't connect to destination during recording
+                // unless it's requested. For now, let's keep it silent to avoid loop.
+                // this.analyser.connect(this.ctx.destination);
             },
             updateFX(name, pct) {
-                if (!this.ctx) this.init();
+                if (!this.ctx) return;
                 if (name === 'eq') this.nodes.eq.gain.value = (pct / 100) * 12;
                 if (name === 'comp') this.nodes.comp.threshold.value = -pct / 2;
                 if (name === 'reverb') this.nodes.revGain.gain.value = pct / 100;
@@ -1780,23 +1791,38 @@
 
         async function requestMic() {
             if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                wfStatusMsg = 'Web Audio not supported in this browser';
+                wfStatusMsg = 'Web Audio not supported';
                 micConnected = false;
                 return;
             }
             try {
-                micStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
-                SingeriaAudio.init();
+                micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                await SingeriaAudio.init();
                 audioCtx = SingeriaAudio.ctx;
                 analyser = SingeriaAudio.analyser;
+
                 const source = audioCtx.createMediaStreamSource(micStream);
                 source.connect(SingeriaAudio.nodes.master);
+
+                // Initialize MediaRecorder
+                mediaRecorder = new MediaRecorder(micStream);
+                recordedChunks = [];
+                mediaRecorder.ondataavailable = (e) => {
+                    if (e.data.size > 0) recordedChunks.push(e.data);
+                };
+                mediaRecorder.onstop = () => {
+                    const blob = new Blob(recordedChunks, { type: 'audio/webm' });
+                    if (recordedAudioUrl) URL.revokeObjectURL(recordedAudioUrl);
+                    recordedAudioUrl = URL.createObjectURL(blob);
+                };
+
                 wfDataArray = new Uint8Array(analyser.fftSize);
                 micConnected = true;
                 wfStatusMsg = '';
             } catch (err) {
                 micConnected = false;
-                wfStatusMsg = '⚠  Mic unavailable: ' + err.name;
+                wfStatusMsg = '⚠ Mic Error: ' + err.name;
+                console.error("Mic access failed:", err);
             }
         }
 
@@ -2034,48 +2060,74 @@
         // ── Button Handlers ───────────────────────────────────────
         btnRec.addEventListener('click', async () => {
             if (!isRecording) {
-                // ── Start recording: request real microphone first ──
+                // ── Start recording ──
                 isRecording = true;
                 btnRec.classList.add('active');
                 lblRec.textContent = 'STOP';
-                // Stop playback if running
+
                 if (isPlaying) {
                     isPlaying = false;
+                    if (playbackAudio) { playbackAudio.pause(); playbackAudio = null; }
                     btnPlay.classList.remove('active');
                     stopVU(); stopWF();
                 }
-                // Ask browser for microphone access
+
                 await requestMic();
+                if (micConnected && mediaRecorder) {
+                    mediaRecorder.start();
+                }
                 startVU();
                 startWF('rec');
             } else {
-                // ── Stop recording: release mic ──
+                // ── Stop recording ──
                 isRecording = false;
                 btnRec.classList.remove('active');
                 lblRec.textContent = 'REC';
-                stopMic();   // release microphone stream
+
+                if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                    mediaRecorder.stop();
+                }
+
+                stopMic();
                 stopVU();
                 stopWF();
             }
         });
 
-        btnPlay.addEventListener('click', () => {
+        btnPlay.addEventListener('click', async () => {
             if (!isPlaying) {
                 // ── Start playback ──
                 isPlaying = true;
                 btnPlay.classList.add('active');
-                // Stop recordi n g if running
+
                 if (isRecording) {
                     isRecording = false;
+                    if (mediaRecorder) mediaRecorder.stop();
                     btnRec.classList.remove('active');
                     lblRec.textContent = 'REC';
                 }
+
+                // If we have a recorded file, play it
+                if (recordedAudioUrl) {
+                    playbackAudio = new Audio(recordedAudioUrl);
+                    playbackAudio.onended = () => {
+                        isPlaying = false;
+                        btnPlay.classList.remove('active');
+                        stopVU(); stopWF();
+                    };
+                    playbackAudio.play().catch(e => console.error("Playback failed:", e));
+                }
+
                 startVU();
                 startWF('play');
             } else {
                 // ── Stop playback ──
                 isPlaying = false;
                 btnPlay.classList.remove('active');
+                if (playbackAudio) {
+                    playbackAudio.pause();
+                    playbackAudio = null;
+                }
                 stopVU();
                 stopWF();
             }
