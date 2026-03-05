@@ -1462,14 +1462,13 @@
         };
 
         function switchMobileModule(modId) {
-            if (window.innerWidth > 768) return; // Only for mobile
-
-            mobTabs.forEach(btn => {
-                btn.classList.toggle('on', btn.dataset.mod === modId);
-            });
-
+            if (window.innerWidth > 768) return;
+            mobTabs.forEach(btn => btn.classList.toggle('on', btn.dataset.mod === modId));
             Object.entries(modules).forEach(([id, el]) => {
-                if (el) el.style.display = (id === modId) ? 'flex' : 'none';
+                if (el) {
+                    el.classList.toggle('mob-active', id === modId);
+                    el.style.display = ''; // Let CSS handle it
+                }
             });
         }
 
