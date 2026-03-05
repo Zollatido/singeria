@@ -1220,7 +1220,10 @@ body {
         display: flex;
         flex-direction: column;
         grid-template-columns: none;
-        gap: 0;
+        gap: 12px;
+        overflow-y: auto;
+        height: calc(100vh - 120px);
+        /* adjust for header/footer */
     }
 
     .grid>.card {
