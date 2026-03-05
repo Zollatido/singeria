@@ -3504,10 +3504,17 @@ section#mod-b {
 /* ═══ MOBILE OVERRIDE ═══ */
 @media (max-width: 768px) {
 
-    html,
+    html {
+        height: auto !important;
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+        scroll-behavior: smooth;
+    }
+
     body {
         height: auto !important;
-        overflow: auto !important;
+        overflow: visible !important;
+        background: #060810 !important;
     }
 
     .app {
@@ -3515,29 +3522,36 @@ section#mod-b {
         height: auto !important;
         min-height: 100vh !important;
         border-radius: 0 !important;
-        padding: 12px 14px !important;
+        padding: 0 14px 40px !important;
         border: none !important;
         overflow: visible !important;
         background: #060810 !important;
+        display: block !important;
     }
 
     .hdr {
         position: sticky;
         top: 0;
-        z-index: 1000;
+        z-index: 1001;
         background: #060810;
-        padding: 10px 0;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        padding: 12px 0;
+        border-bottom: 2px solid rgba(0, 229, 255, 0.1) !important;
+        margin-bottom: 0 !important;
     }
 
     .mob-module-nav {
         display: flex !important;
         position: sticky;
-        top: 58px;
-        z-index: 999;
-        background: #060810;
-        padding: 8px !important;
-        border: 1px solid var(--pri-d) !important;
+        top: 62px;
+        /* Adjusted for sticky header */
+        z-index: 1000;
+        background: rgba(6, 8, 16, 0.98);
+        backdrop-filter: blur(15px);
+        padding: 10px !important;
+        margin: 0 -14px 24px !important;
+        /* Full width */
+        border-bottom: 1px solid rgba(0, 229, 255, 0.2) !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
     }
 
     .grid {
