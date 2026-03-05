@@ -1464,12 +1464,20 @@
         function switchMobileModule(modId) {
             if (window.innerWidth > 768) return;
             mobTabs.forEach(btn => btn.classList.toggle('on', btn.dataset.mod === modId));
-            Object.entries(modules).forEach(([id, el]) => {
-                if (el) {
-                    el.classList.toggle('mob-active', id === modId);
-                    el.style.display = ''; // Let CSS handle it
-                }
-            });
+            const target = document.getElementById(modId);
+            if (target) {
+                // Scroll to target, adjusting for sticky header/nav (~110px)
+                const offset = 110;
+                const bodyRect = document.body.getBoundingClientRect().top;
+                const elementRect = target.getBoundingClientRect().top;
+                const elementPosition = elementRect - bodyRect;
+                const offsetPosition = elementPosition - offset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
         }
 
         mobTabs.forEach(btn => {
