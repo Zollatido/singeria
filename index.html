@@ -14,7 +14,7 @@
         <!-- ═══ HEADER ═══ -->
         <header class="hdr">
             <div class="logo"><span class="c">SINGER</span><span class="o">IA</span><span
-                    style="font-size: 8px; vertical-align: middle; opacity: 0.5; margin-left: 4px;">v2.4</span></div>
+                    style="font-size: 8px; vertical-align: middle; opacity: 0.5; margin-left: 4px;">v2.6</span></div>
             <div class="pname"></div>
             <nav class="nav">
                 <button class="on" data-tab="projects">📁 Projects</button>
@@ -1770,10 +1770,18 @@
         const SingeriaAudio = {
             ctx: null, analyser: null, nodes: {},
             async init() {
-                if (this.ctx) {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContextClass) {
+                    console.error("Web Audio not supported");
+                    return;
+                }
+
+                if (this.ctx && this.ctx.state !== 'closed') {
                     if (this.ctx.state === 'suspended') await this.ctx.resume();
                     return;
                 }
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (!AudioCtx) { console.error("Web Audio not supported"); return; }
                 this.ctx = new AudioCtx();
                 this.analyser = this.ctx.createAnalyser();
                 this.analyser.fftSize = 1024;
@@ -1808,22 +1816,32 @@
             try {
                 micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
                 await SingeriaAudio.init();
+                if (!SingeriaAudio.ctx) throw new Error("AudioContext init failed");
+
                 audioCtx = SingeriaAudio.ctx;
                 analyser = SingeriaAudio.analyser;
 
                 const source = audioCtx.createMediaStreamSource(micStream);
                 source.connect(SingeriaAudio.nodes.master);
 
-                // Initialize MediaRecorder
-                mediaRecorder = new MediaRecorder(micStream);
+                // Initialize MediaRecorder with fallback types
+                let mimeType = 'audio/webm';
+                if (!MediaRecorder.isTypeSupported(mimeType)) {
+                    mimeType = 'audio/mp4';
+                    if (!MediaRecorder.isTypeSupported(mimeType)) mimeType = ''; // Let browser decide
+                }
+
+                mediaRecorder = mimeType ? new MediaRecorder(micStream, { mimeType }) : new MediaRecorder(micStream);
                 recordedChunks = [];
                 mediaRecorder.ondataavailable = (e) => {
                     if (e.data.size > 0) recordedChunks.push(e.data);
                 };
                 mediaRecorder.onstop = () => {
-                    const blob = new Blob(recordedChunks, { type: 'audio/webm' });
+                    const finalType = mediaRecorder.mimeType || 'audio/webm';
+                    const blob = new Blob(recordedChunks, { type: finalType });
                     if (recordedAudioUrl) URL.revokeObjectURL(recordedAudioUrl);
                     recordedAudioUrl = URL.createObjectURL(blob);
+                    console.log("Recording stopped, blob size:", blob.size);
                 };
 
                 wfDataArray = new Uint8Array(analyser.fftSize);
@@ -1845,6 +1863,9 @@
                 audioCtx.close();
                 audioCtx = null;
             }
+            SingeriaAudio.ctx = null;
+            SingeriaAudio.analyser = null;
+            v_dataArray = null;
             analyser = null;
             wfDataArray = null;
             micConnected = false;
