@@ -422,6 +422,13 @@
             </div>
         </div>
 
+        <!-- ═══ MOBILE MODULE SWITCHER (Visible only on mobile) ═══ -->
+        <div class="mob-module-nav">
+            <button class="mob-tab-btn on" data-mod="mod-a">Module A</button>
+            <button class="mob-tab-btn" data-mod="mod-b">Module B</button>
+            <button class="mob-tab-btn" data-mod="mod-c">Module C</button>
+        </div>
+
         <!-- ═══ MAIN GRID (3 Columns) ═══ -->
         <main class="grid">
 
@@ -1425,22 +1432,65 @@
         navBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 const tab = btn.dataset.tab;
+
+                // If this tab is already active, close it
+                if (btn.classList.contains('on')) {
+                    btn.classList.remove('on');
+                    hideAllPanels();
+                    activePanel = null;
+                    return;
+                }
+
                 navBtns.forEach(b => b.classList.remove('on'));
                 btn.classList.add('on');
 
                 const panel = panels[tab];
                 if (!panel) return;
 
-                if (activePanel === panel && panel.style.display !== 'none') {
-                    panel.style.display = 'none';
-                    activePanel = null;
-                } else {
-                    hideAllPanels();
-                    panel.style.display = 'flex';
-                    activePanel = panel;
-                }
+                hideAllPanels();
+                panel.style.display = 'flex';
+                activePanel = panel;
             });
         });
+
+        // ── Mobile Module Switching Logic ──
+        const mobTabs = document.querySelectorAll('.mob-tab-btn');
+        const modules = {
+            'mod-a': document.getElementById('mod-a'),
+            'mod-b': document.getElementById('mod-b'),
+            'mod-c': document.getElementById('mod-c')
+        };
+
+        function switchMobileModule(modId) {
+            if (window.innerWidth > 768) return; // Only for mobile
+
+            mobTabs.forEach(btn => {
+                btn.classList.toggle('on', btn.dataset.mod === modId);
+            });
+
+            Object.entries(modules).forEach(([id, el]) => {
+                if (el) el.style.display = (id === modId) ? 'flex' : 'none';
+            });
+        }
+
+        mobTabs.forEach(btn => {
+            btn.addEventListener('click', () => {
+                switchMobileModule(btn.dataset.mod);
+            });
+        });
+
+        // Handle Resize to reset displays
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                Object.values(modules).forEach(el => { if (el) el.style.display = 'flex'; });
+            } else {
+                const activeTab = document.querySelector('.mob-tab-btn.on')?.dataset.mod || 'mod-a';
+                switchMobileModule(activeTab);
+            }
+        });
+
+        // Initial check for mobile
+        if (window.innerWidth <= 768) switchMobileModule('mod-a');
 
         // ── Project Item Click ──
         document.querySelectorAll('.np-proj-item').forEach(item => {
