@@ -14,7 +14,7 @@
         <!-- ═══ HEADER ═══ -->
         <header class="hdr">
             <div class="logo"><span class="c">SINGER</span><span class="o">IA</span><span
-                    style="font-size: 8px; vertical-align: middle; opacity: 0.5; margin-left: 4px;">v2.2</span></div>
+                    style="font-size: 8px; vertical-align: middle; opacity: 0.5; margin-left: 4px;">v2.4</span></div>
             <div class="pname"></div>
             <nav class="nav">
                 <button class="on" data-tab="projects">📁 Projects</button>
@@ -1701,35 +1701,44 @@
         let isRecording = false;
         let isPlaying = false;
 
-        // ── VU Meter — scales with GAIN knob ──────────────────────────────
-        let vuTimer = null;
+        // ── VU Meter — real-time analysis ──────────────────────────────
         let vuRunning = false;
+        let v_dataArray = null;
 
         function animateVU() {
             if (!vuRunning) return;
             const totalSegs = vuSegs.length;
-            // ikGainValue defined later — default 0.5 until knob is initialized
-            const g = (typeof ikGainValue !== 'undefined') ? ikGainValue : 0.5;
-            if (g < 0.01) {
-                // Gain at 0 → all dim (complete silence)
-                vuSegs.forEach(s => s.classList.add('dim'));
-            } else {
-                const maxLevel = Math.max(1, Math.round(g * (totalSegs - 2)));
-                const level = Math.floor(Math.random() * maxLevel + 1);
-                const threshold = totalSegs - level;
-                vuSegs.forEach((seg, i) => {
-                    if (i >= threshold) seg.classList.remove('dim');
-                    else seg.classList.add('dim');
-                });
+            let level = 0;
+
+            if (micConnected && analyser) {
+                if (!v_dataArray) v_dataArray = new Uint8Array(analyser.frequencyBinCount);
+                analyser.getByteFrequencyData(v_dataArray);
+
+                let sum = 0;
+                for (let i = 0; i < v_dataArray.length; i++) {
+                    sum += v_dataArray[i];
+                }
+                const average = sum / v_dataArray.length;
+                // Scale average volume to segments (more sensitive)
+                level = Math.min(totalSegs, Math.round((average / 64) * totalSegs));
+            } else if (isPlaying && ikGainValue > 0.01) {
+                // Simulation for playback
+                level = Math.floor(Math.random() * (totalSegs * ikGainValue));
             }
-            vuTimer = setTimeout(animateVU, 80);
+
+            const threshold = totalSegs - level;
+            vuSegs.forEach((seg, i) => {
+                if (i >= threshold) seg.classList.remove('dim');
+                else seg.classList.add('dim');
+            });
+
+            requestAnimationFrame(animateVU);
         }
 
         function startVU() { vuRunning = true; animateVU(); }
 
         function stopVU() {
             vuRunning = false;
-            if (vuTimer) { clearTimeout(vuTimer); vuTimer = null; }
             vuSegs.forEach(s => s.classList.add('dim'));
         }
 
@@ -1765,9 +1774,9 @@
                     if (this.ctx.state === 'suspended') await this.ctx.resume();
                     return;
                 }
-                this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                this.ctx = new AudioCtx();
                 this.analyser = this.ctx.createAnalyser();
-                this.analyser.fftSize = 2048;
+                this.analyser.fftSize = 1024;
                 this.nodes.master = this.ctx.createGain();
                 this.nodes.eq = this.ctx.createBiquadFilter();
                 this.nodes.eq.type = 'peaking'; this.nodes.eq.frequency.value = 3200;
@@ -1777,15 +1786,16 @@
                 this.nodes.master.connect(this.nodes.eq);
                 this.nodes.eq.connect(this.nodes.comp);
                 this.nodes.comp.connect(this.analyser);
-                // To avoid feedback on mobile, we don't connect to destination during recording
-                // unless it's requested. For now, let's keep it silent to avoid loop.
-                // this.analyser.connect(this.ctx.destination);
+
+                const g = (typeof ikGainValue !== 'undefined') ? ikGainValue : 0.5;
+                this.nodes.master.gain.value = g;
             },
             updateFX(name, pct) {
                 if (!this.ctx) return;
                 if (name === 'eq') this.nodes.eq.gain.value = (pct / 100) * 12;
                 if (name === 'comp') this.nodes.comp.threshold.value = -pct / 2;
                 if (name === 'reverb') this.nodes.revGain.gain.value = pct / 100;
+                if (name === 'gain') this.nodes.master.gain.setTargetAtTime(pct, this.ctx.currentTime, 0.05);
             }
         };
 
@@ -2173,6 +2183,8 @@
                 else if (db >= -18) ikDbDisplay.style.color = 'rgba(0,229,255,0.9)';
                 else ikDbDisplay.style.color = 'rgba(0,229,255,0.55)';
             }
+            // Real-time engine link
+            SingeriaAudio.updateFX('gain', ikGainValue);
         }
 
         function ikApplyRot(newRot) {
